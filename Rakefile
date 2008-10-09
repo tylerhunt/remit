@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rake/clean'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
+require 'spec/rake/spectask'
 
 desc 'Default: package gem.'
 task :default => :gem
@@ -31,4 +32,8 @@ Rake::RDocTask.new do |rdoc|
   rdoc.title = 'Relax Documentation'
   rdoc.main = 'README'
   rdoc.rdoc_files.include('README', 'LICENSE', 'lib/**/*.rb')
+end
+
+Spec::Rake::SpecTask.new do |spec|
+  spec.spec_opts = ["--format", "specdoc", "--color"]
 end
