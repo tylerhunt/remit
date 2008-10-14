@@ -32,7 +32,6 @@ module Remit
       
       attr_reader :api
       
-      parameter :pipeline_name
       parameter :return_URL
       parameter :caller_key
 
@@ -67,14 +66,28 @@ module Remit
     end
     
     class SingleUsePipeline < Pipeline
+      parameter :pipeline_name,   :value => Remit::PipelineName::SINGLE_USE
       parameter :caller_reference
       parameter :payment_reason
       parameter :payment_method
       parameter :transaction_amount
       parameter :recipient_token
     end
+    
+    class RecipientPipeline < Pipeline
+      parameter :pipeline_name,   :value => Remit::PipelineName::RECIPIENT
+      parameter :caller_reference
+      parameter :validity_start # Time or seconds from Epoch
+      parameter :validity_expiry # Time or seconds from Epoch
+      parameter :payment_method
+      parameter :recipient_pays_fee
+      parameter :caller_reference_refund
+      parameter :max_variable_fee
+      parameter :max_fixed_fee
+    end
 
     class RecurringUsePipeline < Pipeline
+      parameter :pipeline_name,   :value => Remit::PipelineName::RECURRING
       parameter :caller_reference
       parameter :payment_reason
       parameter :recipient_token
@@ -86,6 +99,7 @@ module Remit
     end
     
     class PostpaidPipeline < Pipeline
+      parameter :pipeline_name,   :value => Remit::PipelineName::SETUP_POSTPAID
       parameter :caller_reference_sender
       parameter :caller_reference_settlement
       parameter :payment_reason
@@ -104,6 +118,10 @@ module Remit
     
     def get_single_use_pipeline(options)
       self.get_pipeline(SingleUsePipeline, options)
+    end
+    
+    def get_recipient_pipeline(options)
+      self.get_pipeline(RecipientPipeline, options)
     end
     
     def get_recurring_use_pipeline(options)
