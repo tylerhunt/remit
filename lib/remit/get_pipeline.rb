@@ -32,6 +32,7 @@ module Remit
       
       attr_reader :api
       
+      parameter :pipeline_name
       parameter :return_URL
       parameter :caller_key
 
@@ -66,16 +67,20 @@ module Remit
     end
     
     class SingleUsePipeline < Pipeline
-      parameter :pipeline_name,   :value => Remit::PipelineName::SINGLE_USE
       parameter :caller_reference
       parameter :payment_reason
       parameter :payment_method
       parameter :transaction_amount
       parameter :recipient_token
+      
+      def initialize(api, pipeline, options)
+        super(api, pipeline, options.merge({
+          :pipeline_name => Remit::PipelineName::SINGLE_USE
+        }))
+      end
     end
     
     class RecipientPipeline < Pipeline
-      parameter :pipeline_name,   :value => Remit::PipelineName::RECIPIENT
       parameter :caller_reference
       parameter :validity_start # Time or seconds from Epoch
       parameter :validity_expiry # Time or seconds from Epoch
@@ -84,10 +89,15 @@ module Remit
       parameter :caller_reference_refund
       parameter :max_variable_fee
       parameter :max_fixed_fee
+      
+      def initialize(api, pipeline, options)
+        super(api, pipeline, options.merge({
+          :pipeline_name => Remit::PipelineName::RECIPIENT
+        }))
+      end
     end
 
     class RecurringUsePipeline < Pipeline
-      parameter :pipeline_name,   :value => Remit::PipelineName::RECURRING
       parameter :caller_reference
       parameter :payment_reason
       parameter :recipient_token
@@ -96,10 +106,15 @@ module Remit
       parameter :validity_expiry # Time or seconds from Epoch
       parameter :payment_method
       parameter :recurring_period
+      
+      def initialize(api, pipeline, options)
+        super(api, pipeline, options.merge({
+          :pipeline_name => Remit::PipelineName::RECURRING
+        }))
+      end      
     end
     
     class PostpaidPipeline < Pipeline
-      parameter :pipeline_name,   :value => Remit::PipelineName::SETUP_POSTPAID
       parameter :caller_reference_sender
       parameter :caller_reference_settlement
       parameter :payment_reason
@@ -114,6 +129,12 @@ module Remit
       parameter :usage_limit_type2
       parameter :usage_limit_period2
       parameter :usage_limit_value2
+      
+      def initialize(api, pipeline, options)
+        super(api, pipeline, options.merge({
+          :pipeline_name => Remit::PipelineName::SETUP_POSTPAID
+        }))
+      end
     end
     
     def get_single_use_pipeline(options)
