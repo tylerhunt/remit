@@ -78,7 +78,7 @@ module Remit
       def parse(uri, secret_key, query_string)
         query = self.new(uri, secret_key)
         query_string.split('&').each do |parameter|
-          key, value = parameter.split('=')
+          key, value = parameter.split('=', 2)
           query[key] = unescape_value(value)
         end
         query
