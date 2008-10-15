@@ -4,7 +4,7 @@ describe 'a GetAccountActivity call' do
   it_should_behave_like 'a successful request'
 
   before(:all) do
-    request = Remit::API::GetAccountActivityRequest.new
+    request = Remit::GetAccountActivity::Request.new
     request.start_date = Date.today - 7
     @response = @remit.get_account_activity(request)
   end
