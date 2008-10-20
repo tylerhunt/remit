@@ -27,6 +27,13 @@ Rake::GemPackageTask.new(spec) do |package|
   package.need_tar = true 
 end 
 
+desc "Generate a gemspec file for GitHub"
+task :gemspec do
+  File.open("#{spec.name}.gemspec", 'w') do |f|
+    f.write spec.to_ruby
+  end
+end
+
 Rake::RDocTask.new do |rdoc|
   rdoc.title = 'Relax Documentation'
   rdoc.main = 'README'
