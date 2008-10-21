@@ -16,7 +16,7 @@ module Remit
         parameter :transaction_status
       end
 
-      parameter :transaction_results, :type => TransactionResults
+      parameter :transaction_results, :collection => TransactionResults
     end
 
     def get_results(request = Request.new)
