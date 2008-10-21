@@ -17,6 +17,7 @@ module Remit
       end
 
       parameter :transaction_results, :collection => TransactionResults
+      parameter :number_pending, :type => :integer
     end
 
     def get_results(request = Request.new)
