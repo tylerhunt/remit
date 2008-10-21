@@ -40,6 +40,33 @@ describe 'A single-use pipeline' do
   end
 end
 
+describe 'A recipient pipeline' do
+  it_should_behave_like 'A pipeline'
+  
+  before do
+    @validity_start   = Time.now + (3600 * 24) # 1 day from now
+    @validity_expiry  = Time.now + (2600 * 24 * 180) # ~6 months from now
+    
+    @pipeline_options.merge!({
+      :pipeline_name  => Remit::PipelineName::RECIPIENT,
+      :validity_start => @validity_start,
+      :validity_expiry  => @validity_expiry,
+      :caller_reference => 'N2PCBEIA5864E27EL7C86PJL1FGUGPBL61QTJJM5GQK265SPEN8ZKIJPMQARDVJK',
+      :max_variable_fee => '0.25',
+      :recipient_pays_fee => true
+    })
+    
+    @pipeline = @remit.get_recipient_pipeline(@pipeline_options)
+  end
+  
+  it 'should have the recipient pay marketplace fees' do
+    uri = URI.parse(@pipeline.url)
+    query = Relax::Query.parse(uri)
+    
+    'True'.should == query[:recipient_pays_fee]
+  end
+end
+
 describe 'A recurring-use pipeline' do
   it_should_behave_like 'A pipeline'
 

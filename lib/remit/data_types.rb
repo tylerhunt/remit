@@ -115,6 +115,19 @@ module Remit
     SETUP_POSTPAID = 'SetupPostpaid'
   end
   
+  class PipelineStatusCode
+    CALLER_EXCEPTION  = 'CE'  # problem with your code
+    SYSTEM_ERROR      = 'SE'  # system error, try again
+    SUCCESS_ABT       = 'SA'  # successful payment with Amazon balance
+    SUCCESS_ACH       = 'SB'  # successful payment with bank transfer
+    SUCCESS_CC        = 'SC'  # successful payment with credit card
+    ABORTED           = 'A'   # user aborted payment
+    PAYMENT_METHOD_MISMATCH     = 'PE'  # user does not have payment method requested
+    PAYMENT_METHOD_UNSUPPORTED  = 'NP'  # account doesn't support requested payment method
+    INVALID_CALLER    = 'NM'  # you are not a valid 3rd party caller to the transaction
+    SUCCESS_RECIPIENT_TOKEN_INSTALLED = 'SR'
+  end
+  
   module RequestTypes
     class Amount < Remit::Request
       parameter :amount
