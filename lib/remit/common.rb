@@ -19,10 +19,8 @@ module Remit
   end
 
   class BaseResponse < Relax::Response
-    private
-
-    def node_name(name)
-      name.to_s.gsub(/(^|_)(.)/) { $2.upcase }
+    def node_name(name, namespace = nil)
+      super(name.to_s.gsub(/(^|_)(.)/) { $2.upcase }, namespace)
     end
   end
 
@@ -50,11 +48,10 @@ module Remit
       @status == ResponseStatus::SUCCESS
     end
 
-    private
-
-    def node_name(name)
-      name.to_s.gsub(/(^|_)(.)/) { $2.upcase }
+    def node_name(name, namespace = nil)
+      super(name.to_s.gsub(/(^|_)(.)/) { $2.upcase }, namespace)
     end
+    
   end
 
   class SignedQuery < Relax::Query
