@@ -2,12 +2,12 @@ require 'spec'
 
 require File.dirname(__FILE__) + '/../lib/remit'
 
-unless ENV.include?('AWS_ACCESS_KEY') and ENV.include?('AWS_SECRET_KEY')
+unless (ENV.include?('AWS_ACCESS_KEY') || ENV.include?('AMAZON_ACCESS_KEY_ID')) and (ENV.include?('AWS_SECRET_KEY') || ENV.include?('AMAZON_SECRET_ACCESS_KEY'))
   raise RuntimeError, "You must set your AWS_ACCESS_KEY and AWS_SECRET_KEY environment variables to run these tests"
 end
 
-ACCESS_KEY = ENV['AWS_ACCESS_KEY'] unless defined?(ACCESS_KEY)
-SECRET_KEY = ENV['AWS_SECRET_KEY'] unless defined?(SECRET_KEY)
+ACCESS_KEY = ENV['AWS_ACCESS_KEY'] || ENV['AMAZON_ACCESS_KEY_ID']     unless defined?(ACCESS_KEY)
+SECRET_KEY = ENV['AWS_SECRET_KEY'] || ENV['AMAZON_SECRET_ACCESS_KEY'] unless defined?(SECRET_KEY)
 
 describe 'a successful request', :shared => true do
   before(:all) do
