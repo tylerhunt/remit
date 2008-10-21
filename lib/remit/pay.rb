@@ -20,11 +20,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      # FIXME: Due to an issue with Hpricot, Relax-0.0.4, and namespaces, the
-      # transaction_response parameter is not parsed correctly and will always
-      # be nil (http://groups.google.com/group/remit/t/1e0af072200d1bb3).
-      # The suggested course of action is to operate on the raw XML.
-      parameter :transaction_response, :type => TransactionResponse
+      parser :rexml
+      parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
     end
 
     def pay(request = Request.new)
