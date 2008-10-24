@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.dirname(__FILE__) + '/units_helper'
 
 describe 'A pipeline', :shared => true do
   before do

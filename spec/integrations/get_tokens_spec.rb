@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.dirname(__FILE__) + '/integrations_helper'
 
 describe 'a GetTokens call' do
   it_should_behave_like 'a successful response'
