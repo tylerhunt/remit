@@ -87,10 +87,7 @@ describe 'A recipient pipeline' do
   end
   
   it 'should have the recipient pay marketplace fees' do
-    uri = URI.parse(@pipeline.url)
-    query = Relax::Query.parse(uri)
-    
-    'True'.should == query[:recipient_pays_fee]
+    @pipeline.url.should match(/recipientPaysFee=true/)
   end
   
   it 'should have the right name' do
