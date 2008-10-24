@@ -27,8 +27,8 @@ module Remit
     end
     
     def method_missing(method, *args) #:nodoc:
-      if @params.has_key?(method)
-        @params[method]
+      if @params.has_key?(method.to_s)
+        @params[method.to_s]
       else
         super(method, *args)
       end

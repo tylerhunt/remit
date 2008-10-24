@@ -25,4 +25,10 @@ describe 'an IPN request' do
     @request.should be_valid
   end
   
+  it 'should pass through access to given parameters' do
+    @request.status.should        eql('SUCCESS')
+    @request.operation.should     eql('PAY')
+    @request.transactionId.should eql('13KIGL9RC25853BGPPOS2VSKBKF2JERR3HO')
+  end
+  
 end
