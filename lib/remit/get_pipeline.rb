@@ -80,6 +80,31 @@ module Remit
       end
     end
     
+    class MultiUsePipeline < Pipeline
+      parameter :caller_reference
+      parameter :payment_reason
+      parameter :recipient_token_list
+      parameter :amount_type
+      parameter :transaction_amount
+      parameter :validity_start
+      parameter :validity_expiry
+      parameter :payment_method
+      parameter :global_amount_limit
+      parameter :usage_limit_type_1
+      parameter :usage_limit_period_1
+      parameter :usage_limit_value_1
+      parameter :usage_limit_type_2
+      parameter :usage_limit_period_2
+      parameter :usage_limit_value_2
+      parameter :is_recipient_cobranding
+    
+      def initialize(api, pipeline, options)
+        super(api, pipeline, options.merge({
+          :pipeline_name => Remit::PipelineName::MULTI_USE
+        }))
+      end
+    end
+    
     class RecipientPipeline < Pipeline
       parameter :caller_reference
       parameter :validity_start # Time or seconds from Epoch
@@ -140,7 +165,11 @@ module Remit
     def get_single_use_pipeline(options)
       self.get_pipeline(SingleUsePipeline, options)
     end
-    
+
+    def get_multi_use_pipeline(options)
+      self.get_pipeline(MultiUsePipeline, options)
+    end
+
     def get_recipient_pipeline(options)
       self.get_pipeline(RecipientPipeline, options)
     end

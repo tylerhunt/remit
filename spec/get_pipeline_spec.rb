@@ -40,6 +40,28 @@ describe 'A single-use pipeline' do
   end
 end
 
+describe 'A multi-use pipeline' do
+  it_should_behave_like 'A pipeline'
+  
+  before do
+    @pipeline_options.merge!({
+      :transaction_amount => 10,
+      :caller_reference => 'N2PCBEIA5864E27EL7C86PJL1FGUGPBL61QTJJM5GQK265SPEN8ZKIJPMQARDVJK',
+      :recipient_token_list => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP',
+      :pipeline_name => Remit::PipelineName::MULTI_USE
+    })
+    
+    @pipeline = @remit.get_multi_use_pipeline(@pipeline_options)
+  end
+  
+  it 'should ignore unused parameters' do
+    uri = URI.parse(@pipeline.url)
+    query = Relax::Query.parse(uri)
+    
+    query[:paymentReason].should be_nil
+  end
+end
+
 describe 'A recipient pipeline' do
   it_should_behave_like 'A pipeline'
   
