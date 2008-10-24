@@ -4,7 +4,7 @@ describe 'a GetTokens call' do
   it_should_behave_like 'a successful response'
 
   before(:all) do
-    @response = @remit.get_tokens
+    @response = remit.get_tokens
   end
 
   it 'should have a collection of tokens' do

@@ -6,7 +6,7 @@ describe 'a GetAccountActivity call' do
   before(:all) do
     request = Remit::GetAccountActivity::Request.new
     request.start_date = Date.today - 7
-    @response = @remit.get_account_activity(request)
+    @response = remit.get_account_activity(request)
   end
 
   it 'should have a collection of transactions' do

@@ -3,11 +3,11 @@ require 'spec'
 
 require File.dirname(__FILE__) + '/../lib/remit'
 
-describe 'a successful response', :shared => true do
-  before(:all) do
-    @remit = Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
-  end
+def remit
+  @remit ||= Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
+end
 
+describe 'a successful response', :shared => true do
   it 'should return success' do
     @response.status.should eql('Success')
   end

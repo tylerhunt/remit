@@ -2,8 +2,6 @@ require File.dirname(__FILE__) + '/units_helper'
 
 describe 'A pipeline', :shared => true do
   before do
-    @remit = Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
-
     @pipeline_options = {
       :return_URL => 'http://example.com/'
     }
@@ -11,7 +9,7 @@ describe 'A pipeline', :shared => true do
 
   it 'should sign its URL' do
     uri = URI.parse(@pipeline.url)
-    pipeline = Remit::SignedQuery.parse(uri, @remit.secret_key, uri.query)
+    pipeline = Remit::SignedQuery.parse(uri, remit.secret_key, uri.query)
     query = Relax::Query.parse(uri)
 
     pipeline[:awsSignature].should == query[:awsSignature]
@@ -28,7 +26,7 @@ describe 'A single-use pipeline' do
       :recipient_token => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP'
     })
 
-    @pipeline = @remit.get_single_use_pipeline(@pipeline_options)
+    @pipeline = remit.get_single_use_pipeline(@pipeline_options)
   end
 
   it 'should ignore unused parameters' do
@@ -53,7 +51,7 @@ describe 'A multi-use pipeline' do
       :recipient_token_list => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP'
     })
     
-    @pipeline = @remit.get_multi_use_pipeline(@pipeline_options)
+    @pipeline = remit.get_multi_use_pipeline(@pipeline_options)
   end
   
   it 'should ignore unused parameters' do
@@ -83,7 +81,7 @@ describe 'A recipient pipeline' do
       :recipient_pays_fee => true
     })
     
-    @pipeline = @remit.get_recipient_pipeline(@pipeline_options)
+    @pipeline = remit.get_recipient_pipeline(@pipeline_options)
   end
   
   it 'should have the recipient pay marketplace fees' do
@@ -112,7 +110,7 @@ describe 'A recurring-use pipeline' do
       :recipient_token => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP'
     })
     
-    @pipeline = @remit.get_recurring_use_pipeline(@pipeline_options)
+    @pipeline = remit.get_recurring_use_pipeline(@pipeline_options)
   end
 
   it 'should convert times to seconds from epoch' do
@@ -128,7 +126,7 @@ describe 'A recurring-use pipeline' do
       :validity_start => @validity_start.to_i,
       :validity_expiry => @validity_expiry.to_i
     })
-    @pipeline = @remit.get_recurring_use_pipeline(options)
+    @pipeline = remit.get_recurring_use_pipeline(options)
     
     uri = URI.parse(@pipeline.url)
     query = Relax::Query.parse(uri)
@@ -154,7 +152,7 @@ describe 'A postpaid pipeline' do
       :global_amount_limit => @global_amount_limit
     })
     
-    @pipeline = @remit.get_postpaid_pipeline(@pipeline_options)
+    @pipeline = remit.get_postpaid_pipeline(@pipeline_options)
   end
   
   it 'should create a PostpaidPipeline' do
