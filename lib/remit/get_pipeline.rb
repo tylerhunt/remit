@@ -73,10 +73,8 @@ module Remit
       parameter :transaction_amount
       parameter :recipient_token
       
-      def initialize(api, pipeline, options)
-        super(api, pipeline, options.merge({
-          :pipeline_name => Remit::PipelineName::SINGLE_USE
-        }))
+      def pipeline_name
+        Remit::PipelineName::SINGLE_USE
       end
     end
     
@@ -97,11 +95,9 @@ module Remit
       parameter :usage_limit_period_2
       parameter :usage_limit_value_2
       parameter :is_recipient_cobranding
-    
-      def initialize(api, pipeline, options)
-        super(api, pipeline, options.merge({
-          :pipeline_name => Remit::PipelineName::MULTI_USE
-        }))
+      
+      def pipeline_name
+        Remit::PipelineName::MULTI_USE
       end
     end
     
@@ -115,10 +111,8 @@ module Remit
       parameter :max_variable_fee
       parameter :max_fixed_fee
       
-      def initialize(api, pipeline, options)
-        super(api, pipeline, options.merge({
-          :pipeline_name => Remit::PipelineName::RECIPIENT
-        }))
+      def pipeline_name
+        Remit::PipelineName::RECIPIENT
       end
     end
 
@@ -130,13 +124,11 @@ module Remit
       parameter :validity_start # Time or seconds from Epoch
       parameter :validity_expiry # Time or seconds from Epoch
       parameter :payment_method
-      parameter :recurring_period
+      parameter :recurring_period  
       
-      def initialize(api, pipeline, options)
-        super(api, pipeline, options.merge({
-          :pipeline_name => Remit::PipelineName::RECURRING
-        }))
-      end      
+      def pipeline_name
+        Remit::PipelineName::RECURRING
+      end 
     end
     
     class PostpaidPipeline < Pipeline
@@ -155,10 +147,8 @@ module Remit
       parameter :usage_limit_period2
       parameter :usage_limit_value2
       
-      def initialize(api, pipeline, options)
-        super(api, pipeline, options.merge({
-          :pipeline_name => Remit::PipelineName::SETUP_POSTPAID
-        }))
+      def pipeline_name
+        Remit::PipelineName::SETUP_POSTPAID
       end
     end
     

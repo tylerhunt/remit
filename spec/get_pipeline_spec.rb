@@ -25,8 +25,7 @@ describe 'A single-use pipeline' do
     @pipeline_options.merge!({
       :transaction_amount => 10,
       :caller_reference => 'N2PCBEIA5864E27EL7C86PJL1FGUGPBL61QTJJM5GQK265SPEN8ZKIJPMQARDVJK',
-      :recipient_token => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP',
-      :pipeline_name => Remit::PipelineName::SINGLE_USE
+      :recipient_token => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP'
     })
 
     @pipeline = @remit.get_single_use_pipeline(@pipeline_options)
@@ -38,6 +37,10 @@ describe 'A single-use pipeline' do
     
     query[:paymentReason].should be_nil
   end
+  
+  it 'should have the right name' do
+    @pipeline.pipeline_name.should == Remit::PipelineName::SINGLE_USE
+  end
 end
 
 describe 'A multi-use pipeline' do
@@ -47,8 +50,7 @@ describe 'A multi-use pipeline' do
     @pipeline_options.merge!({
       :transaction_amount => 10,
       :caller_reference => 'N2PCBEIA5864E27EL7C86PJL1FGUGPBL61QTJJM5GQK265SPEN8ZKIJPMQARDVJK',
-      :recipient_token_list => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP',
-      :pipeline_name => Remit::PipelineName::MULTI_USE
+      :recipient_token_list => 'N5PCME5A5Q6FE2QEB7CD64JLGFTUGXBE61HTCJMGGAK2R5IPEQ8EKIVP3QAVD7JP'
     })
     
     @pipeline = @remit.get_multi_use_pipeline(@pipeline_options)
@@ -60,6 +62,10 @@ describe 'A multi-use pipeline' do
     
     query[:paymentReason].should be_nil
   end
+  
+  it 'should have the right name' do
+    @pipeline.pipeline_name.should == Remit::PipelineName::MULTI_USE
+  end
 end
 
 describe 'A recipient pipeline' do
@@ -70,7 +76,6 @@ describe 'A recipient pipeline' do
     @validity_expiry  = Time.now + (2600 * 24 * 180) # ~6 months from now
     
     @pipeline_options.merge!({
-      :pipeline_name  => Remit::PipelineName::RECIPIENT,
       :validity_start => @validity_start,
       :validity_expiry  => @validity_expiry,
       :caller_reference => 'N2PCBEIA5864E27EL7C86PJL1FGUGPBL61QTJJM5GQK265SPEN8ZKIJPMQARDVJK',
@@ -87,6 +92,10 @@ describe 'A recipient pipeline' do
     
     'True'.should == query[:recipient_pays_fee]
   end
+  
+  it 'should have the right name' do
+    @pipeline.pipeline_name.should == Remit::PipelineName::RECIPIENT
+  end
 end
 
 describe 'A recurring-use pipeline' do
@@ -98,7 +107,6 @@ describe 'A recurring-use pipeline' do
     @recurring_period = '1 Month'
     
     @pipeline_options.merge!({
-      :pipeline_name => Remit::PipelineName::RECURRING,
       :validity_start => @validity_start,
       :validity_expiry => @validity_expiry,
       :recurring_period => @recurring_period,
@@ -131,6 +139,10 @@ describe 'A recurring-use pipeline' do
     @validity_start.to_i.to_s.should == query[:validityStart]
     @validity_expiry.to_i.to_s.should == query[:validityExpiry]
   end
+  
+  it 'should have the right name' do
+    @pipeline.pipeline_name.should == Remit::PipelineName::RECURRING
+  end
 end
 
 describe 'A postpaid pipeline' do
@@ -141,7 +153,6 @@ describe 'A postpaid pipeline' do
     @global_amount_limit = 100
     
     @pipeline_options.merge!({
-      :pipeline_name => Remit::PipelineName::SETUP_POSTPAID,
       :credit_limit => @credit_limit,
       :global_amount_limit => @global_amount_limit
     })
@@ -151,5 +162,9 @@ describe 'A postpaid pipeline' do
   
   it 'should create a PostpaidPipeline' do
     @pipeline.class.should == Remit::GetPipeline::PostpaidPipeline
+  end
+  
+  it 'should have the right name' do
+    @pipeline.pipeline_name.should == Remit::PipelineName::SETUP_POSTPAID
   end
 end
