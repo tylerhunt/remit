@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
 describe 'a GetAccountActivity call' do
-  it_should_behave_like 'a successful request'
+  it_should_behave_like 'a successful response'
 
   before(:all) do
     request = Remit::GetAccountActivity::Request.new

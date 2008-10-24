@@ -10,7 +10,7 @@ unless ACCESS_KEY and SECRET_KEY
   raise RuntimeError, "You must set your AWS_ACCESS_KEY and AWS_SECRET_KEY environment variables to run these tests"
 end
 
-describe 'a successful request', :shared => true do
+describe 'a successful response', :shared => true do
   before(:all) do
     @remit = Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
   end
