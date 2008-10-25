@@ -30,5 +30,9 @@ describe "the Pay API" do
     it "has a transaction status" do
       @response.transaction_response.status.should == 'Initiated'
     end
+    
+    it "has status shortcuts" do
+      @response.transaction_response.should be_initiated
+    end
   end
 end

@@ -81,11 +81,9 @@ module Remit
     parameter :status_detail
     parameter :new_sender_token_usage, :type => TokenUsageLimit
     
-    def method_missing(method, *args)
-      if method.to_s =~ /\A(reserved|success|failure|initiated|reinitiated|temporarydecline)\?\Z/i
-        self.status == eval("Remit::TransactionStatus::#{$1.upcase}")
-      else
-        super(method, *args)
+    %w(reserved success failure initiated reinitiated temporary_decline).each do |status_name|
+      define_method("#{status_name}?") do
+        self.status == Remit::TransactionStatus.const_get(status_name.sub('_', '').upcase)
       end
     end
   end
