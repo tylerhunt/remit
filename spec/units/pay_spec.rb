@@ -35,4 +35,35 @@ describe "the Pay API" do
       @response.transaction_response.should be_initiated
     end
   end
+  
+  describe "for a failed request" do
+    it_should_behave_like 'a failed response'
+    
+    before do
+      doc = <<-EXML
+      <ns3:PayResponse xmlns:ns3=\"http://fps.amazonaws.com/doc/2007-01-08/\">
+        <Status>Failure</Status>
+        <Errors>
+          <Errors>
+            <ErrorType>Business</ErrorType>
+            <IsRetriable>false</IsRetriable>
+            <ErrorCode>InvalidParams</ErrorCode>
+            <ReasonText>callerTokenId can not be empty</ReasonText>
+          </Errors>
+        </Errors>
+        <RequestId>7966a2d9-5ce9-4902-aefc-b01d254c931a:0</RequestId>
+      </ns3:PayResponse>
+      EXML
+
+      @response = Remit::Pay::Response.new(doc)
+    end
+    
+    it "has error details" do
+      error = @response.errors.first
+      error.error_type.should == 'Business'
+      error.is_retriable.should == 'false'
+      error.error_code.should == 'InvalidParams'
+      error.reason_text.should == 'callerTokenId can not be empty'
+    end
+  end
 end

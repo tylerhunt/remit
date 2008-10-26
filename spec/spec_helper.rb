@@ -20,3 +20,21 @@ describe 'a successful response', :shared => true do
     @response.request_id.should_not be_nil
   end
 end
+
+describe 'a failed response', :shared => true do
+  it "is not successful" do
+    @response.should_not be_successful
+  end
+  
+  it "has a request id" do
+    @response.request_id.should_not be_empty
+  end
+  
+  it "has errors" do
+    @response.errors.should_not be_empty
+  end
+end
+
+
+
+
