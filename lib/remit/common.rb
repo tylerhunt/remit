@@ -49,7 +49,9 @@ module Remit
     end
 
     def node_name(name, namespace = nil)
-      super(name.to_s.gsub(/(^|_)(.)/) { $2.upcase }, namespace)
+      super(name.to_s.split('/').collect{ |tag|
+        tag.gsub(/(^|_)(.)/) { $2.upcase }
+      }.join('/'), namespace)
     end
     
   end

@@ -60,6 +60,7 @@ describe "the Pay API" do
     
     it "has error details" do
       error = @response.errors.first
+      error.should be_kind_of(Remit::ServiceError)
       error.error_type.should == 'Business'
       error.is_retriable.should == 'false'
       error.error_code.should == 'InvalidParams'
