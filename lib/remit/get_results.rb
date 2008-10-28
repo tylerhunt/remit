@@ -11,9 +11,9 @@ module Remit
     class Response < Remit::Response
       class TransactionResults < Remit::BaseResponse
         parameter :transaction_id
-        parameter :operation_type
+        parameter :operation_type, :element => :operation
         parameter :caller_reference
-        parameter :transaction_status
+        parameter :transaction_status, :element => :status
       end
 
       parameter :transaction_results, :collection => TransactionResults
