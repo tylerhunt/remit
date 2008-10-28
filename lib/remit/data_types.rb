@@ -132,4 +132,13 @@ module Remit
       parameter :currency_code
     end
   end
+  
+  class Operation
+    PAY             = "Pay"
+    REFUND          = "Refund"
+    SETTLE          = "Settle"
+    SETTLE_DEBT     = "SettleDebt"
+    WRITE_OFF_DEBT  = "WriteOffDebt"
+    FUND_PREPAID    = "FundPrepaid"
+  end
 end
