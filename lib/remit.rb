@@ -15,6 +15,7 @@ require 'remit/data_types'
 
 require 'remit/cancel_token'
 require 'remit/discard_results'
+require 'remit/error_codes'
 require 'remit/fund_prepaid'
 require 'remit/get_account_activity'
 require 'remit/get_account_balance'
