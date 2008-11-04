@@ -21,7 +21,7 @@ spec = Gem::Specification.new do |spec|
   spec.test_files         = FileList['{spec}/**/{*spec.rb,*helper.rb}'].to_a
   spec.has_rdoc           = true
   spec.extra_rdoc_files   = ['README', 'LICENSE']
-  spec.add_dependency('relax', '>= 0.0.3')
+  spec.add_dependency('relax', '>= 0.0.5')
 end
 
 Rake::GemPackageTask.new(spec) do |package| 
