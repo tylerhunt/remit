@@ -23,7 +23,7 @@ module Remit
     
     def valid?
       return false unless @supplied_signature
-      generate_signature_for(@params) == @supplied_signature
+      self.class.generate_signature_for(@params, @secret_key) == @supplied_signature
     end
     
     def method_missing(method, *args) #:nodoc:
@@ -34,16 +34,14 @@ module Remit
       end
     end
     
-    
-    private
-    
-    
-    def generate_signature_for(params)
+    def self.generate_signature_for(params, secret_key)
       query   = params.sort_by { |k,v| k.downcase }
       digest  = OpenSSL::Digest::Digest.new('sha1')
-      hmac    = OpenSSL::HMAC.digest(digest, @secret_key, query.to_s)
+      hmac    = OpenSSL::HMAC.digest(digest, secret_key, query.to_s)
       encoded = Base64.encode64(hmac).chomp
     end
+    
+    private
     
     def strip_keys_from(params, *ignore_keys)
       parsed = params.dup
