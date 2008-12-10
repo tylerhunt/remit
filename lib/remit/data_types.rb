@@ -3,6 +3,28 @@ require 'relax'
 
 require 'remit/common'
 
+def camelize(lower_case_and_underscored_word, first_letter_in_uppercase = true)
+  if first_letter_in_uppercase
+    lower_case_and_underscored_word.to_s.gsub(/\/(.?)/) { "::" + $1.upcase }.gsub(/(^|_)(.)/) { $2.upcase }
+  else
+    lower_case_and_underscored_word.first + camelize(lower_case_and_underscored_word)[1..-1]
+  end
+end
+
+module Relax
+  class Response
+    class << self
+      alias_method :alias_for_parameter, :parameter
+      def parameter(name, options = {})
+        opts = {
+          :element => camelize(name)
+        }.merge!(options)
+        alias_for_parameter(name, opts)
+      end
+    end
+  end
+end
+
 module Remit
   class Amount < BaseResponse
     parameter :currency_code
