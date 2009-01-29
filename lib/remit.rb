@@ -76,22 +76,29 @@ module Remit
     include UnsubscribeForCallerNotification
     include WriteOffDebt
 
-    API_ENDPOINT = 'https://fps.amazonaws.com/'
-    API_SANDBOX = 'https://fps.sandbox.amazonaws.com/'
-    PIPELINE_ENDPOINT = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
-    PIPELINE_SANDBOX = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
-    API_VERSION = Date.new(2007, 1, 8).to_s
-    SIGNATURE_VERSION = 1
-
     attr_reader :pipeline
     attr_reader :access_key
-    attr_reader :secret_key
-
-    def initialize(access_key, secret_key, sandbox = false)
-      super((not sandbox) ? API_ENDPOINT : API_SANDBOX)
-      @pipeline = ((not sandbox) ? PIPELINE_ENDPOINT : PIPELINE_SANDBOX)
-      @access_key = access_key
-      @secret_key = secret_key
+    attr_reader :secret_key    
+    
+    
+    path = File.expand_path "#{RAILS_ROOT}/config/amazon_fps.yml" # Should generate amazon_fps.yml file on install
+    h = YAML.load_file path rescue raise "No config file round at /config/amazon_fps.yml!"
+    config = h[RAILS_ENV].symbolize_keys
+    # set default params and set AWS keys
+    ACCESS_KEY = config[:access_key]
+    SECRET_ACCESS_KEY = config[:secret_access_key]
+    ENDPOINT = config[:endpoint]
+    RETURN_BASE = config[:return_base]
+    PIPELINE = config[:pipeline]
+    SANDBOX = config[:sandbox]  
+    API_VERSION = config[:version]
+    SIGNATURE_VERSION = 1
+    
+    def initialize
+      super(ENDPOINT)
+      @pipeline = PIPELINE
+      @access_key = ACCESS_KEY
+      @secret_key = SECRET_ACCESS_KEY
     end
 
     private

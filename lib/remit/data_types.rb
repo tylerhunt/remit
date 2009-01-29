@@ -8,6 +8,16 @@ module Remit
     parameter :currency_code
     parameter :amount, :type => :float
   end
+  
+  class TemporaryDeclinePolicy < BaseResponse
+    parameter :temporary_decline_policy_type
+    parameter :implicit_retry_timeout_in_mins
+  end
+   
+  class DescriptorPolicy < BaseResponse
+    parameter :soft_descriptor_type
+    parameter :CS_number_of
+  end
 
   class ChargeFeeTo
     CALLER = 'Caller'
@@ -130,6 +140,16 @@ module Remit
     class Amount < Remit::Request
       parameter :amount
       parameter :currency_code
+    end
+    
+    class TemporaryDeclinePolicy < Remit::Request
+      parameter :temporary_decline_policy_type
+      parameter :implicit_retry_timeout_in_mins
+    end
+    
+    class DescriptorPolicy < Remit::Request
+      parameter :soft_descriptor_type
+      parameter :CS_number_of
     end
   end
   

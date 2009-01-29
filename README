@@ -10,6 +10,38 @@ I hope you enjoy using it as much as I've enjoyed writing it. I'm interested to
 hear what sort of uses you find for it. If you find any bugs, let me know (or
 better yet, submit a patch).
 
+Setup
+------
+Requires a config file located at #{RAILS_ROOT}/config/amazon_fps.yml.  Use the following format.
+
+  development:
+    access_key: <your sandbox access key>
+    secret_access_key: <your sandbox secret access key>
+    return_base: <your development return url>
+    endpoint: 'https://fps.sandbox.amazonaws.com/'
+    pipeline: 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
+    sandbox: true
+    version: '2007-01-08'
+
+  test:
+    access_key: <your sandbox access key>
+    secret_access_key: <your sandbox secret access key>
+    return_base: <your development return url>
+    endpoint: 'https://fps.sandbox.amazonaws.com/'
+    pipeline: 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
+    sandbox: true
+    version: '2007-01-08'
+  
+  production:
+    access_key: <your real access key>
+    secret_access_key: <your real secret access key>
+    return_base: <your production return url>
+    version: '2007-01-08'
+    endpoint: 'https://fps.amazonaws.com/'
+    pipeline: 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
+    sandbox: false
+
+
 
 Users
 -----

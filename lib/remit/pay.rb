@@ -8,7 +8,8 @@ module Remit
       parameter :caller_reference
       parameter :caller_token_id
       parameter :charge_fee_to
-      parameter :marketplace_fixed_fee
+      parameter :descriptor_policy, :type => Remit::RequestTypes::DescriptorPolicy
+      parameter :marketplace_fixed_fee, :type => Remit::RequestTypes::Amount
       parameter :marketplace_variable_fee
       parameter :meta_data
       parameter :recipient_description
@@ -17,6 +18,7 @@ module Remit
       parameter :sender_description
       parameter :sender_reference
       parameter :sender_token_id
+      parameter :temporary_decline_policy, :type => Remit::RequestTypes::TemporaryDeclinePolicy
       parameter :transaction_amount, :type => Remit::RequestTypes::Amount
       parameter :transaction_date
     end
