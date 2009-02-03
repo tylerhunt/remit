@@ -49,7 +49,7 @@ Remit gem in your config/environment.rb file:
 Then you should create an initializer to configure your Amazon keys. Create the
 file config/initializers/remit.rb with the following contents:
 
-    config_file = File.join(root, 'config', 'remit.yml')
+    config_file = File.join(Rails.root, 'config', 'amazon_fps.yml')
     config = YAML.load_file(config_file)[RAILS_ENV].symbolize_keys
 
     FPS_ACCESS_KEY = config[:access_key]
