@@ -33,12 +33,11 @@ module Remit
       attr_reader :api
       
       parameter :pipeline_name
-      parameter :return_URL
+      parameter :return_url
       parameter :caller_key
 
-      def initialize(api, pipeline, options)
+      def initialize(api, options)
         @api = api
-        @pipeline = pipeline
         
         options.each do |k,v|
           self.send("#{k}=", v)
@@ -46,7 +45,7 @@ module Remit
       end
 
       def url
-        uri = URI.parse(@pipeline)
+        uri = URI.parse(@api.pipeline_url)
         
         query = {}
         self.class.parameters.each do |p|
@@ -61,7 +60,7 @@ module Remit
         # Remove any unused optional parameters
         query.reject! { |key, value| value.nil? }
 
-        uri.query = SignedQuery.new(@api.pipeline, @api.secret_key, query).to_s
+        uri.query = SignedQuery.new(@api.pipeline_url, @api.secret_key, query).to_s
         uri.to_s
       end
     end
@@ -173,7 +172,7 @@ module Remit
     end
     
     def get_pipeline(pipeline_subclass, options)
-      pipeline = pipeline_subclass.new(self, @pipeline, {
+      pipeline = pipeline_subclass.new(self, {
         :caller_key => @access_key
       }.merge(options))
     end

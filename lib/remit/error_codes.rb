@@ -1,27 +1,29 @@
-# scraped and categorized from http://docs.amazonwebservices.com/AmazonFPS/2007-01-08/FPSDeveloperGuide/index.html?ErrorCodesTable.html
-# you can use these categories to specify default error handling in your application such as asking users to retry or sending an exception email.
+# Scraped and categorized from http://docs.amazonwebservices.com/AmazonFPS/\
+# 2007-01-08/FPSDeveloperGuide/index.html?ErrorCodesTable.html. You can use
+# these categories to specify default error handling in your application such
+# as asking users to retry or sending an exception email.
 module Remit::ErrorCodes
-  class << self  
+  class << self
     def sender_error?(code)
       SENDER.include? code.to_sym
     end
-    
+
     def recipient_error?(code)
       RECIPIENT.include? code.to_sym
     end
-    
+
     def caller_error?(code)
       CALLER.include?(code.to_sym)
     end
-    
+
     def amazon_error?(code)
       AMAZON.include? code.to_sym
     end
-    
+
     def api_error?(code)
       API.include? code.to_sym
     end
-    
+
     def unknown_error?(code)
       UNKNOWN.include? code.to_sym
     end
@@ -43,7 +45,7 @@ module Remit::ErrorCodes
     :UnverifiedBankAccount, # A verified bank account should be used for this transaction
     :UnverifiedEmailAddress_Sender, # The sender account must have a verified e-mail address for this payment
   ]
-  
+
   RECIPIENT = [
     :InactiveAccount_Recipient, # The recipient's account is in suspended or closed state.
     :InvalidAccountState_Recipient, # Recipient account cannot participate in the transaction
@@ -54,7 +56,7 @@ module Remit::ErrorCodes
     :UnverifiedAccount_Recipient, # The recipient's account must have a verified bank account or a credit card before this transaction can be initiated.
     :UnverifiedEmailAddress_Recipient, # The recipient account must have a verified e-mail address for receiving payments.
   ]
-  
+
   CALLER = [
     :InactiveAccount_Caller, # The caller's account is in suspended or closed state.
     :InvalidAccountState_Caller, # The caller account cannot participate in the transaction
@@ -62,11 +64,11 @@ module Remit::ErrorCodes
     :TokenNotActive_Caller, # The caller token is canceled.
     :UnverifiedEmailAddress_Caller, # The caller account must have a verified e-mail address
   ]
-  
+
   AMAZON = [
     :InternalError # A retriable error that happens due to some transient problem in the system.
   ]
-  
+
   # bad syntax or logic
   API = [
     :AmountOutOfRange, # The transaction amount is more than the allowed range.
@@ -106,7 +108,7 @@ module Remit::ErrorCodes
     :TokenUsageError, # The token usage limit is exceeded.
     :UsageNotDefined, # For a multi-use token or a recurring token the usage limits are not specified in the GateKeeper text.
   ]
-  
+
   # these errors don't specify who is at fault
   UNKNOWN = [
     :InvalidAccountState, # The account is either suspended or closed. Payment instructions cannot be installed on this account.

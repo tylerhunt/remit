@@ -8,6 +8,8 @@ require 'base64'
 require 'erb'
 
 require 'rubygems'
+
+gem 'relax', '0.0.6'
 require 'relax'
 
 require 'remit/common'
@@ -76,36 +78,29 @@ module Remit
     include UnsubscribeForCallerNotification
     include WriteOffDebt
 
-    attr_reader :pipeline
+    API_ENDPOINT = 'https://fps.amazonaws.com/'.freeze
+    API_SANDBOX_ENDPOINT = 'https://fps.sandbox.amazonaws.com/'.freeze
+    PIPELINE_URL = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'.freeze
+    PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
+    API_VERSION = Date.new(2007, 1, 8).to_s.freeze
+    SIGNATURE_VERSION = 1.freeze
+
     attr_reader :access_key
-    attr_reader :secret_key    
-    
-    
-    path = File.expand_path "#{RAILS_ROOT}/config/amazon_fps.yml" # Should generate amazon_fps.yml file on install
-    h = YAML.load_file path rescue raise "No config file round at /config/amazon_fps.yml!"
-    config = h[RAILS_ENV].symbolize_keys
-    # set default params and set AWS keys
-    ACCESS_KEY = config[:access_key]
-    SECRET_ACCESS_KEY = config[:secret_access_key]
-    ENDPOINT = config[:endpoint]
-    RETURN_BASE = config[:return_base]
-    PIPELINE = config[:pipeline]
-    SANDBOX = config[:sandbox]  
-    API_VERSION = config[:version]
-    SIGNATURE_VERSION = 1
-    
-    def initialize
-      super(ENDPOINT)
-      @pipeline = PIPELINE
-      @access_key = ACCESS_KEY
-      @secret_key = SECRET_ACCESS_KEY
+    attr_reader :secret_key
+    attr_reader :pipeline_url
+
+    def initialize(access_key, secret_key, sandbox=false)
+      @access_key = access_key
+      @secret_key = secret_key
+      @pipeline_url = sandbox ? PIPELINE_SANDBOX_URL : PIPELINE_URL
+
+      super(sandbox ? API_SANDBOX_ENDPOINT : API_ENDPOINT)
     end
 
-    private
-
-    def new_query(query = {})
+    def new_query(query={})
       SignedQuery.new(@endpoint, @secret_key, query)
     end
+    private :new_query
 
     def default_query
       new_query({
@@ -115,19 +110,24 @@ module Remit
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
       })
     end
+    private :default_query
 
     def query(request)
       query = super
       query[:Signature] = sign(query)
       query
     end
+    private :query
 
     def sign(values)
       keys = values.keys.sort { |a, b| a.to_s.downcase <=> b.to_s.downcase }
+
       signature = keys.inject('') do |signature, key|
         signature += key.to_s + values[key].to_s
       end
+
       Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, signature)).strip
     end
+    private :sign
   end
 end

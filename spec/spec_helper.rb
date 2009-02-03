@@ -9,7 +9,7 @@ end
 
 describe 'a successful response', :shared => true do
   it 'should return success' do
-    @response.status.should eql('Success')
+    @response.status.should == 'Success'
   end
 
   it 'should not have any errors' do
@@ -25,16 +25,12 @@ describe 'a failed response', :shared => true do
   it "is not successful" do
     @response.should_not be_successful
   end
-  
+
   it "has a request id" do
     @response.request_id.should_not be_empty
   end
-  
+
   it "has errors" do
     @response.errors.should_not be_empty
   end
 end
-
-
-
-
