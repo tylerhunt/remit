@@ -4,8 +4,8 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
-desc 'Default: package gem.'
-task :default => :gem
+desc 'Default: run specs.'
+task :default => :spec
 
 spec = Gem::Specification.new do |spec|
   spec.name               = 'remit'
@@ -20,7 +20,7 @@ spec = Gem::Specification.new do |spec|
   spec.require_path       = 'lib'
   spec.test_files         = FileList['{spec}/**/{*spec.rb,*helper.rb}'].to_a
   spec.has_rdoc           = true
-  spec.extra_rdoc_files   = ['README', 'LICENSE']
+  spec.extra_rdoc_files   = ['README.markdown', 'LICENSE']
   spec.add_dependency('relax', '>= 0.0.5')
 end
 
@@ -30,9 +30,9 @@ end
 
 Rake::RDocTask.new do |rdoc|
   rdoc.title    = 'Remit Documentation'
-  rdoc.main     = 'README'
+  rdoc.main     = 'README.markdown'
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.rdoc_files.include('README', 'LICENSE', 'lib/**/*.rb')
+  rdoc.rdoc_files.include('README.markdown', 'LICENSE', 'lib/**/*.rb')
   rdoc.options << '--inline-source'
   rdoc.options << '--line-numbers'
 end
