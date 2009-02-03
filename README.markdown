@@ -55,7 +55,7 @@ file config/initializers/remit.rb with the following contents:
     FPS_ACCESS_KEY = config[:access_key]
     FPS_SECRET_KEY = config[:secret_key]
 
-Then create the YAML file config/remit.yml:
+Then create the YAML file config/amazon_fps.yml:
 
     development: &sandbox
       access_key: <your sandbox access key>
