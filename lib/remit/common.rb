@@ -32,7 +32,7 @@ module Remit
     def initialize(xml)
       super
 
-      if is?(:Response) and has?(:Errors)
+      if is?(:Response) && has?(:Errors)
         @errors = elements(:Errors).collect do |error|
           Error.new(error)
         end
@@ -40,7 +40,7 @@ module Remit
         @status = text_value(element(:Status))
         @errors = elements('errors/errors').collect do |error|
           ServiceError.new(error)
-        end if not successful?
+        end unless successful?
       end
     end
 
