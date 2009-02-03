@@ -52,11 +52,8 @@ file config/initializers/remit.rb with the following contents:
     config_file = File.join(root, 'config', 'remit.yml')
     config = YAML.load_file(config_file)[RAILS_ENV].symbolize_keys
 
-    access_key = config[:access_key]
-    secret_key = config[:secret_key]
-    sandbox = !Rails.env.production?
-
-    REMIT = Remit::API.new(access_key, secret_key, sandbox)
+    FPS_ACCESS_KEY = config[:access_key]
+    FPS_SECRET_KEY = config[:secret_key]
 
 Then create the YAML file config/remit.yml:
 
@@ -70,6 +67,16 @@ Then create the YAML file config/remit.yml:
     production:
       access_key: <your access key>
       secret_key: <your secret key>
+
+To instantiate and use the Remit API in your application, you could define a
+method in your ApplicationController like this:
+
+    def remit
+      @remit ||= begin
+        sandbox = !Rails.env.production?
+        Remit::API.new(FPS_ACCESS_KEY, FPS_SECRET_KEY, sandbox)
+      end
+    end
 
 
 Sites Using Remit
