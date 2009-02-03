@@ -1,3 +1,10 @@
+0.0.2 - February 3, 2008
+
+* Updated to Relax 0.0.6.
+* Added support for CC Descriptor Text (Jon Crawford)
+* Added support for Temporary Decline Policy (Jon Crawford)
+* Changed Fixed Marketplace Fee to type Amount (Jon Crawford)
+
 0.0.1 - January 28, 2009
 
 * First public release
