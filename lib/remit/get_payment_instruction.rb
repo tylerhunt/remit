@@ -4,7 +4,7 @@ module Remit
   module GetPaymentInstruction
     class Request < Remit::Request
       action :GetPaymentInstruction
-      parameter :token_id
+      parameter :token_id, :required => true
     end
 
     class Response < Remit::Response

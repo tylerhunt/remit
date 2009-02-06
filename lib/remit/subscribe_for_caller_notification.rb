@@ -4,8 +4,8 @@ module Remit
   module SubscribeForCallerNotification
     class Request < Remit::Request
       action :SubscribeForCallerNotification
-      parameter :notification_operation_name
-      parameter :web_service_api_url
+      parameter :notification_operation_name, :required => true
+      parameter :web_service_api_url, :required => true
     end
 
     class Response < Remit::Response

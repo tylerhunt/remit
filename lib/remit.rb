@@ -9,7 +9,7 @@ require 'erb'
 
 require 'rubygems'
 
-gem 'relax', '0.0.6'
+gem 'relax', '0.0.7'
 require 'relax'
 
 require 'remit/common'

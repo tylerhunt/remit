@@ -4,7 +4,7 @@ module Remit
   module GetTransaction
     class Request < Remit::Request
       action :GetTransaction
-      parameter :transaction_id
+      parameter :transaction_id, :required => true
     end
 
     class Response < Remit::Response

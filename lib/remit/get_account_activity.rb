@@ -4,7 +4,7 @@ module Remit
   module GetAccountActivity
     class Request < Remit::Request
       action :GetAccountActivity
-      parameter :start_date
+      parameter :start_date, :required => true
       parameter :end_date
       parameter :max_batch_size
       parameter :sort_order_by_date

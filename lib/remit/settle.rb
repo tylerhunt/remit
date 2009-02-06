@@ -4,8 +4,8 @@ module Remit
   module Settle
     class Request < Remit::Request
       action :Settle
-      parameter :settlement_amount
-      parameter :transaction_id
+      parameter :reserve_transaction_id, :required => true
+      parameter :transaction_amount, :type => Remit::RequestTypes::Amount
       parameter :transaction_date
     end
 

@@ -4,7 +4,7 @@ module Remit
   module UnsubscribeForCallerNotification
     class Request < Remit::Request
       action :UnSubscribeForCallerNotification
-      parameter :notification_operation_name
+      parameter :notification_operation_name, :required => true
     end
 
     class Response < Remit::Response

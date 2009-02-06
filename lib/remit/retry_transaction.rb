@@ -4,7 +4,7 @@ module Remit
   module RetryTransaction
     class Request < Remit::Request
       action :RetryTransaction
-      parameter :original_transaction_id
+      parameter :original_transaction_id, :required => true
     end
 
     class Response < Remit::Response

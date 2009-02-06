@@ -4,7 +4,7 @@ module Remit
   module GetPrepaidBalance
     class Request < Remit::Request
       action :GetPrepaidBalance
-      parameter :prepaid_instrument_id
+      parameter :prepaid_instrument_id, :required => true
     end
 
     class Response < Remit::Response

@@ -4,7 +4,7 @@ module Remit
   module GetDebtBalance
     class Request < Remit::Request
       action :GetDebtBalance
-      parameter :credit_instrument_id
+      parameter :credit_instrument_id, :required => true
     end
 
     class Response < Remit::Response

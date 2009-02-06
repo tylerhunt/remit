@@ -4,7 +4,7 @@ module Remit
   module DiscardResults
     class Request < Remit::Request
       action :DiscardResults
-      parameter :transaction_ids
+      parameter :transaction_ids, :required => true
     end
 
     class Response < Remit::Response

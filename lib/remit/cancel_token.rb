@@ -4,7 +4,7 @@ module Remit
   module CancelToken
     class Request < Remit::Request
       action :CancelToken
-      parameter :token_id
+      parameter :token_id, :required => true
       parameter :reason_text
     end
 
