@@ -1,3 +1,7 @@
+0.0.3 - Current
+
+* Specified required request parameters for all operations (Tyler Hunt)
+
 0.0.2 - February 3, 2008
 
 * Updated to Relax 0.0.6.
