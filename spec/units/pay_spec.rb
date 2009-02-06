@@ -37,10 +37,9 @@ describe "the Pay API" do
   end
 
   describe "for a failed request" do
-    it_should_behave_like 'a failed response'
-
     before do
       doc = <<-XML
+        <?xml version=\"1.0\"?>
         <ns3:PayResponse xmlns:ns3=\"http://fps.amazonaws.com/doc/2007-01-08/\">
           <Status>Failure</Status>
           <Errors>
@@ -56,15 +55,79 @@ describe "the Pay API" do
       XML
 
       @response = Remit::Pay::Response.new(doc)
+      @error = @response.errors.first
     end
 
-    it "has error details" do
-      error = @response.errors.first
-      error.should be_kind_of(Remit::ServiceError)
-      error.error_type.should == 'Business'
-      error.is_retriable.should == 'false'
-      error.error_code.should == 'InvalidParams'
-      error.reason_text.should == 'callerTokenId can not be empty'
+    it_should_behave_like 'a failed response'
+
+    describe "with an invalid params error" do
+      it "should be a service error" do
+        @error.should be_kind_of(Remit::ServiceError)
+      end
+
+      it "should have an error type of 'Business'" do
+        @error.error_type.should == 'Business'
+      end
+
+      it "should have an error code of 'InvalidParams'" do
+        @error.error_code.should == 'InvalidParams'
+      end
+
+      it "should not be retriable" do
+        @error.is_retriable.should == 'false'
+      end
+
+      it "should have reason text" do
+        @error.reason_text.should == 'callerTokenId can not be empty'
+      end
+    end
+  end
+
+  describe "for a failed request" do
+    before do
+      doc = <<-XML
+        <?xml version=\"1.0\"?>
+        <ns3:PayResponse xmlns:ns3=\"http://fps.amazonaws.com/doc/2007-01-08/\">
+          <Status>Failure</Status>
+          <Errors>
+            <Errors>
+              <ErrorType>Business</ErrorType>
+              <IsRetriable>false</IsRetriable>
+              <ErrorCode>TokenUsageError</ErrorCode>
+              <ReasonText>The token \"45XU7TLBN995ZQA2U1PS1ZCTJXJMJ3H1GH6VZAB82C1BGLK9X3AXUQDA3QDLJVPX\" has violated its usage policy.</ReasonText>
+              </Errors>
+            </Errors>
+            <RequestId>78acff80-b740-4b57-9301-18d0576e6855:0
+          </RequestId>
+        </ns3:PayResponse>
+      XML
+
+      @response = Remit::Pay::Response.new(doc)
+      @error = @response.errors.first
+    end
+
+    it_should_behave_like 'a failed response'
+
+    describe "with a token usage error" do
+      it "should be a service error" do
+        @error.should be_kind_of(Remit::ServiceError)
+      end
+
+      it "should have an error type of 'Business'" do
+        @error.error_type.should == 'Business'
+      end
+
+      it "should have an error code of 'TokenUsageError'" do
+        @error.error_code.should == 'TokenUsageError'
+      end
+
+      it "should not be retriable" do
+        @error.is_retriable.should == 'false'
+      end
+
+      it "should have reason text" do
+        @error.reason_text.should == 'The token "45XU7TLBN995ZQA2U1PS1ZCTJXJMJ3H1GH6VZAB82C1BGLK9X3AXUQDA3QDLJVPX" has violated its usage policy.'
+      end
     end
   end
 end
