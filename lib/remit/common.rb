@@ -38,7 +38,7 @@ module Remit
         end
       else
         @status = text_value(element(:Status))
-        @errors = elements('errors/errors').collect do |error|
+        @errors = elements('Errors/Errors').collect do |error|
           ServiceError.new(error)
         end unless successful?
       end
