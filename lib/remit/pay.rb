@@ -19,6 +19,7 @@ module Remit
       parameter :sender_token_id
       parameter :transaction_amount, :type => Remit::RequestTypes::Amount
       parameter :transaction_date
+      parameter :descriptor_policy, :type => Remit::RequestTypes::DescriptorPolicy
     end
 
     class Response < Remit::Response

@@ -131,6 +131,15 @@ module Remit
       parameter :amount
       parameter :currency_code
     end
+    
+    class DescriptorPolicy < Remit::Request
+      parameter :soft_descriptor_type
+    end
+  end
+  
+  class SoftDescriptorType
+    STATIC = 'static'
+    DYNAMIC = 'dynamic'
   end
   
   class Operation
