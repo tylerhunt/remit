@@ -11,7 +11,7 @@ module Remit
       parameter :recipient_reference
       parameter :caller_reference
       parameter :transaction_date
-      parameter :transaction_amount
+      parameter :transaction_amount, :type => Remit::RequestTypes::Amount
       parameter :charge_fee_to
       parameter :sender_description
       parameter :recipient_description

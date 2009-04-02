@@ -8,7 +8,7 @@ module Remit
       parameter :caller_reference
       parameter :caller_token_id
       parameter :charge_fee_to
-      parameter :marketplace_fixed_fee
+      parameter :marketplace_fixed_fee, :type => Remit::RequestTypes::Amount
       parameter :marketplace_variable_fee
       parameter :meta_data
       parameter :recipient_description
