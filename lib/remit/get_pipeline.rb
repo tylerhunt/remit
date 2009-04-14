@@ -152,6 +152,16 @@ module Remit
       end
     end
     
+    class EditTokenPipeline < Pipeline
+      parameter :caller_reference
+      parameter :token_id
+      parameter :payment_method
+      
+      def pipeline_name
+        Remit::PipelineName::EDIT_TOKEN
+      end
+    end
+    
     def get_single_use_pipeline(options)
       self.get_pipeline(SingleUsePipeline, options)
     end
@@ -170,6 +180,10 @@ module Remit
     
     def get_postpaid_pipeline(options)
       self.get_pipeline(PostpaidPipeline, options)
+    end
+    
+    def get_edit_token_pipeline(options)
+      self.get_pipeline(EditTokenPipeline, options)
     end
     
     def get_pipeline(pipeline_subclass, options)

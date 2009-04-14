@@ -25,6 +25,7 @@ module Remit
     # 
     def successful?
       [
+        Remit::PipelineStatusCode::SUCCESS_UNCHANGED,
         Remit::PipelineStatusCode::SUCCESS_ABT,
         Remit::PipelineStatusCode::SUCCESS_ACH,
         Remit::PipelineStatusCode::SUCCESS_CC,

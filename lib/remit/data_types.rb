@@ -111,11 +111,13 @@ module Remit
     RECIPIENT = 'Recipient'
     SETUP_PREPAID = 'SetupPrepaid'
     SETUP_POSTPAID = 'SetupPostpaid'
+    EDIT_TOKEN = 'EditToken'
   end
   
   class PipelineStatusCode
     CALLER_EXCEPTION  = 'CE'  # problem with your code
     SYSTEM_ERROR      = 'SE'  # system error, try again
+    SUCCESS_UNCHANGED = 'SU'  # edit token pipeline finished, but token is unchanged
     SUCCESS_ABT       = 'SA'  # successful payment with Amazon balance
     SUCCESS_ACH       = 'SB'  # successful payment with bank transfer
     SUCCESS_CC        = 'SC'  # successful payment with credit card
