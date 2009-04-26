@@ -4,6 +4,7 @@ describe 'an IPN request' do
   before(:each) do
     @request_params = {
       "action"            => "notice",
+      "awsSignature"      => "DA7ZbuQaBDt2/+Mty9XweJyqI1E=",
       "buyerName"         => "Fps Buyer",
       "callerReference"   => "4-8-1-3.5",
       "controller"        => "amazon_fps/ipn",
@@ -11,7 +12,6 @@ describe 'an IPN request' do
       "paymentMethod"     => "CC",
       "recipientEmail"    => "recipient@email.url",
       "recipientName"     => "Fps Business",
-      "signature"         => "DA7ZbuQaBDt2/+Mty9XweJyqI1E=",
       "status"            => "SUCCESS",
       "transactionAmount" => "USD 3.50",
       "transactionDate"   => "1224687134",
