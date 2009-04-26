@@ -5,7 +5,7 @@ module Remit
   # Encapsulates the logic for IPN request validation and attribute retrieval.
   class IpnRequest
     # Signature key name used by AmazonFPS IPNs
-    SIGNATURE_KEY = 'signature'
+    SIGNATURE_KEY = 'awsSignature'
 
     # +params+ should be your controllers request parameters.
     def initialize(params, secret_key)
