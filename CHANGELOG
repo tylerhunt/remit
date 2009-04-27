@@ -1,8 +1,10 @@
-0.0.3 - Current
+0.0.3 - April 27, 2009
 
 * Specified required request parameters for all operations (Tyler Hunt)
+* Updated IPN request to use the awsSignature (David Balatero)
+* Added versioning support for CBUI pipelines (David Balatero)
 
-0.0.2 - February 3, 2008
+0.0.2 - February 3, 2009
 
 * Updated to Relax 0.0.6.
 * Added support for CC Descriptor Text (Jon Crawford)
