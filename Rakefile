@@ -4,12 +4,15 @@ require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
+GEM = "remit"
+GEM_VERSION = "0.0.3"
+
 desc 'Default: run specs.'
 task :default => :spec
 
 spec = Gem::Specification.new do |spec|
-  spec.name               = 'remit'
-  spec.version            = '0.0.3'
+  spec.name               = GEM
+  spec.version            = GEM_VERSION
   spec.summary            = "An API for using the Amazon Flexible Payment Service (FPS)."
   spec.author             = 'Tyler Hunt'
   spec.email              = 'tyler@tylerhunt.com'
@@ -27,6 +30,11 @@ end
 Rake::GemPackageTask.new(spec) do |package| 
   package.need_tar = true 
 end 
+
+desc "Install gem locally."
+task :install => [:package] do
+  sh %{sudo gem install pkg/#{GEM}-#{GEM_VERSION}}
+end
 
 Rake::RDocTask.new do |rdoc|
   rdoc.title    = 'Remit Documentation'
