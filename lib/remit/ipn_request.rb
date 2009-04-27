@@ -3,9 +3,12 @@ require 'openssl/digest'
 
 module Remit
   # Encapsulates the logic for IPN request validation and attribute retrieval.
+  #
+  # Note: if your responses from Amazon are not validating, please pass the
+  # :version parameter to your original CBUI request.
   class IpnRequest
     # Signature key name used by AmazonFPS IPNs
-    SIGNATURE_KEY = 'awsSignature'
+    SIGNATURE_KEY = 'signature'
 
     # +params+ should be your controllers request parameters.
     def initialize(params, secret_key)
