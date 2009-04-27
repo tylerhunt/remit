@@ -35,6 +35,7 @@ module Remit
       parameter :pipeline_name
       parameter :return_url
       parameter :caller_key
+      parameter :version
 
       def initialize(api, options)
         @api = api

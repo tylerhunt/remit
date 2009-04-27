@@ -1,40 +1,31 @@
 require 'rubygems'
 require 'rake/clean'
-require 'rake/gempackagetask'
-require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
 desc 'Default: run specs.'
 task :default => :spec
 
-spec = Gem::Specification.new do |spec|
-  spec.name               = 'remit'
-  spec.version            = '0.0.3'
-  spec.summary            = "An API for using the Amazon Flexible Payment Service (FPS)."
-  spec.author             = 'Tyler Hunt'
-  spec.email              = 'tyler@tylerhunt.com'
-  spec.homepage           = 'http://tylerhunt.com/'
-  spec.rubyforge_project  = 'remit'
-  spec.platform           = Gem::Platform::RUBY
-  spec.files              = FileList['{bin,lib}/**/*'].to_a
-  spec.require_path       = 'lib'
-  spec.test_files         = FileList['{spec}/**/{*spec.rb,*helper.rb}'].to_a
-  spec.has_rdoc           = true
-  spec.extra_rdoc_files   = ['README.markdown', 'LICENSE']
-  spec.add_dependency('relax', '>= 0.0.7')
-end
+begin
+  require 'jeweler'
 
-Rake::GemPackageTask.new(spec) do |package| 
-  package.need_tar = true 
-end 
+  Jeweler::Tasks.new do |gem|
+    gem.name = 'remit'
+    gem.summary = 'An API for using the Amazon Flexible Payment Service (FPS).'
+    gem.email = 'tyler@tylerhunt.com'
+    gem.homepage = 'http://github.com/tylerhunt/remit'
+    gem.authors = ['Tyler Hunt']
+    gem.rubyforge_project = 'remit'
+    gem.platform           = Gem::Platform::RUBY
+    gem.files              = FileList['{bin,lib}/**/*'].to_a
+    gem.require_path       = 'lib'
+    gem.test_files         = FileList['{spec}/**/{*spec.rb,*helper.rb}'].to_a
+    gem.has_rdoc           = true
+    gem.extra_rdoc_files   = ['README.markdown', 'LICENSE']
 
-Rake::RDocTask.new do |rdoc|
-  rdoc.title    = 'Remit Documentation'
-  rdoc.main     = 'README.markdown'
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.rdoc_files.include('README.markdown', 'LICENSE', 'lib/**/*.rb')
-  rdoc.options << '--inline-source'
-  rdoc.options << '--line-numbers'
+    gem.add_dependency('relax', '~> 0.0.7')
+  end
+rescue LoadError
+  puts 'Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com'
 end
 
 task :spec do
