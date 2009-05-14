@@ -36,6 +36,14 @@ module Remit
       parameter :return_url
       parameter :caller_key
       parameter :version
+      parameter :address_name
+      parameter :address_line_1
+      parameter :address_line_2
+      parameter :city
+      parameter :state
+      parameter :zip
+      parameter :country
+      parameter :phone_number
 
       def initialize(api, options)
         @api = api
@@ -59,7 +67,7 @@ module Remit
         end
 
         # Remove any unused optional parameters
-        query.reject! { |key, value| value.nil? }
+        query.reject! { |key, value| value.nil? or (value.is_a?(String) and value.empty?) }
 
         uri.query = SignedQuery.new(@api.pipeline_url, @api.secret_key, query).to_s
         uri.to_s
