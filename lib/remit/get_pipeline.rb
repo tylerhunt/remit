@@ -67,7 +67,7 @@ module Remit
         end
 
         # Remove any unused optional parameters
-        query.reject! { |key, value| value.nil? or (value.is_a?(String) and value.empty?) }
+        query.reject! { |key, value| value.nil? || (value.is_a?(String) && value.empty?) }
 
         uri.query = SignedQuery.new(@api.pipeline_url, @api.secret_key, query).to_s
         uri.to_s
