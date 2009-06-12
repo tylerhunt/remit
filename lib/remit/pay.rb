@@ -20,6 +20,7 @@ module Remit
       parameter :transaction_amount, :type => Remit::RequestTypes::Amount
       parameter :transaction_date
       parameter :descriptor_policy, :type => Remit::RequestTypes::DescriptorPolicy
+      parameter :temporary_decline_policy, :type => Remit::RequestTypes::TemporaryDeclinePolicy
     end
 
     class Response < Remit::Response

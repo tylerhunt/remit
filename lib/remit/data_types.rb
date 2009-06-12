@@ -137,11 +137,22 @@ module Remit
     class DescriptorPolicy < Remit::Request
       parameter :soft_descriptor_type
     end
+    
+    class TemporaryDeclinePolicy < Remit::Request
+      parameter :temporary_decline_policy_type
+      parameter :implicit_retry_timeout_in_mins
+    end
   end
   
   class SoftDescriptorType
     STATIC = 'static'
     DYNAMIC = 'dynamic'
+  end
+  
+  class TemporaryDeclinePolicyType
+    EXPLICIT = 'ExplicitRetry'
+    IMPLICIT = 'ImplicitRetry'
+    FAILURE = 'Failure'
   end
   
   class Operation
