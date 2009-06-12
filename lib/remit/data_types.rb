@@ -145,8 +145,8 @@ module Remit
   end
   
   class SoftDescriptorType
-    STATIC = 'static'
-    DYNAMIC = 'dynamic'
+    STATIC = 'Static'
+    DYNAMIC = 'Dynamic'
   end
   
   class TemporaryDeclinePolicyType
