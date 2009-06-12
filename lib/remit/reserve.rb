@@ -20,7 +20,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parser :rexml
+      parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
     end
 
     def reserve(request = Request.new)
