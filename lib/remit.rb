@@ -13,6 +13,7 @@ require 'relax'
 require 'remit/common'
 require 'remit/data_types'
 
+require 'remit/cancel'
 require 'remit/cancel_token'
 require 'remit/discard_results'
 require 'remit/error_codes'
@@ -47,6 +48,7 @@ require 'remit/write_off_debt'
 
 module Remit
   class API < Relax::Service
+    include Cancel
     include CancelToken
     include DiscardResults
     include FundPrepaid
