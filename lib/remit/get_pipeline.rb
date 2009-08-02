@@ -254,7 +254,7 @@ module Remit
     end
 
     def get_recipient_pipeline(options)
-      self.get_pipeline(RecipientPipeline, options)
+      self.get_pipeline(RecipientPipeline, {:version => Date.new(2009, 1, 9).to_s}.merge(options))
     end
     
     def get_recurring_use_pipeline(options)
