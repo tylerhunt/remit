@@ -17,6 +17,7 @@ module Remit
       parameter :refund_sender_token_id
       parameter :transaction_date
       parameter :transaction_id
+      parameter :marketplace_refund_policy
       
       
       # The RefundAmount parameter has multiple components.  It is specified on the query string like
