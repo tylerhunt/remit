@@ -19,6 +19,7 @@ require 'remit/ipn_request'
 require 'remit/get_pipeline'
 require 'remit/pipeline_response'
 
+require 'remit/operations/cancel_subscription_and_refund'
 require 'remit/operations/cancel_token'
 require 'remit/operations/discard_results'
 require 'remit/operations/fund_prepaid'
@@ -49,6 +50,7 @@ require 'remit/operations/write_off_debt'
 
 module Remit
   class API < Relax::Service
+    include CancelSubscriptionAndRefund
     include CancelToken
     include DiscardResults
     include FundPrepaid
