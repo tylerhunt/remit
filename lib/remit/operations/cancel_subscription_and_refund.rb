@@ -1,7 +1,6 @@
 require 'remit/common'
 
-# Note: This is a special FPS action used by Amazon SimplePay
-# See more here: http://docs.amazonwebservices.com/AmazonSimplePay/latest/ASPAdvancedUserGuide/
+# This operation is used by Amazon Simple Pay.
 module Remit
   module CancelSubscriptionAndRefund
     class Request < Remit::Request
@@ -15,7 +14,7 @@ module Remit
     class Response < Remit::Response
       parameter :refund_transaction_id
     end
-    
+
     def cancel_subscription_and_refund(request = Request.new)
       call(request, Response)
     end
