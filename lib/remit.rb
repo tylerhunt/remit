@@ -27,6 +27,7 @@ require 'remit/get_outstanding_debt_balance'
 require 'remit/get_payment_instruction'
 require 'remit/get_pipeline'
 require 'remit/get_prepaid_balance'
+require 'remit/get_recipient_verification_status'
 require 'remit/get_results'
 require 'remit/get_token_usage'
 require 'remit/get_tokens'
@@ -61,6 +62,7 @@ module Remit
     include GetPaymentInstruction
     include GetPipeline
     include GetPrepaidBalance
+    include GetRecipientVerificationStatus
     include GetResults
     include GetTokenUsage
     include GetTokens
