@@ -85,4 +85,25 @@ module Remit
       end
     end
   end
+  
+  class VerifySignature
+    require 'open-uri'
+    require 'cgi'
+
+    attr_reader :valid
+    
+    def initialize( api, uri )
+      begin
+        service_url = api.endpoint.to_s + "?Action=VerifySignature&" + "UrlEndPoint=" + CGI.escape(uri.split('?', 2)[0]) +
+          "&HttpParameters=" + CGI.escape(uri.split('?', 2)[1]) + "&Version=" + Remit::API::API_VERSION
+        
+        STDOUT.puts( "Checking signature against: #{service_url}")
+        
+        open( service_url ) {|f| @valid = ( f.read =~ %r{<VerificationStatus>Success</VerificationStatus>})}
+      rescue
+        STDERR.puts( $!.message )
+        STDERR.puts( $!.backtrace.join("\n") )
+      end
+    end
+  end
 end

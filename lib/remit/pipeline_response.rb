@@ -11,9 +11,9 @@ module Remit
     # The unescape_value method is used here because the awsSignature value
     # pulled from the request is filtered through the same method.
     #++
-    def valid?
+    def valid?( api = nil)
       return false unless given_signature
-      Relax::Query.unescape_value(correct_signature) == given_signature
+      Relax::Query.unescape_value(correct_signature(api)) == given_signature
     end
 
     # Returns +true+ if the response returns a successful state.
@@ -40,12 +40,17 @@ module Remit
     private :request_query
 
     def given_signature
-      request_query[:awsSignature]
+      request_query[:signature]
     end
     private :given_signature
 
-    def correct_signature
-      Remit::SignedQuery.new(@uri.path, @secret_key, request_query).sign
+    def correct_signature( api = nil)
+      return nil unless api
+      
+      Rails.logger.debug "FPS: Computed signature: " + Remit::SignedQuery.new(@uri.path, @secret_key, request_query).sign
+      Rails.logger.debug "FPS: Real signature: " + request_query[:signature]
+      # Verifign a responses signature against a webservice seems....silly?
+      Remit::VerifySignature.new(api, @uri.to_s).valid
     end
     private :correct_signature
   end

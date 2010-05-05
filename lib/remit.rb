@@ -121,6 +121,7 @@ module Remit
     end
     private :query
 
+    # signature version 2
     def sign(values)
       keys = values.keys.sort { |a, b| a.to_s.downcase <=> b.to_s.downcase }
 
