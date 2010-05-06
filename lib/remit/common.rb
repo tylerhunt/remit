@@ -33,7 +33,7 @@ module Remit
       super
 
       if is?(:Response) && has?(:Errors)
-        @errors = elements(:Errors).collect do |error|
+        @errors = elements('Errors/Error').collect do |error|
           Error.new(error)
         end
       else
