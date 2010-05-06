@@ -84,7 +84,8 @@ module Remit
     API_SANDBOX_ENDPOINT = 'https://fps.sandbox.amazonaws.com/'.freeze
     PIPELINE_URL = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'.freeze
     PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
-    API_VERSION = Date.new(2007, 1, 8).to_s.freeze
+    # API_VERSION = Date.new(2007, 1, 8).to_s.freeze
+    API_VERSION = Date.new(2008, 9, 17).to_s.freeze
     SIGNATURE_VERSION = 1.freeze
 
     attr_reader :access_key
