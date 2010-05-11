@@ -23,9 +23,11 @@ module Remit
       parameter :transaction_date
     end
 
+    # The response is odd, when it succeeds.  --JonMoses
     class Response < Remit::Response
       parser :rexml
-      parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
+      # parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
+      parameter :pay_result, :type => TransactionResponse
     end
 
     def pay(request = Request.new)

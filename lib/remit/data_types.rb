@@ -87,13 +87,17 @@ module Remit
 
   class TransactionResponse < BaseResponse
     parameter :transaction_id
+    parameter :transaction_status
     parameter :status
-    parameter :status_detail
     parameter :new_sender_token_usage, :type => TokenUsageLimit
 
+    def which_status
+      self.status.blank? ? self.transaction_status : self.status
+    end
+    
     %w(reserved success failure initiated reinitiated temporary_decline pending).each do |status_name|
       define_method("#{status_name}?") do
-        self.status == Remit::TransactionStatus.const_get(status_name.sub('_', '').upcase)
+        self.which_status == Remit::TransactionStatus.const_get(status_name.sub('_', '').upcase)
       end
     end
   end
