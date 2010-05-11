@@ -13,7 +13,8 @@ module Remit
     #++
     def valid?( api = nil)
       return false unless given_signature
-      Relax::Query.unescape_value(correct_signature(api)) == given_signature
+      # Relax::Query.unescape_value(correct_signature(api)) == given_signature
+      correct_signature(api)
     end
 
     # Returns +true+ if the response returns a successful state.
