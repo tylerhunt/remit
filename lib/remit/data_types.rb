@@ -126,6 +126,7 @@ module Remit
     RECIPIENT = 'Recipient'
     SETUP_PREPAID = 'SetupPrepaid'
     SETUP_POSTPAID = 'SetupPostpaid'
+    EDIT_TOKEN = 'EditToken'
   end
 
   class PipelineStatusCode

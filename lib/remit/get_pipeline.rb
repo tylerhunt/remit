@@ -123,6 +123,15 @@ module Remit
         Remit::PipelineName::RECIPIENT
       end
     end
+    
+    class EditTokenPipeline < Pipeline
+      parameter :caller_reference
+      parameter :payment_method
+      parameter :token_id
+      
+      def pipeline_name
+        Remit::PipelineName::EDIT_TOKEN
+    end
 
     class RecurringUsePipeline < Pipeline
       parameter :caller_reference
