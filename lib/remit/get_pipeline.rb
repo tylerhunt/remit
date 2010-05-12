@@ -131,6 +131,7 @@ module Remit
       
       def pipeline_name
         Remit::PipelineName::EDIT_TOKEN
+      end
     end
 
     class RecurringUsePipeline < Pipeline
