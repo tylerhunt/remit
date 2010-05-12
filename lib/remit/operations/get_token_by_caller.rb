@@ -1,4 +1,4 @@
-wrequire 'remit/common'
+require 'remit/common'
 
 module Remit
   module GetTokenByCaller
