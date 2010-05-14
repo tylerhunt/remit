@@ -21,7 +21,7 @@ describe 'a GetTokens call' do
     token.caller_reference.should_not be_empty
     token.token_type.should_not be_empty
     token.old_token_id.should_not be_empty
-    token.payment_reason.should_not be_empty
+    token.payment_reason.should be_empty
   end
 
   it 'should have a token with a token ID' do
