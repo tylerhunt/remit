@@ -11,16 +11,18 @@ module Remit
     SIGNATURE_KEY = 'signature'
 
     # +params+ should be your controllers request parameters.
-    def initialize(params, secret_key)
+    def initialize(params, secret_key, api, uri, raw_post = nil)
       raise ArgumentError, "Expected the request params hash, received: #{params.inspect}" unless params.kind_of?(Hash)
       @params             = strip_keys_from(params, 'action', 'controller')
       @supplied_signature = @params.delete(SIGNATURE_KEY)
       @secret_key         = secret_key
+      @raw_post           = raw_post
+      @api                = api
+      @uri                = uri
     end
 
     def valid?
-      return false unless @supplied_signature
-      generate_signature_for(@params) == @supplied_signature
+      Remit::VerifySignature.new(@api, @uri.to_s, @raw_post).valid
     end
 
     def method_missing(method, *args) #:nodoc:

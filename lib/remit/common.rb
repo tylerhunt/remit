@@ -33,7 +33,7 @@ module Remit
       super
 
       if is?(:Response) && has?(:Errors)
-        @errors = elements(:Errors).collect do |error|
+        @errors = elements('Errors/Error').collect do |error|
           Error.new(error)
         end
       else
@@ -82,6 +82,39 @@ module Remit
         end
 
         query
+      end
+    end
+  end
+  
+  class VerifySignature
+    require 'open-uri'
+    require 'cgi'
+
+    attr_reader :valid
+    
+    def initialize( api, uri, params = nil )
+      begin
+        params = uri.split('?', 2)[1] unless params
+        
+        service_url = api.endpoint.to_s + "?Action=VerifySignature&UrlEndPoint=" + CGI.escape(uri.split('?', 2)[0]) +
+          "&HttpParameters=" + CGI.escape(params) + "&Version=" + Remit::API::API_VERSION
+        
+        msg = "Checking signature against: #{service_url}"
+        if defined?(Rails)
+          Rails.logger.info msg
+        else
+          STDOUT.puts msg
+        end
+        
+        open( service_url ) {|f| @valid = ( f.read =~ %r{<VerificationStatus>Success</VerificationStatus>})}
+      rescue
+        if defined?(Rails)
+          Rails.logger.error $!.message
+          Rails.logger.error $!.backtrace.join("\n\t")
+        else
+          STDERR.puts( $!.message )
+          STDERR.puts( $!.backtrace.join("\n\t") )
+        end
       end
     end
   end
