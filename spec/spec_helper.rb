@@ -8,12 +8,20 @@ def remit
 end
 
 describe 'a successful response', :shared => true do
-  it 'should return success' do
-    @response.status.should == 'Success'
-  end
+  #The new API version doesn't return an explicit 'status'
+  #Either you get errors or not
+  #it 'should return success' do
+  #  @response.status.should == 'Success'
+  #end
 
   it 'should not have any errors' do
-    @response.errors.should be_nil
+    if @response.errors
+      @response.errors.should == []
+    else
+      @response.errors.should be_nil
+    end
+    #puts "errors = #{@response.errors.class} - #{@response.errors.size}"
+    
   end
 
   it 'should have a request ID' do

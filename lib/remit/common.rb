@@ -95,7 +95,7 @@ module Remit
     def initialize( api, uri, params = nil )
       begin
         params = uri.split('?', 2)[1] unless params
-        
+        puts "params = #{params}"
         service_url = api.endpoint.to_s + "?Action=VerifySignature&UrlEndPoint=" + CGI.escape(uri.split('?', 2)[0]) +
           "&HttpParameters=" + CGI.escape(params) + "&Version=" + Remit::API::API_VERSION
         
@@ -105,9 +105,9 @@ module Remit
         else
           STDOUT.puts msg
         end
-        
+        puts "trying to open #{service_url}" 
         open( service_url ) {|f| @valid = ( f.read =~ %r{<VerificationStatus>Success</VerificationStatus>})}
-      rescue
+      rescue Exception => e
         if defined?(Rails)
           Rails.logger.error $!.message
           Rails.logger.error $!.backtrace.join("\n\t")
