@@ -10,7 +10,7 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :tokens, :collection => Token
+      parameter :tokens, :element => 'GetTokensResult/Token', :collection => Remit::Token
     end
 
     def get_tokens(request = Request.new)

@@ -36,20 +36,20 @@ module Remit
         parameter :error_message
         parameter :fees, :type => Amount
         parameter :meta_data
-        parameter :operation
+        parameter :fpsoperation
         parameter :original_transaction_id
         parameter :payment_method
         parameter :recipient_name
         parameter :sender_name
         parameter :sender_token_id
-        parameter :status
+        parameter :status_code
         parameter :transaction_amount, :type => Amount
         parameter :transaction_id
-        parameter :transaction_parts, :collection => TransactionPart
+        parameter :transaction_parts, :collection => TransactionPart, :element=>"TransactionPart"
       end
 
       parameter :response_batch_size
-      parameter :transactions, :collection => Transaction
+      parameter :transactions, :collection => Transaction, :element=>"GetAccountActivityResult/Transaction"
       parameter :start_time_for_next_transaction, :type => :time
     end
 
