@@ -63,13 +63,13 @@ module Remit
   class Token < BaseResponse
     parameter :token_id
     parameter :friendly_name
-    parameter :status
+    parameter :token_status
     parameter :date_installed, :type => :time
-    parameter :caller_installed
+    #parameter :caller_installed
     parameter :caller_reference
     parameter :token_type
     parameter :old_token_id
-    parameter :payment_reason
+    #parameter :payment_reason
 
     class TokenStatus
       ACTIVE = 'Active'
@@ -85,6 +85,9 @@ module Remit
     parameter :last_reset_time_stamp
   end
 
+
+  
+  
   class TransactionResponse < BaseResponse
     parameter :transaction_id
     parameter :transaction_status
