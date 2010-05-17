@@ -9,10 +9,6 @@ describe 'a GetTokens call' do
   end
 
   it 'should have a collection of tokens' do
-    puts "with access key #{ACCESS_KEY}"
-    puts "response = #{@response.tokens.to_s}"
-    puts "response.tokens = #{@response.tokens.class}"
-    puts "response.tokesn.size = #{@response.tokens.size}"
     @response.should have_at_least(1).tokens
   end
 

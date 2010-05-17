@@ -6,7 +6,7 @@ unless ACCESS_KEY and SECRET_KEY
 end
 
 
-puts "Access key = #{ACCESS_KEY}"
-puts "Secret key = #{SECRET_KEY}"
+#puts "Access key = #{ACCESS_KEY}"
+#puts "Secret key = #{SECRET_KEY}"
 
 require File.dirname(__FILE__) + '/../spec_helper'
