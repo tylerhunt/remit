@@ -86,18 +86,20 @@ module Remit
     PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
     # API_VERSION = Date.new(2007, 1, 8).to_s.freeze
     API_VERSION = Date.new(2008, 9, 17).to_s.freeze
-    SIGNATURE_VERSION = 1.freeze
-
+    
+    SIGNATURE_VERSION = 2.freeze
+    SIGNATURE_METHOD = "HmacSHA256".freeze
     attr_reader :access_key
     attr_reader :secret_key
     attr_reader :pipeline_url
+    attr_reader :api_endpoint
 
     def initialize(access_key, secret_key, sandbox=false)
       @access_key = access_key
       @secret_key = secret_key
       @pipeline_url = sandbox ? PIPELINE_SANDBOX_URL : PIPELINE_URL
-
-      super(sandbox ? API_SANDBOX_ENDPOINT : API_ENDPOINT)
+      @api_endpoint = sandbox ? API_SANDBOX_ENDPOINT : API_ENDPOINT
+      super(@api_endpoint)
     end
 
     def new_query(query={})
@@ -109,6 +111,7 @@ module Remit
       new_query({
         :AWSAccessKeyId => @access_key,
         :SignatureVersion => SIGNATURE_VERSION,
+        :SignatureMethod => SIGNATURE_METHOD,
         :Version => API_VERSION,
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
       })
@@ -117,7 +120,7 @@ module Remit
 
     def query(request)
       query = super
-      query[:Signature] = sign(query)
+      query[:Signature] = sign_v2(query)
       query
     end
     private :query
@@ -133,5 +136,24 @@ module Remit
       Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, signature)).strip
     end
     private :sign
+
+
+    # signature version 2
+    def sign_v2(values)
+      #keys = values.keys.sort { |a, b| a.to_s <=> b.to_s }
+      #puts "keys = #{pp keys}"
+      canonical_querystring = values.sort{ |a, b| a.to_s <=> b.to_s }.collect { |key, value| [CGI.escape(key.to_s), CGI.escape(value.to_s)].join('=') }.join('&')
+      
+      string_to_sign = "GET
+#{@api_endpoint.match(/https:\/\/(.*)\//)[1]}
+/
+#{canonical_querystring}"
+      #puts "string_to_sign = #{string_to_sign}"
+
+      signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @secret_key, string_to_sign)).strip
+      #puts "signature = #{signature}"
+      return signature
+    end
+    private :sign_v2
   end
 end
