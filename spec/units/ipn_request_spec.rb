@@ -1,7 +1,8 @@
 require File.dirname(__FILE__) + '/units_helper'
 
 describe 'an IPN request' do
-  
+#This needs to be updated to match the new Verify methods
+
 #  before(:each) do
 #    @request_params = {
 #      "action"            => "notice",

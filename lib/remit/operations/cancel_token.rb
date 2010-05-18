@@ -9,6 +9,7 @@ module Remit
     end
 
     class Response < Remit::Response
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def cancel_token(request = Request.new)

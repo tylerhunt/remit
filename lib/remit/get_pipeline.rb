@@ -33,7 +33,7 @@ module Remit
       attr_reader :api
       
       parameter :pipeline_name
-      parameter :return_url
+      parameter :return_URL
       parameter :caller_key
       parameter :version
       parameter :address_name
@@ -44,7 +44,9 @@ module Remit
       parameter :zip
       parameter :country
       parameter :phone_number
-
+      parameter :signature_version
+      parameter :signature_method
+      
       def initialize(api, options)
         @api = api
         
@@ -192,7 +194,10 @@ module Remit
     
     def get_pipeline(pipeline_subclass, options)
       pipeline = pipeline_subclass.new(self, {
-        :caller_key => @access_key
+        :caller_key => @access_key,
+        :signature_version=>Remit::API::SIGNATURE_VERSION,
+        :signature_method=>Remit::API::SIGNATURE_METHOD,
+        :version=>Remit::API::PIPELINE_VERSION
       }.merge(options))
     end
   end

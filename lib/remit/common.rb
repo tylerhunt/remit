@@ -67,8 +67,29 @@ module Remit
       store(:awsSignature, Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, "#{@uri.path}?#{to_s(false)}".gsub('%20', '+'))).strip)
     end
 
+    def sign_v2
+      delete(:signature)
+      
+      sorted_keys = keys.sort { |a, b| a.to_s <=> b.to_s }
+      #puts "keys = #{pp keys}"
+      
+      canonical_querystring = self.sort{ |a, b| a.to_s <=> b.to_s }.collect { |key, value| [CGI.escape(key.to_s), CGI.escape(value.to_s)].join('=') }.join('&')
+      canonical_querystring = canonical_querystring.gsub('+','%20')
+      string_to_sign = "GET
+#{@uri.host}
+#{@uri.path}
+#{canonical_querystring}"
+      signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @secret_key, string_to_sign)).strip
+      
+      store(:signature,signature)
+      #puts "signature = #{signature}"
+      #return signature
+    end
+
+
+
     def to_s(signed=true)
-      sign if signed
+      sign_v2 if signed
       super()
     end
 
@@ -95,7 +116,7 @@ module Remit
     def initialize( api, uri, params = nil )
       begin
         params = uri.split('?', 2)[1] unless params
-        puts "params = #{params}"
+        #puts "params = #{params}"
         service_url = api.endpoint.to_s + "?Action=VerifySignature&UrlEndPoint=" + CGI.escape(uri.split('?', 2)[0]) +
           "&HttpParameters=" + CGI.escape(params) + "&Version=" + Remit::API::API_VERSION
         
