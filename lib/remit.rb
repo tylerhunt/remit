@@ -37,6 +37,7 @@ require 'remit/operations/get_token_usage'
 require 'remit/operations/get_tokens'
 require 'remit/operations/get_total_prepaid_liability'
 require 'remit/operations/get_transaction'
+require 'remit/operations/get_transaction_status'
 require 'remit/operations/install_payment_instruction'
 require 'remit/operations/pay'
 require 'remit/operations/refund'
@@ -86,7 +87,7 @@ module Remit
     PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
     # API_VERSION = Date.new(2007, 1, 8).to_s.freeze
     API_VERSION = Date.new(2008, 9, 17).to_s.freeze
-    
+    PIPELINE_VERSION = Date.new(2009, 1, 9).to_s.freeze
     SIGNATURE_VERSION = 2.freeze
     SIGNATURE_METHOD = "HmacSHA256".freeze
     attr_reader :access_key
@@ -125,7 +126,7 @@ module Remit
     end
     private :query
 
-    # signature version 2
+    # signature version 1
     def sign(values)
       keys = values.keys.sort { |a, b| a.to_s.downcase <=> b.to_s.downcase }
 
@@ -143,7 +144,7 @@ module Remit
       #keys = values.keys.sort { |a, b| a.to_s <=> b.to_s }
       #puts "keys = #{pp keys}"
       canonical_querystring = values.sort{ |a, b| a.to_s <=> b.to_s }.collect { |key, value| [CGI.escape(key.to_s), CGI.escape(value.to_s)].join('=') }.join('&')
-      
+      canonical_querystring = canonical_querystring.gsub('+','%20')
       string_to_sign = "GET
 #{@api_endpoint.match(/https:\/\/(.*)\//)[1]}
 /

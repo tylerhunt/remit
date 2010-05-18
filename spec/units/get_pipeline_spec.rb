@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/units_helper'
 describe 'A pipeline', :shared => true do
   before do
     @pipeline_options = {
-      :return_url => 'http://example.com/'
+      :return_URL => 'http://example.com/'
     }
   end
 

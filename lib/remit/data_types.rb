@@ -86,6 +86,57 @@ module Remit
   end
 
 
+  class ResponseMetadata < BaseResponse
+    parameter :request_id
+  end
+
+  class PayResult < BaseResponse
+    parameter :transaction_id
+    parameter :transaction_status
+  end
+  
+  class TransactionPart < Remit::BaseResponse
+    parameter :account_id
+    parameter :role
+    parameter :name
+    parameter :reference
+    parameter :description
+    parameter :fee_paid, :type => Amount
+  end
+    
+  class Transaction < BaseResponse
+    
+    parameter :caller_name
+    parameter :caller_token_id
+    parameter :caller_reference
+    parameter :caller_description
+    parameter :caller_transaction_date, :type => :time
+    parameter :date_completed, :type => :time
+    parameter :date_received, :type => :time
+    parameter :error_code
+    parameter :error_message
+    parameter :fees, :type => Amount
+    parameter :fps_fees_paid_by, :element=>"FPSFeesPaidBy"
+    parameter :fps_operation, :element=>"FPSOperation"
+    parameter :meta_data
+    parameter :payment_method
+    parameter :recipient_name
+    parameter :recipient_email
+    parameter :recipient_token_id
+    parameter :related_transactions
+    parameter :sender_email
+    parameter :sender_name
+    parameter :sender_token_id
+    parameter :transaction_status
+    parameter :status_code
+    parameter :status_history
+    parameter :status_message
+    parameter :transaction_amount, :type => Amount
+    parameter :transaction_id
+    parameter :transaction_parts, :collection => TransactionPart, :element=>"TransactionPart"
+  end
+  
+  
   
   
   class TransactionResponse < BaseResponse
