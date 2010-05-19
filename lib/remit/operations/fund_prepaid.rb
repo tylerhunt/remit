@@ -21,7 +21,12 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      class FundPrepaidResult < Remit::BaseResponse
+        parameter :transaction_id
+        parameter :transaction_status
+      end
+      parameter :fund_prepaid_result, :type => FundPrepaidResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def fund_prepaid(request = Request.new)

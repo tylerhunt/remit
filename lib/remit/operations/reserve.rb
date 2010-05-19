@@ -20,7 +20,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parameter :reserve_result, :type => TransactionStatusResponse
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def reserve(request = Request.new)

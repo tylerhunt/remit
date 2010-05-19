@@ -7,12 +7,15 @@ module Remit
     end
 
     class Response < Remit::Response
-      class OutstandingDebtBalance < Remit::BaseResponse
-        parameter :outstanding_balance, :type => Amount
-        parameter :pending_out_balance, :type => Amount
+      class GetOutstandingDebtBalanceResult < Remit::BaseResponse
+        class OutstandingDebtBalance < Remit::BaseResponse
+          parameter :outstanding_balance, :type => Amount
+          parameter :pending_out_balance, :type => Amount
+        end
+        parameter :outstanding_debt, :type => OutstandingDebtBalance
       end
-
-      parameter :outstanding_debt, :type => OutstandingDebtBalance
+      parameter :get_outstanding_debt_balance_result, :type => GetOutstandingDebtBalanceResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def get_outstanding_debt_balance(request = Request.new)
