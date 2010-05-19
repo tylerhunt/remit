@@ -27,7 +27,7 @@ module Remit
     class Response < Remit::Response
       parser :rexml
       # parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
-      parameter :pay_result, :type => PayResult
+      parameter :pay_result, :type => TransactionStatusResponse
     end
 
     def pay(request = Request.new)

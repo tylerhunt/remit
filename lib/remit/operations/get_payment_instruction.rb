@@ -1,5 +1,7 @@
 require 'remit/common'
 
+#This actions seems to have been deprecated
+
 module Remit
   module GetPaymentInstruction
     class Request < Remit::Request

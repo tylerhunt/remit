@@ -8,7 +8,11 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :token_usage_limits, :type => TokenUsageLimit
+      class GetTokenUsageResult < Remit::BaseResponse
+        parameter :token_usage_limits, :type => TokenUsageLimit
+      end
+      parameter :get_token_usage_result, :type=>GetTokenUsageResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def get_token_usage(request = Request.new)

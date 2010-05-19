@@ -26,8 +26,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parser :rexml
-      parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
+      parameter :refund_result, :type=>TransactionStatusResponse
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def refund(request = Request.new)

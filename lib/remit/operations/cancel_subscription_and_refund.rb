@@ -12,7 +12,11 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :refund_transaction_id
+      class CancelSubscriptionAndRefundResult < Remit::BaseResponse
+        parameter :refund_transaction_id
+      end
+      parameter :cancel_subscription_and_refund_result, :type=>CancelSubscriptionAndRefundResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def cancel_subscription_and_refund(request = Request.new)

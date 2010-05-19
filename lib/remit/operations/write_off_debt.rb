@@ -18,7 +18,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parameter :write_off_debt_result, :type => TransactionStatusResponse
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def write_off_debt(request = Request.new)

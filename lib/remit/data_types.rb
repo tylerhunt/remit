@@ -36,7 +36,7 @@ module Remit
   end
 
   class PaymentMethods
-    BALANCE_TRANSFER = 'abt'
+    BALANCE_aFER = 'abt'
     BANK_ACCOUNT = 'ach'
     CREDIT_CARD = 'credit card'
     PREPAID = 'prepaid'
@@ -90,7 +90,7 @@ module Remit
     parameter :request_id
   end
 
-  class PayResult < BaseResponse
+  class TransactionStatusResponse < BaseResponse
     parameter :transaction_id
     parameter :transaction_status
   end

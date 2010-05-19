@@ -7,19 +7,22 @@ module Remit
     end
 
     class Response < Remit::Response
-      class AccountBalance < Remit::BaseResponse
-        class AvailableBalances < Remit::BaseResponse
-          parameter :disburse_balance, :type => Amount
-          parameter :refund_balance, :type => Amount
+      class GetAccountBalanceResult < Remit::BaseResponse
+        class AccountBalance < Remit::BaseResponse
+          class AvailableBalances < Remit::BaseResponse
+            parameter :disburse_balance, :type => Amount
+            parameter :refund_balance, :type => Amount
+          end
+  
+          parameter :total_balance, :type => Amount
+          parameter :pending_in_balance, :type => Amount
+          parameter :pending_out_balance, :type => Amount
+          parameter :available_balances, :type => AvailableBalances
         end
-
-        parameter :total_balance, :type => Amount
-        parameter :pending_in_balance, :type => Amount
-        parameter :pending_out_balance, :type => Amount
-        parameter :available_balances, :type => AvailableBalances
+        parameter :account_balance, :type=>AccountBalance
       end
-
-      parameter :account_balance, :type => AccountBalance
+      parameter :get_account_balance_result, :type => GetAccountBalanceResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def get_account_balance(request = Request.new)
