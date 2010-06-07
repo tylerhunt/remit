@@ -4,7 +4,7 @@ module Remit
   module Reserve
     class Request < Remit::Request
       action :Reserve
-      parameter :recipient_token_id, :required => true
+      parameter :recipient_token_id
       parameter :sender_token_id, :required => true
       parameter :caller_token_id, :required => true
       parameter :sender_reference
