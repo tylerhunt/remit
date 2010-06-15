@@ -4,7 +4,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{remit}
+  s.name = %q{localocracy-remit}
   s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -52,7 +52,7 @@ Gem::Specification.new do |s|
      "lib/remit/operations/write_off_debt.rb",
      "lib/remit/pipeline_response.rb"
   ]
-  s.homepage = %q{http://github.com/tylerhunt/remit}
+  s.homepage = %q{http://github.com/localocracy/remit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{remit}

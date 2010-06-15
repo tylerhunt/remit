@@ -4,7 +4,7 @@ module Remit
   module Reserve
     class Request < Remit::Request
       action :Reserve
-      parameter :recipient_token_id
+      parameter :recipient_token_id, :required => true
       parameter :sender_token_id, :required => true
       parameter :caller_token_id, :required => true
       parameter :sender_reference
@@ -20,7 +20,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parser :rexml
+      parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
     end
 
     def reserve(request = Request.new)
