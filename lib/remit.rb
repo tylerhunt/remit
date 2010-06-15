@@ -53,6 +53,7 @@ module Remit
   class API < Relax::Service
     include CancelSubscriptionAndRefund
     include CancelToken
+    include Cancel
     include DiscardResults
     include FundPrepaid
     include GetAccountActivity

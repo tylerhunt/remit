@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
      "lib/remit/ipn_request.rb",
      "lib/remit/operations/cancel_subscription_and_refund.rb",
      "lib/remit/operations/cancel_token.rb",
+     "lib/remit/operations/cancel.rb",
      "lib/remit/operations/discard_results.rb",
      "lib/remit/operations/fund_prepaid.rb",
      "lib/remit/operations/get_account_activity.rb",
