@@ -21,6 +21,7 @@ require 'remit/pipeline_response'
 
 require 'remit/operations/cancel_subscription_and_refund'
 require 'remit/operations/cancel_token'
+require 'remit/operations/cancel'
 require 'remit/operations/discard_results'
 require 'remit/operations/fund_prepaid'
 require 'remit/operations/get_account_activity'
