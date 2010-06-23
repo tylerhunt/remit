@@ -14,7 +14,7 @@ module Remit
       parameter :meta_data
       parameter :recipient_description
       parameter :recipient_reference
-      # parameter :recipient_token_id, :true
+      parameter :recipient_token_id #, :true This is not really required, but does need to be there. 
       parameter :sender_description
       parameter :sender_reference
       parameter :sender_token_id, :required => true
