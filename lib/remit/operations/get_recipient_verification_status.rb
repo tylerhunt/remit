@@ -8,6 +8,7 @@ module Remit
     end
 
     class Response < Remit::Response
+      parser :rexml
       class GetRecipientVerificationStatusResult < Remit::BaseResponse
         parameter :recipient_verification_status
       end

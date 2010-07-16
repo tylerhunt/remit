@@ -8,9 +8,7 @@ describe "the GetRecipientVerificationStatus API" do
       doc = <<-XML
         <GetRecipientVerificationResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
           <GetRecipientVerificationResult>
-            <RecipientVerificationStatus>
-              VerificationComplete
-            </RecipientVerificationStatus>
+            <RecipientVerificationStatus>VerificationComplete</RecipientVerificationStatus>
           </GetRecipientVerificationResult>
           <ResponseMetadata>
             <RequestId>197e2085-1ed7-47a2-93d8-d76b452acc74:0</RequestId>
@@ -29,6 +27,9 @@ describe "the GetRecipientVerificationStatus API" do
       @response.get_recipient_verification_result.should_not be_nil
     end
     
+    it "has status" do
+      @response.get_recipient_verification_result.recipient_verification_status.should == 'VerificationComplete'
+    end
     
   end
 end
