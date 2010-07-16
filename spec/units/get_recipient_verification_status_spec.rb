@@ -6,14 +6,14 @@ describe "the GetRecipientVerificationStatus API" do
     
     before do
       doc = <<-XML
-        <GetRecipientVerificationResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <GetRecipientVerificationResult>
+        <GetRecipientVerificationStatusResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+          <GetRecipientVerificationStatusResult>
             <RecipientVerificationStatus>VerificationComplete</RecipientVerificationStatus>
-          </GetRecipientVerificationResult>
+          </GetRecipientVerificationStatusResult>
           <ResponseMetadata>
-            <RequestId>197e2085-1ed7-47a2-93d8-d76b452acc74:0</RequestId>
+            <RequestId>b0c46f6d-dd91-464f-b37d-44be250866b7:0</RequestId>
           </ResponseMetadata>
-        </GetRecipientVerificationResponse>
+        </GetRecipientVerificationStatusResponse>
       XML
       
       @response = Remit::GetRecipientVerificationStatus::Response.new(doc)
@@ -24,11 +24,11 @@ describe "the GetRecipientVerificationStatus API" do
     end
     
     it "has results" do
-      @response.get_recipient_verification_result.should_not be_nil
+      @response.get_recipient_verification_status_result.should_not be_nil
     end
     
     it "has status" do
-      @response.get_recipient_verification_result.recipient_verification_status.should == 'VerificationComplete'
+      @response.get_recipient_verification_status_result.recipient_verification_status.should == 'VerificationComplete'
     end
     
   end

@@ -13,7 +13,7 @@ module Remit
         parameter :recipient_verification_status
       end
 
-      parameter :get_recipient_verification_result, :type => GetRecipientVerificationStatusResult
+      parameter :get_recipient_verification_status_result, :type => GetRecipientVerificationStatusResult
       parameter :response_metadata, :type=>ResponseMetadata
       
     end
