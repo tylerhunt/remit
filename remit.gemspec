@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
      "lib/remit/operations/get_outstanding_debt_balance.rb",
      "lib/remit/operations/get_payment_instruction.rb",
      "lib/remit/operations/get_prepaid_balance.rb",
+     "lib/remit/operations/get_recipient_verification_status.rb",
      "lib/remit/operations/get_results.rb",
      "lib/remit/operations/get_token_by_caller.rb",
      "lib/remit/operations/get_token_usage.rb",
