@@ -67,6 +67,7 @@ module Remit
     include GetPaymentInstruction
     include GetPipeline
     include GetPrepaidBalance
+    include GetRecipientVerificationStatus
     include GetResults
     include GetTokenUsage
     include GetTokens
