@@ -48,7 +48,6 @@ module Remit
       parameter :version
       parameter :website_description
 
-
       def initialize(api, options)
         @api = api
         
