@@ -17,7 +17,7 @@ module Remit
       
     end
 
-    def get_debt_balance(request = Request.new)
+    def get_recipient_verification_status(request = Request.new)
       call(request, Response)
     end
   end
