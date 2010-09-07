@@ -160,6 +160,19 @@ module Remit
       end
     end
     
+    class PrepaidPipeline < Pipeline
+      parameter :caller_reference_sender
+      parameter :caller_reference_funding
+      parameter :payment_reason
+      parameter :payment_method
+      parameter :validity_start # Time or seconds from Epoch
+      parameter :validity_expiry # Time or seconds from Epoch
+      parameter :funding_amount
+      def pipeline_name
+        Remit::PipelineName::SETUP_PREPAID
+      end
+    end
+    
     def get_single_use_pipeline(options)
       self.get_pipeline(SingleUsePipeline, options)
     end
@@ -178,6 +191,9 @@ module Remit
     
     def get_postpaid_pipeline(options)
       self.get_pipeline(PostpaidPipeline, options)
+    end
+    def get_prepaid_pipeline(options)
+      self.get_pipeline(PrepaidPipeline, options)
     end
     
     def get_pipeline(pipeline_subclass, options)
