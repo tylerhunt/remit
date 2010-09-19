@@ -4,12 +4,12 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{localocracy-remit}
+  s.name = %q{remit}
   s.version = "0.0.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tyler Hunt"]
-  s.date = %q{2010-01-11}
+  s.date = %q{2010-09-19}
   s.email = %q{tyler@tylerhunt.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -22,9 +22,9 @@ Gem::Specification.new do |s|
      "lib/remit/error_codes.rb",
      "lib/remit/get_pipeline.rb",
      "lib/remit/ipn_request.rb",
+     "lib/remit/operations/cancel.rb",
      "lib/remit/operations/cancel_subscription_and_refund.rb",
      "lib/remit/operations/cancel_token.rb",
-     "lib/remit/operations/cancel.rb",
      "lib/remit/operations/discard_results.rb",
      "lib/remit/operations/fund_prepaid.rb",
      "lib/remit/operations/get_account_activity.rb",
@@ -42,6 +42,7 @@ Gem::Specification.new do |s|
      "lib/remit/operations/get_tokens.rb",
      "lib/remit/operations/get_total_prepaid_liability.rb",
      "lib/remit/operations/get_transaction.rb",
+     "lib/remit/operations/get_transaction_status.rb",
      "lib/remit/operations/install_payment_instruction.rb",
      "lib/remit/operations/pay.rb",
      "lib/remit/operations/refund.rb",
@@ -54,22 +55,42 @@ Gem::Specification.new do |s|
      "lib/remit/operations/write_off_debt.rb",
      "lib/remit/pipeline_response.rb"
   ]
-  s.homepage = %q{http://github.com/localocracy/remit}
+  s.homepage = %q{http://github.com/tylerhunt/remit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{remit}
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{An API for using the Amazon Flexible Payment Service (FPS).}
   s.test_files = [
     "spec/integrations/get_account_activity_spec.rb",
      "spec/integrations/get_tokens_spec.rb",
-     "spec/units/get_pipeline_spec.rb",
+     "spec/units/get_transaction_status_spec.rb",
+     "spec/units/get_prepaid_balance_spec.rb",
+     "spec/units/get_debt_balance_spec.rb",
+     "spec/units/cancel_subscription_and_refund_spec.rb",
+     "spec/units/reserve_spec.rb",
+     "spec/units/settle_spec.rb",
+     "spec/units/get_account_balance_spec.rb",
      "spec/units/get_results_spec.rb",
+     "spec/units/fund_prepaid_spec.rb",
+     "spec/units/write_off_debt_spec.rb",
      "spec/units/ipn_request_spec.rb",
+     "spec/units/get_recipient_verification_status_spec.rb",
+     "spec/units/get_account_activity_spec.rb",
      "spec/units/pay_spec.rb",
+     "spec/units/get_total_prepaid_liability_spec.rb",
+     "spec/units/get_pipeline_spec.rb",
+     "spec/units/cancel_token_spec.rb",
+     "spec/units/get_tokens_spec.rb",
+     "spec/units/get_token_usage_spec.rb",
+     "spec/units/get_outstanding_debt_balance_spec.rb",
+     "spec/units/settle_debt_spec.rb",
+     "spec/units/get_token_by_caller_spec.rb",
+     "spec/units/get_transaction_spec.rb",
+     "spec/units/refund_spec.rb",
      "spec/integrations/integrations_helper.rb",
-     "spec/spec_helper.rb",
-     "spec/units/units_helper.rb"
+     "spec/units/units_helper.rb",
+     "spec/spec_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
