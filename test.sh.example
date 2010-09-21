@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#For testing this gem:
+export AWS_ACCESS_KEY=ADDYOURKEYHERE
+export AWS_SECRET_KEY=ADDYOURSECRETKEYHERE
+
+spec spec/
