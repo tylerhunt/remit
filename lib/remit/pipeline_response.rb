@@ -1,28 +1,18 @@
 module Remit
   
   class PipelineResponse
+    attr_reader :supplied_signature
     
-    def initialize(uri, secret_key)
-      @uri        = URI.parse(uri)
-      @secret_key = secret_key
+    # Signature key name used by AmazonFPS Pipelines
+    SIGNATURE_KEY = 'awsSignature'
+    
+    def initialize(request_url, params, secret_key)
+      @request_url        = request_url
+      @params             = params.dup.except('action', 'controller')
+      @supplied_signature = @params.delete(SIGNATURE_KEY)
+      @secret_key         = secret_key
     end
-    
-    ##
-    # Returns +true+ if the response is correctly signed (awsSignature).
-    # 
-    #--
-    # The unescape_value method is used here because the awsSignature value
-    # pulled from the request is filtered through the same method.
-    #++
-    # 
-    def valid?
-      return false unless given_signature
-      Relax::SignedQuery.unescape_value(correct_signature) == given_signature
-    end
-    
-    ##
-    # Returns +true+ if the response returns a successful state.
-    # 
+
     def successful?
       [
         Remit::PipelineStatusCode::SUCCESS_UNCHANGED,
@@ -32,32 +22,18 @@ module Remit
         Remit::PipelineStatusCode::SUCCESS_RECIPIENT_TOKEN_INSTALLED
       ].include?(request_query[:status])
     end
-    
-    
-    def method_missing(method, *args) #:nodoc:
-      if request_query.has_key?(method.to_sym)
-        request_query[method.to_sym]
-      else
-        super
-      end
+
+    def valid?
+      supplied_signature and expected_signature == supplied_signature
     end
     
-    
-    private
-    
-    
-    def request_query(reload = false)
-      @query ||= Remit::SignedQuery.parse(@uri, @secret_key, @uri.query || '')
+    def method_missing(method, *args, &block) #:nodoc:
+      return @params[method.to_s] if @params.has_key?(method.to_s)
+      super
     end
-    
-    def given_signature
-      request_query[:awsSignature]
+
+    def expected_signature
+      @expected_signature ||= Remit::SignedQuery.new(@request_url, @secret_key, @params)[:signature]
     end
-    
-    def correct_signature
-      Remit::SignedQuery.new(@uri.path, @secret_key, request_query)[:signature]
-    end
-    
   end
-  
 end
