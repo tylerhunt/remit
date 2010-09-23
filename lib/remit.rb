@@ -97,6 +97,13 @@ module Remit
       @access_key = access_key
       @secret_key = secret_key
     end
+    
+    # generates v1 signatures, for historical purposes.
+    def self.signature_v1(path, params, secret_key)
+      params = params.except('awsSignature', 'action', 'controller', 'id').sort_by{ |k,v| k.to_s.downcase }.map{|k,v| "#{k}=#{CGI.escape v}"}.join('&')
+      signable = path + '?' + params
+      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, secret_key, signable)).strip
+    end
 
     private
 
