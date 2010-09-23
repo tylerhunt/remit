@@ -92,8 +92,11 @@ module Remit
         query
       end
       
+      UNSAFE = /[^A-Za-z0-9_.~-]/
+      # Amazon is very specific about what chars should be escaped, and which should not.
       def escape_value(value)
-        CGI.escape(value.to_s)
+        # note that URI.escape(' ') => '%20', and CGI.escape(' ') => '+'
+        URI.escape(value.to_s, UNSAFE)
       end
     end
   end
