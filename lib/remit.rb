@@ -46,6 +46,7 @@ require 'remit/retry_transaction'
 require 'remit/settle'
 require 'remit/settle_debt'
 require 'remit/subscribe_for_caller_notification'
+require 'remit/verify_signature'
 require 'remit/unsubscribe_for_caller_notification'
 require 'remit/write_off_debt'
 
@@ -79,6 +80,7 @@ module Remit
     include Settle
     include SettleDebt
     include SubscribeForCallerNotification
+    include VerifySignature
     include UnsubscribeForCallerNotification
     include WriteOffDebt
 

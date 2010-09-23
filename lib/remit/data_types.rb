@@ -163,4 +163,8 @@ module Remit
     WRITE_OFF_DEBT  = "WriteOffDebt"
     FUND_PREPAID    = "FundPrepaid"
   end
+  
+  class VerifySignatureResult < BaseResponse
+    parameter :verification_status
+  end
 end
