@@ -61,18 +61,27 @@ module Remit
       super(query)
       @uri = URI.parse(uri.to_s)
       @secret_key = secret_key
+      sign
     end
 
     def sign
-      delete_if { |key, value| key == :awsSignature }
-      store(:awsSignature, Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, "#{@uri.path}?#{to_s(false)}".gsub('%20', '+'))).strip)
+      store(:signatureVersion, Remit::API::SIGNATURE_VERSION)
+      store(:signatureMethod, 'HmacSHA256')
+      store(:signature, signature)
     end
 
-    def to_s(signed = true)
-      sign if signed
-      super()
+    def signature
+      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @secret_key, signable_string)).strip
     end
-
+    
+    def signable_string
+      [ 'GET',
+        @uri.host,
+        @uri.path,
+        to_s # the query string, sans :signature (but with :signatureVersion and :signatureMethod)
+      ].join("\n")
+    end
+    
     class << self
       def parse(uri, secret_key, query_string)
         query = self.new(uri, secret_key)
@@ -82,6 +91,19 @@ module Remit
         end
         query
       end
+      
+      def escape_value(value)
+        CGI.escape(value.to_s)
+      end
+    end
+  end
+  
+  # Frustratingly enough, API requests want the signature params with slightly different casing.
+  class ApiQuery < SignedQuery
+    def sign
+      store(:SignatureVersion, Remit::API::SIGNATURE_VERSION)
+      store(:SignatureMethod, 'HmacSHA256')
+      store(:Signature, signature)
     end
   end
 end

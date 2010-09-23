@@ -84,8 +84,8 @@ module Remit
     API_SANDBOX = 'https://fps.sandbox.amazonaws.com/'
     PIPELINE_ENDPOINT = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'
     PIPELINE_SANDBOX = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'
-    API_VERSION = Date.new(2007, 1, 8).to_s
-    SIGNATURE_VERSION = 1
+    API_VERSION = Date.new(2008, 9, 17).to_s
+    SIGNATURE_VERSION = 2
 
     attr_reader :pipeline
     attr_reader :access_key
@@ -100,31 +100,14 @@ module Remit
 
     private
 
-    def new_query(query = {})
-      SignedQuery.new(@endpoint, @secret_key, query)
-    end
-
-    def default_query
-      new_query({
+    # called from Relax::Service#call
+    def query(request)
+      params = request.to_query.merge(
         :AWSAccessKeyId => @access_key,
-        :SignatureVersion => SIGNATURE_VERSION,
         :Version => API_VERSION,
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-      })
-    end
-
-    def query(request)
-      query = super
-      query[:Signature] = sign(query)
-      query
-    end
-
-    def sign(values)
-      keys = values.keys.sort { |a, b| a.to_s.downcase <=> b.to_s.downcase }
-      signature = keys.inject('') do |signature, key|
-        signature += key.to_s + values[key].to_s
-      end
-      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, signature)).strip
+      )
+      ApiQuery.new(@endpoint, @secret_key, params)
     end
   end
 end

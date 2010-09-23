@@ -17,7 +17,7 @@ module Remit
     # 
     def valid?
       return false unless given_signature
-      Relax::Query.unescape_value(correct_signature) == given_signature
+      Relax::SignedQuery.unescape_value(correct_signature) == given_signature
     end
     
     ##
@@ -55,7 +55,7 @@ module Remit
     end
     
     def correct_signature
-      Remit::SignedQuery.new(@uri.path, @secret_key, request_query).sign
+      Remit::SignedQuery.new(@uri.path, @secret_key, request_query)[:signature]
     end
     
   end

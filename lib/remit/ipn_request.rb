@@ -7,6 +7,7 @@ module Remit
   # Encapsulates the logic for IPN request validation and attribute retrieval.
   # 
   class IpnRequest
+    attr_reader :supplied_signature
     
     # Signature key name used by AmazonFPS IPNs
     SIGNATURE_KEY = 'signature'
@@ -14,41 +15,26 @@ module Remit
     ##
     # +params+ should be your controllers request parameters.
     # 
-    def initialize(params, secret_key)
+    def initialize(request, params, secret_key)
       raise ArgumentError, "Expected the request params hash, received: #{params.inspect}" unless params.kind_of?(Hash)
-      @params             = strip_keys_from(params, 'action', 'controller')
+      @request            = request
+      @params             = params.dup.except('action', 'controller')
       @supplied_signature = @params.delete(SIGNATURE_KEY)
       @secret_key         = secret_key
     end
     
     def valid?
-      return false unless @supplied_signature
-      self.class.generate_signature_for(@params, @secret_key) == @supplied_signature
+      supplied_signature and expected_signature == supplied_signature
     end
     
-    def method_missing(method, *args) #:nodoc:
-      if @params.has_key?(method.to_s)
-        @params[method.to_s]
-      else
-        super(method, *args)
-      end
+    def method_missing(method, *args, &block) #:nodoc:
+      return @params[method.to_s] if @params.has_key?(method.to_s)
+      super
     end
     
-    def self.generate_signature_for(params, secret_key)
-      query   = params.sort_by { |k,v| k.downcase }
-      digest  = OpenSSL::Digest::Digest.new('sha1')
-      hmac    = OpenSSL::HMAC.digest(digest, secret_key, query.to_s)
-      encoded = Base64.encode64(hmac).chomp
+    def expected_signature
+      @expected_signature ||= Remit::SignedQuery.new(@request.url, @secret_key, @params)[:signature]
     end
-    
-    private
-    
-    def strip_keys_from(params, *ignore_keys)
-      parsed = params.dup
-      ignore_keys.each { |key| parsed.delete(key) }
-      parsed
-    end
-    
   end
   
 end
