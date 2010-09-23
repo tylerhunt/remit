@@ -84,16 +84,6 @@ module Remit
     parameter :last_reset_count
     parameter :last_reset_time_stamp
   end
-
-
-  class ResponseMetadata < BaseResponse
-    parameter :request_id
-  end
-
-  class TransactionStatusResponse < BaseResponse
-    parameter :transaction_id
-    parameter :transaction_status
-  end
   
   class TransactionPart < Remit::BaseResponse
     parameter :account_id
@@ -107,7 +97,6 @@ module Remit
   class Transaction < BaseResponse
     
     parameter :caller_name
-    parameter :caller_token_id
     parameter :caller_reference
     parameter :caller_description
     parameter :caller_transaction_date, :type => :time
@@ -135,35 +124,25 @@ module Remit
     parameter :transaction_id
     parameter :transaction_parts, :collection => TransactionPart, :element=>"TransactionPart"
   end
-  
-  
-  
-  
+
   class TransactionResponse < BaseResponse
     parameter :transaction_id
     parameter :transaction_status
-    parameter :status
-    parameter :new_sender_token_usage, :type => TokenUsageLimit
 
-    def which_status
-      self.status.blank? ? self.transaction_status : self.status
-    end
-    
-    %w(reserved success failure initiated reinitiated temporary_decline pending).each do |status_name|
+    %w(cancelled failure pending reserved success).each do |status_name|
       define_method("#{status_name}?") do
-        self.which_status == Remit::TransactionStatus.const_get(status_name.sub('_', '').upcase)
+        self.transaction_status == Remit::TransactionStatus.const_get(status_name.sub('_', '').upcase)
       end
     end
   end
 
   class TransactionStatus
+    #For IPN operations these strings are upcased.  For Non-IPN operations they are not upcased
+    CANCELLED         = 'Cancelled'
+    FAILURE           = 'Failure'
+    PENDING           = 'Pending'
     RESERVED          = 'Reserved'
     SUCCESS           = 'Success'
-    FAILURE           = 'Failure'
-    INITIATED         = 'Initiated'
-    REINITIATED       = 'Reinitiated'
-    TEMPORARYDECLINE  = 'TemporaryDecline'
-    PENDING           = 'Pending'
   end
 
   class TokenType
@@ -213,6 +192,12 @@ module Remit
     end
   end
 
+  class TemporaryDeclinePolicyType
+    EXPLICIT_RETRY = 'ExplicitRetry'
+    IMPLICIT_RETRY = 'ImplicitRetry'
+    FAILURE = 'Failure'
+  end
+    
   class Operation
     PAY             = "Pay"
     REFUND          = "Refund"

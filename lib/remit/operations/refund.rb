@@ -6,11 +6,8 @@ module Remit
       action :Refund
       parameter :caller_description
       parameter :caller_reference, :required => true
-      parameter :caller_token_id, :required => true
       parameter :charge_fee_to, :required => true
-      parameter :meta_data
       parameter :refund_amount, :type => Remit::RequestTypes::Amount
-      parameter :refund_recipient_description
       parameter :refund_recipient_reference
       parameter :refund_sender_description
       parameter :refund_sender_reference
@@ -26,8 +23,9 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :refund_result, :type=>TransactionStatusResponse
-      parameter :response_metadata, :type=>ResponseMetadata
+      parser :rexml
+      parameter :refund_result, :type => Remit::TransactionResponse
+      parameter :response_metadata, :type => ResponseMetadata
     end
 
     def refund(request = Request.new)

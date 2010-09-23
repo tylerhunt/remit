@@ -14,7 +14,7 @@ describe 'a successful response', :shared => true do
   #  @response.status.should == 'Success'
   #end
 
-  it 'should not have any errors' do
+  it 'has no errors' do
     if @response.errors
       @response.errors.should == []
     else
@@ -24,7 +24,7 @@ describe 'a successful response', :shared => true do
     
   end
 
-  it 'should have a request ID' do
+  it "has a request id" do
     @response.request_id.should_not be_nil
   end
 end
@@ -35,10 +35,28 @@ describe 'a failed response', :shared => true do
   end
 
   it "has a request id" do
-    @response.request_id.should_not be_empty
+    @response.request_id.should_not be_nil
   end
 
   it "has errors" do
     @response.errors.should_not be_empty
+  end
+end
+
+describe 'a pending response', :shared => true do
+  it "is not successful" do
+    @response.should_not be_successful
+  end
+
+  it "has a request id" do
+    @response.request_id.should_not be_nil
+  end
+
+  it 'has no errors' do
+    if @response.errors
+      @response.errors.should == []
+    else
+      @response.errors.should be_nil
+    end
   end
 end

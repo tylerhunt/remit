@@ -10,7 +10,7 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parameter :transaction_response, :type => Remit::TransactionResponse
     end
 
     def retry_transaction(request = Request.new)

@@ -9,10 +9,10 @@ describe "the Pay API" do
       <PayResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
          <PayResult>
             <TransactionId>abc123</TransactionId>
-            <TransactionStatus>Initiated</TransactionStatus>
+            <TransactionStatus>Success</TransactionStatus>
          </PayResult>
          <ResponseMetadata>
-            <RequestId>foo</RequestId>
+            <RequestId>foo-bar</RequestId>
          </ResponseMetadata>
       </PayResponse>
       XML
@@ -29,7 +29,7 @@ describe "the Pay API" do
     end
 
     it "has a transaction status" do
-      @response.pay_result.transaction_status.should == 'Initiated'
+      @response.pay_result.transaction_status.should == 'Success'
     end
 
     #it "has status shortcuts" do
@@ -37,70 +37,48 @@ describe "the Pay API" do
     #end
   end
 
-  describe "for a failed request" do
+  describe "for a pending request" do
     before do
       doc = <<-XML
-        <?xml version=\"1.0\"?>
-        <ns3:PayResponse xmlns:ns3=\"http://fps.amazonaws.com/doc/2007-01-08/\">
-          <Status>Failure</Status>
-          <Errors>
-            <Errors>
-              <ErrorType>Business</ErrorType>
-              <IsRetriable>false</IsRetriable>
-              <ErrorCode>InvalidParams</ErrorCode>
-              <ReasonText>callerTokenId can not be empty</ReasonText>
-            </Errors>
-          </Errors>
-          <RequestId>7966a2d9-5ce9-4902-aefc-b01d254c931a:0</RequestId>
-        </ns3:PayResponse>
+        <PayResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+           <PayResult>
+              <TransactionId>14GK6BGKA7U6OU6SUTNLBI5SBBV9PGDJ6UL</TransactionId>
+              <TransactionStatus>Pending</TransactionStatus>
+           </PayResult>
+           <ResponseMetadata>
+              <RequestId>c21e7735-9c08-4cd8-99bf-535a848c79b4:0</RequestId>
+           </ResponseMetadata>
+        </PayResponse>
       XML
 
       @response = Remit::Pay::Response.new(doc)
       @error = @response.errors.first
     end
 
-    it_should_behave_like 'a failed response'
+    it_should_behave_like 'a pending response'
 
-    describe "with an invalid params error" do
-      it "should be a service error" do
-        @error.should be_kind_of(Remit::ServiceError)
-      end
-
-      it "should have an error type of 'Business'" do
-        @error.error_type.should == 'Business'
-      end
-
-      it "should have an error code of 'InvalidParams'" do
-        @error.error_code.should == 'InvalidParams'
-      end
-
-      it "should not be retriable" do
-        @error.is_retriable.should == 'false'
-      end
-
-      it "should have reason text" do
-        @error.reason_text.should == 'callerTokenId can not be empty'
-      end
-    end
   end
 
   describe "for a failed request" do
     before do
       doc = <<-XML
-        <?xml version=\"1.0\"?>
-        <ns3:PayResponse xmlns:ns3=\"http://fps.amazonaws.com/doc/2007-01-08/\">
-          <Status>Failure</Status>
+        <PayResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+          <PayResult>
+            <TransactionId>14GK6BGKA7U6OU6SUTNLBI5SBBV9PGDJ6UL</TransactionId>
+            <TransactionStatus>Pending</TransactionStatus>
+          </PayResult>
+          <ResponseMetadata>
+            <RequestId>c21e7735-9c08-4cd8-99bf-535a848c79b4:0</RequestId>
+          </ResponseMetadata>
           <Errors>
             <Errors>
               <ErrorType>Business</ErrorType>
               <IsRetriable>false</IsRetriable>
               <ErrorCode>TokenUsageError</ErrorCode>
-              <ReasonText>The token \"45XU7TLBN995ZQA2U1PS1ZCTJXJMJ3H1GH6VZAB82C1BGLK9X3AXUQDA3QDLJVPX\" has violated its usage policy.</ReasonText>
-              </Errors>
+              <ReasonText>The token "45XU7TLBN995ZQA2U1PS1ZCTJXJMJ3H1GH6VZAB82C1BGLK9X3AXUQDA3QDLJVPX" has violated its usage policy.</ReasonText>
             </Errors>
-            <RequestId>78acff80-b740-4b57-9301-18d0576e6855:0
-          </RequestId>
-        </ns3:PayResponse>
+          </Errors>
+        </PayResponse>
       XML
 
       @response = Remit::Pay::Response.new(doc)

@@ -23,11 +23,23 @@ module Remit
     end
   end
 
+  class ResponseMetadata < BaseResponse
+    # Amazon FPS returns a RequestId element for every API call accepted for processing
+    # that means not *every* call will have a request ID.
+    parameter :request_id#, :required => true
+    parameter :signature_version
+    parameter :signature_method
+  end  
+
   class Response < BaseResponse
-    parameter :request_id
+    parameter :response_metadata, :type => Remit::ResponseMetadata, :required => true
 
     attr_accessor :status
     attr_accessor :errors
+
+    def request_id
+      self.response_metadata.respond_to?(:request_id) ? self.response_metadata.request_id : nil
+    end
 
     def initialize(xml)
       super

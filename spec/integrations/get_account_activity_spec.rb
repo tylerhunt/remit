@@ -20,7 +20,6 @@ describe 'a GetAccountActivity call' do
   it 'should have a transaction with all of its values set' do
     transaction = @response.get_account_activity_result.transactions.first
     transaction.caller_name.should_not be_empty
-    #transaction.caller_token_id.should_not be_empty
     transaction.caller_transaction_date.should_not be_nil
     transaction.date_completed.should_not be_nil
     transaction.date_received.should_not be_nil

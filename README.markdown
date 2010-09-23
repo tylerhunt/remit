@@ -88,4 +88,25 @@ The following production sites are currently using Remit:
   * http://www.obsidianportal.com/
 
 
+This fork of remit is based exclusively on the 2008-09-17.
+These are the changes summarized by Amazon from the previous API, and the level of compliance in the gem:
+
+1. You don't have to use InstallPaymentInstruction API to create Caller and Recipient tokens for your account. A Recipient token is now required only in Marketplace applications. We have completely removed the Caller token.
+  Compliance: Caller token references removed.
+2. We removed parameters that are not being used by you today. For example, we removed metadata and recipient description, but we retained sender description and caller description.
+  Compliance: DONE! recipient_description and metadata have been removed from the code.
+3. We simplified the transaction response object.
+  Compliance: The former Remit::TransactionResponse object has been accordingly simplified.
+4. We simplified the GetTransaction response by removing unnecessary parameters.
+  Compliance: ?
+5. By default, implicit retry and cancel will be the method used to handle temporary declines rather than the current explicit retry process.
+  Compliance: Removed deprecated statuses
+6. GetResults, DiscardResults are replaced with GetTransactionStatus API.
+  Compliance: GetResults and Discard Results are gone.  GetTransactionStatus takes their place.
+7. Temporary decline status is not exposed to customers as we provide a simpler way to handle this status.
+  Compliance: Temporary decline status can no longer be tested for, as it will never be a status.
+8. Web Service notification is removed and replaced with simplified IPN (Instant Payment Notification) mechanism.
+
+
+
 Copyright (c) 2007-2009 Tyler Hunt, released under the MIT license

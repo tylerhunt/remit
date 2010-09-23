@@ -10,7 +10,7 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :settle_result, :type => TransactionStatusResponse
+      parameter :settle_result, :type => Remit::TransactionResponse
       parameter :response_metadata, :type=>ResponseMetadata
     end
 
