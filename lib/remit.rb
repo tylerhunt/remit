@@ -22,7 +22,6 @@ require 'remit/pipeline_response'
 require 'remit/operations/cancel_subscription_and_refund'
 require 'remit/operations/cancel_token'
 require 'remit/operations/cancel'
-require 'remit/operations/discard_results'
 require 'remit/operations/fund_prepaid'
 require 'remit/operations/get_account_activity'
 require 'remit/operations/get_account_balance'
@@ -33,7 +32,6 @@ require 'remit/operations/get_outstanding_debt_balance'
 require 'remit/operations/get_payment_instruction'
 require 'remit/operations/get_prepaid_balance'
 require 'remit/operations/get_recipient_verification_status'
-require 'remit/operations/get_results'
 require 'remit/operations/get_token_by_caller'
 require 'remit/operations/get_token_usage'
 require 'remit/operations/get_tokens'
@@ -56,7 +54,6 @@ module Remit
     include CancelSubscriptionAndRefund
     include CancelToken
     include Cancel
-    include DiscardResults
     include FundPrepaid
     include GetAccountActivity
     include GetAccountBalance
@@ -68,7 +65,6 @@ module Remit
     include GetPipeline
     include GetPrepaidBalance
     include GetRecipientVerificationStatus
-    include GetResults
     include GetTokenUsage
     include GetTokens
     include GetTokenByCaller
