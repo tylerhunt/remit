@@ -3,3 +3,4 @@ test.sh
 remit-*.gem
 pkg
 rdoc
+.rvmrc
