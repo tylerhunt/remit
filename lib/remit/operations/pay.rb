@@ -10,14 +10,12 @@ module Remit
       parameter :descriptor_policy, :type => Remit::RequestTypes::DescriptorPolicy
       parameter :marketplace_fixed_fee, :type => Remit::RequestTypes::Amount
       parameter :marketplace_variable_fee
-      parameter :recipient_reference
-      parameter :recipient_token_id #, :true This is not really required, but does need to be there. 
+      parameter :recipient_token_id #, Only required for MarketPlace transactions
       parameter :sender_description
-      parameter :sender_reference
       parameter :sender_token_id, :required => true
-      parameter :temporary_decline_policy, :type => Remit::RequestTypes::TemporaryDeclinePolicy
       parameter :transaction_amount, :type => Remit::RequestTypes::Amount, :required => true
-      parameter :transaction_date
+      parameter :transaction_timeout_in_mins
+      parameter :timestamp
     end
 
     # The response is odd, when it succeeds.  --JonMoses

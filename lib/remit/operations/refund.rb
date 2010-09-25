@@ -6,14 +6,16 @@ module Remit
       action :Refund
       parameter :caller_description
       parameter :caller_reference, :required => true
-      parameter :charge_fee_to, :required => true
       parameter :refund_amount, :type => Remit::RequestTypes::Amount
-      parameter :refund_recipient_reference
-      parameter :refund_sender_description
-      parameter :refund_sender_reference
-      parameter :refund_sender_token_id, :required => true
-      parameter :transaction_date
       parameter :transaction_id, :required => true
+      #MarketplaceRefundPolicy is available in these APIs:
+      # Amazon FPS Advanced Quick Start
+      # Amazon FPS Marketplace Quick Start
+      # Amazon FPS Aggregated Payments Quick Start
+      # i.e. Not Basic Quick Start
+      #Amazon Docs now correctly list it as an Enumerated DataType
+      parameter :marketplace_refund_policy
+      parameter :timestamp
 
       # The RefundAmount parameter has multiple components.  It is specified on the query string like
       # so: RefundAmount.Amount=XXX&RefundAmount.CurrencyCode=YYY
