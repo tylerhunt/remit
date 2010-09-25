@@ -22,10 +22,10 @@ Gem::Specification.new do |s|
      "lib/remit/error_codes.rb",
      "lib/remit/get_pipeline.rb",
      "lib/remit/ipn_request.rb",
+     "lib/remit/pipeline_response.rb",
      "lib/remit/operations/cancel.rb",
      "lib/remit/operations/cancel_subscription_and_refund.rb",
      "lib/remit/operations/cancel_token.rb",
-     "lib/remit/operations/discard_results.rb",
      "lib/remit/operations/fund_prepaid.rb",
      "lib/remit/operations/get_account_activity.rb",
      "lib/remit/operations/get_account_balance.rb",
@@ -36,7 +36,6 @@ Gem::Specification.new do |s|
      "lib/remit/operations/get_payment_instruction.rb",
      "lib/remit/operations/get_prepaid_balance.rb",
      "lib/remit/operations/get_recipient_verification_status.rb",
-     "lib/remit/operations/get_results.rb",
      "lib/remit/operations/get_token_by_caller.rb",
      "lib/remit/operations/get_token_usage.rb",
      "lib/remit/operations/get_tokens.rb",
@@ -52,8 +51,7 @@ Gem::Specification.new do |s|
      "lib/remit/operations/settle_debt.rb",
      "lib/remit/operations/subscribe_for_caller_notification.rb",
      "lib/remit/operations/unsubscribe_for_caller_notification.rb",
-     "lib/remit/operations/write_off_debt.rb",
-     "lib/remit/pipeline_response.rb"
+     "lib/remit/operations/write_off_debt.rb"
   ]
   s.homepage = %q{http://github.com/tylerhunt/remit}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -71,7 +69,6 @@ Gem::Specification.new do |s|
      "spec/units/reserve_spec.rb",
      "spec/units/settle_spec.rb",
      "spec/units/get_account_balance_spec.rb",
-     "spec/units/get_results_spec.rb",
      "spec/units/fund_prepaid_spec.rb",
      "spec/units/write_off_debt_spec.rb",
      "spec/units/ipn_request_spec.rb",
