@@ -209,7 +209,7 @@ module Remit
     POLICY = {
       :marketplace_txn_only => 'MarketplaceTxnOnly',
       :master_and_marketplace_txn => 'MasterAndMarketplaceTxn',
-      :master_txn_only => 'MasterTxnOnly'
+      :master_txn_only => 'MasterTxnOnly' #default if not specified, set by Amazon FPS
     }
   end
 
