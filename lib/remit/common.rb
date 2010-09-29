@@ -44,16 +44,18 @@ module Remit
     def initialize(xml)
       super
 
-      if is?(:Response) && has?(:Errors)
-        @errors = elements('Errors/Error').collect do |error|
-          Error.new(error)
-        end
-      else
+#TODO: How to differentiate between Error and Service Error
+#The way this is written it would always be the first branch, since this is the Response class and it is testing is is?(:Response)
+#      if is?(:Response) && has?(:Errors)
+#        @errors = elements('Errors/Error').collect do |error|
+#          Error.new(error)
+#        end
+#      else
         @status = text_value(element(:Status))
         @errors = elements('Errors/Errors').collect do |error|
           ServiceError.new(error)
         end unless successful?
-      end
+#      end
     end
 
     def successful?
