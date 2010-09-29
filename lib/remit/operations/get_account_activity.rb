@@ -21,7 +21,7 @@ module Remit
         parameter :transactions, :collection => Transaction, :element=>"Transaction"
         parameter :start_time_for_next_transaction, :type => :time
       end
-      parameter :get_account_activity_result, :type=>GetAccountActivityResult
+      parameter :get_account_activity_result, :type => GetAccountActivityResult
     end
 
     def get_account_activity(request = Request.new)

@@ -30,7 +30,7 @@ describe 'a GetAccountActivity call' do
     transaction.fps_operation.should_not be_empty
     transaction.recipient_name.should_not be_empty
     transaction.sender_name.should_not be_empty
-    transaction.sender_token_id.should_not be_empty
+    transaction.sender_token_id.should_not be_nil #some transactions have '' here.
     transaction.status_code.should_not be_empty
     transaction.transaction_amount.should_not be_nil
     transaction.transaction_id.should_not be_empty
