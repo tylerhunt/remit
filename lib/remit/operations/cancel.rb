@@ -10,7 +10,7 @@ module Remit
 
     class Response < Remit::Response
       parser :rexml
-      parameter :transaction_response, :type => Remit::TransactionResponse
+      parameter :cancel_response, :type => Remit::TransactionResponse
     end
 
     def cancel(request = Request.new)

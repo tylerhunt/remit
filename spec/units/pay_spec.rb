@@ -33,7 +33,7 @@ describe "the Pay API" do
     end
 
     #it "has status shortcuts" do
-    #  @response.transaction_response.should be_initiated
+    #  @response.pay_result.should be_initiated
     #end
   end
 

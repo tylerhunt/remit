@@ -74,7 +74,6 @@ module Remit
     include Pay
     include Refund
     include Reserve
-    include RetryTransaction
     include Settle
     include SettleDebt
     include SubscribeForCallerNotification
