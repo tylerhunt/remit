@@ -46,7 +46,6 @@ Gem::Specification.new do |s|
      "lib/remit/operations/pay.rb",
      "lib/remit/operations/refund.rb",
      "lib/remit/operations/reserve.rb",
-     "lib/remit/operations/retry_transaction.rb",
      "lib/remit/operations/settle.rb",
      "lib/remit/operations/settle_debt.rb",
      "lib/remit/operations/subscribe_for_caller_notification.rb",
