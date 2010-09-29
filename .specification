@@ -1,0 +1,123 @@
+--- !ruby/object:Gem::Specification 
+name: remit
+version: !ruby/object:Gem::Version 
+  hash: 29
+  prerelease: false
+  segments: 
+  - 0
+  - 0
+  - 1
+  version: 0.0.1
+platform: ruby
+authors: 
+- Tyler Hunt
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2009-01-28 00:00:00 -05:00
+default_executable: 
+dependencies: 
+- !ruby/object:Gem::Dependency 
+  name: relax
+  prerelease: false
+  requirement: &id001 !ruby/object:Gem::Requirement 
+    none: false
+    requirements: 
+    - - ">="
+      - !ruby/object:Gem::Version 
+        hash: 21
+        segments: 
+        - 0
+        - 0
+        - 5
+        version: 0.0.5
+  type: :runtime
+  version_requirements: *id001
+description: 
+email: tyler@tylerhunt.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: 
+- README
+- LICENSE
+files: 
+- lib/remit
+- lib/remit/cancel_token.rb
+- lib/remit/common.rb
+- lib/remit/data_types.rb
+- lib/remit/discard_results.rb
+- lib/remit/fund_prepaid.rb
+- lib/remit/get_account_activity.rb
+- lib/remit/get_account_balance.rb
+- lib/remit/get_all_credit_instruments.rb
+- lib/remit/get_all_prepaid_instruments.rb
+- lib/remit/get_debt_balance.rb
+- lib/remit/get_outstanding_debt_balance.rb
+- lib/remit/get_payment_instruction.rb
+- lib/remit/get_pipeline.rb
+- lib/remit/get_prepaid_balance.rb
+- lib/remit/get_results.rb
+- lib/remit/get_token_by_caller.rb
+- lib/remit/get_token_usage.rb
+- lib/remit/get_tokens.rb
+- lib/remit/get_total_prepaid_liability.rb
+- lib/remit/get_transaction.rb
+- lib/remit/install_payment_instruction.rb
+- lib/remit/pay.rb
+- lib/remit/refund.rb
+- lib/remit/reserve.rb
+- lib/remit/retry_transaction.rb
+- lib/remit/settle.rb
+- lib/remit/settle_debt.rb
+- lib/remit/subscribe_for_caller_notification.rb
+- lib/remit/unsubscribe_for_caller_notification.rb
+- lib/remit/write_off_debt.rb
+- lib/remit.rb
+- README
+- LICENSE
+- spec/get_account_activity_spec.rb
+- spec/get_pipeline_spec.rb
+- spec/get_tokens_spec.rb
+- spec/spec_helper.rb
+has_rdoc: true
+homepage: http://tylerhunt.com/
+licenses: []
+
+post_install_message: 
+rdoc_options: []
+
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  none: false
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
+      version: "0"
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  none: false
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      hash: 3
+      segments: 
+      - 0
+      version: "0"
+requirements: []
+
+rubyforge_project: remit
+rubygems_version: 1.3.7
+signing_key: 
+specification_version: 2
+summary: An API for using the Amazon Flexible Payment Service (FPS).
+test_files: 
+- spec/get_account_activity_spec.rb
+- spec/get_pipeline_spec.rb
+- spec/get_tokens_spec.rb
+- spec/spec_helper.rb
