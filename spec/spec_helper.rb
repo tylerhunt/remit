@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'spec'
 
-require File.dirname(__FILE__) + '/../lib/remit'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/remit')
 
 def remit
   @remit ||= Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
