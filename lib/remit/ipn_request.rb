@@ -16,6 +16,7 @@ module Remit
       @params             = strip_keys_from(params, 'action', 'controller')
       @supplied_signature = @params.delete(SIGNATURE_KEY)
       @secret_key         = secret_key
+      #TODO: Next three vars don't seem to be used. Remove? --pboling
       @raw_post           = raw_post
       @api                = api
       @uri                = uri

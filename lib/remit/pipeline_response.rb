@@ -1,20 +1,21 @@
 module Remit
   class PipelineResponse
+    include Signature
+
     def initialize(uri, secret_key)
       @uri        = URI.parse(uri)
       @secret_key = secret_key
     end
 
-    # Returns +true+ if the response is correctly signed (awsSignature).
+    # Returns +true+ if the response is correctly signed (signature).
     #
     #--
-    # The unescape_value method is used here because the awsSignature value
+    # The unescape_value method is used here because the signature value
     # pulled from the request is filtered through the same method.
     #++
     def valid?( api = nil)
       return false unless given_signature
-      # Relax::Query.unescape_value(correct_signature(api)) == given_signature
-      correct_signature(api)
+      Relax::Query.unescape_value(correct_signature) == given_signature
     end
 
     # Returns +true+ if the response returns a successful state.
@@ -36,7 +37,7 @@ module Remit
     end
 
     def request_query(reload = false)
-      @query ||= Remit::SignedQuery.parse(@uri, @secret_key, @uri.query || '')
+      @query ||= sign(@secret_key, @uri.path, "GET", request_query)
     end
     private :request_query
 
@@ -45,13 +46,8 @@ module Remit
     end
     private :given_signature
 
-    def correct_signature( api = nil)
-      return nil unless api
-      
-      Rails.logger.debug "FPS: Computed signature: " + Remit::SignedQuery.new(@uri.path, @secret_key, request_query).sign
-      Rails.logger.debug "FPS: Real signature: " + request_query[:signature]
-      # Verifign a responses signature against a webservice seems....silly?
-      Remit::VerifySignature.new(api, @uri.to_s).valid
+    def correct_signature
+      sign(@secret_key, @uri.path, "GET", request_query)
     end
     private :correct_signature
   end

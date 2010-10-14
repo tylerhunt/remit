@@ -6,12 +6,14 @@ require 'uri'
 require 'date'
 require 'base64'
 require 'erb'
+require 'cgi'
 
 require 'rubygems'
 
 gem 'relax', '0.0.7'
 require 'relax'
 
+require 'remit/signature'
 require 'remit/data_types'
 require 'remit/common'
 require 'remit/error_codes'
@@ -50,6 +52,8 @@ require 'remit/operations/write_off_debt'
 
 module Remit
   class API < Relax::Service
+    include Signature
+
     include CancelSubscriptionAndRefund
     include CancelToken
     include Cancel
@@ -101,13 +105,8 @@ module Remit
       super(@api_endpoint)
     end
 
-    def new_query(query={})
-      SignedQuery.new(@endpoint, @secret_key, query)
-    end
-    private :new_query
-
     def default_query
-      new_query({
+      Relax::Query.new({
         :AWSAccessKeyId => @access_key,
         :SignatureVersion => SIGNATURE_VERSION,
         :SignatureMethod => SIGNATURE_METHOD,
@@ -115,44 +114,12 @@ module Remit
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
       })
     end
-    private :default_query
 
     def query(request)
       query = super
-      query[:Signature] = sign_v2(query)
+      query[:Signature] = sign(@secret_key, @endpoint, "GET", query)
       query
     end
-    private :query
 
-    # signature version 1
-    def sign(values)
-      keys = values.keys.sort { |a, b| a.to_s.downcase <=> b.to_s.downcase }
-
-      signature = keys.inject('') do |signature, key|
-        signature += key.to_s + values[key].to_s
-      end
-
-      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, signature)).strip
-    end
-    private :sign
-
-
-    # signature version 2
-    def sign_v2(values)
-      #keys = values.keys.sort { |a, b| a.to_s <=> b.to_s }
-      #puts "keys = #{pp keys}"
-      canonical_querystring = values.sort{ |a, b| a.to_s <=> b.to_s }.collect { |key, value| [CGI.escape(key.to_s), CGI.escape(value.to_s)].join('=') }.join('&')
-      canonical_querystring = canonical_querystring.gsub('+','%20')
-      string_to_sign = "GET
-#{@api_endpoint.match(/https:\/\/(.*)\//)[1]}
-/
-#{canonical_querystring}"
-      #puts "string_to_sign = #{string_to_sign}"
-
-      signature = Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @secret_key, string_to_sign)).strip
-      #puts "signature = #{signature}"
-      return signature
-    end
-    private :sign_v2
   end
 end
