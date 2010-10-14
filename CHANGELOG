@@ -33,8 +33,9 @@
 * First public release
 * Support for recurring-use tokens in the pipeline (Micah Wedemeyer)
 
-0.0.8 - October 14, 2010
+0.1.0 - October 14, 2010
 
-* Updated various parts for marketplace compatiblity
-* Added more rspec tests
-* Switched to signature parameter from awsSignature
+* Updated various parts for marketplace compatiblity [Peter Boling]
+* Added more rspec tests [Peter Boling, and many others]
+* Switched to signature parameter from awsSignature [Peter Boling]
+* Updated to latest API, 2008-09-17 [Peter Boling, and many others]
