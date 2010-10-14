@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{remit}
-  s.version = "0.0.5"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Tyler Hunt"]
-  s.date = %q{2010-09-19}
-  s.email = %q{tyler@tylerhunt.com}
+  s.authors = ["Tyler Hunt", "Peter Boling"]
+  s.date = %q{2010-10-14}
+  s.email = %q{peter.boling+remit@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
      "README.markdown"
@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
      "lib/remit/error_codes.rb",
      "lib/remit/get_pipeline.rb",
      "lib/remit/ipn_request.rb",
-     "lib/remit/pipeline_response.rb",
      "lib/remit/operations/cancel.rb",
      "lib/remit/operations/cancel_subscription_and_refund.rb",
      "lib/remit/operations/cancel_token.rb",
@@ -50,50 +49,53 @@ Gem::Specification.new do |s|
      "lib/remit/operations/settle_debt.rb",
      "lib/remit/operations/subscribe_for_caller_notification.rb",
      "lib/remit/operations/unsubscribe_for_caller_notification.rb",
-     "lib/remit/operations/write_off_debt.rb"
+     "lib/remit/operations/write_off_debt.rb",
+     "lib/remit/pipeline_response.rb",
+     "lib/remit/signature.rb"
   ]
-  s.homepage = %q{http://github.com/tylerhunt/remit}
+  s.homepage = %q{http://github.com/nyc-ruby-meetup/remit}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{remit}
-  s.rubygems_version = %q{1.3.6}
+  s.rubyforge_project = %q{remit-nyc}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{An API for using the Amazon Flexible Payment Service (FPS).}
   s.test_files = [
     "spec/integrations/get_account_activity_spec.rb",
      "spec/integrations/get_tokens_spec.rb",
-     "spec/units/get_transaction_status_spec.rb",
-     "spec/units/get_prepaid_balance_spec.rb",
-     "spec/units/get_debt_balance_spec.rb",
+     "spec/integrations/pay_spec.rb",
      "spec/units/cancel_subscription_and_refund_spec.rb",
-     "spec/units/reserve_spec.rb",
-     "spec/units/settle_spec.rb",
-     "spec/units/get_account_balance_spec.rb",
-     "spec/units/fund_prepaid_spec.rb",
-     "spec/units/write_off_debt_spec.rb",
-     "spec/units/ipn_request_spec.rb",
-     "spec/units/get_recipient_verification_status_spec.rb",
-     "spec/units/get_account_activity_spec.rb",
-     "spec/units/pay_spec.rb",
-     "spec/units/get_total_prepaid_liability_spec.rb",
-     "spec/units/get_pipeline_spec.rb",
      "spec/units/cancel_token_spec.rb",
-     "spec/units/get_tokens_spec.rb",
-     "spec/units/get_token_usage_spec.rb",
+     "spec/units/fund_prepaid_spec.rb",
+     "spec/units/get_account_activity_spec.rb",
+     "spec/units/get_account_balance_spec.rb",
+     "spec/units/get_debt_balance_spec.rb",
      "spec/units/get_outstanding_debt_balance_spec.rb",
-     "spec/units/settle_debt_spec.rb",
+     "spec/units/get_pipeline_spec.rb",
+     "spec/units/get_prepaid_balance_spec.rb",
+     "spec/units/get_recipient_verification_status_spec.rb",
      "spec/units/get_token_by_caller_spec.rb",
+     "spec/units/get_token_usage_spec.rb",
+     "spec/units/get_tokens_spec.rb",
+     "spec/units/get_total_prepaid_liability_spec.rb",
      "spec/units/get_transaction_spec.rb",
+     "spec/units/get_transaction_status_spec.rb",
+     "spec/units/ipn_request_spec.rb",
+     "spec/units/pay_spec.rb",
      "spec/units/refund_spec.rb",
+     "spec/units/reserve_spec.rb",
+     "spec/units/settle_debt_spec.rb",
+     "spec/units/settle_spec.rb",
+     "spec/units/write_off_debt_spec.rb",
      "spec/integrations/integrations_helper.rb",
-     "spec/units/units_helper.rb",
-     "spec/spec_helper.rb"
+     "spec/spec_helper.rb",
+     "spec/units/units_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<relax>, ["~> 0.0.7"])
     else
       s.add_dependency(%q<relax>, ["~> 0.0.7"])
