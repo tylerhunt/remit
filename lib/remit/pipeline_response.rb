@@ -3,7 +3,7 @@ module Remit
     include Signature
 
     def initialize(uri, secret_key)
-      @uri        = URI.parse(uri)
+      @uri        = URI::parse(uri)
       @secret_key = secret_key
     end
 
@@ -37,7 +37,9 @@ module Remit
     end
 
     def request_query(reload = false)
-      @query ||= sign(@secret_key, @uri.path, "GET", request_query)
+      reload ?
+        @query = sign(@secret_key, @uri, "GET", @uri.query || '') :
+        @query ||= sign(@secret_key, @uri, "GET", @uri.query || '')
     end
     private :request_query
 
@@ -47,7 +49,7 @@ module Remit
     private :given_signature
 
     def correct_signature
-      sign(@secret_key, @uri.path, "GET", request_query)
+      sign(@secret_key, @uri, "GET", request_query)
     end
     private :correct_signature
   end
