@@ -36,10 +36,13 @@ module Remit
       end
     end
 
-    def request_query(reload = false)
-      reload ?
-        @query = sign(@secret_key, @uri, "GET", @uri.query || '') :
-        @query ||= sign(@secret_key, @uri, "GET", @uri.query || '')
+    def request_query#(reload = false)
+      @query ||= begin
+        query = CGI::parse(@uri.query || '')
+        signature = sign(@secret_key, @uri, "GET", query)
+        @query = query.merge('signature' => signature)
+        @uri.query = @query.collect {|k,v| "#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"}.join("&")
+      end
     end
     private :request_query
 

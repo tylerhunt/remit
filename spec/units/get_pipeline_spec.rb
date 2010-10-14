@@ -24,7 +24,7 @@ describe 'A pipeline', :shared => true do
 
   it 'should sign its URL' do
     uri = URI.parse(@pipeline.url)
-    signature = sign(remit.secret_key, uri, "GET", uri.query)
+    signature = sign(remit.secret_key, uri, "GET", CGI::parse(uri.query))
     query = Relax::Query.parse(uri)
 
     signature == query[:signature]

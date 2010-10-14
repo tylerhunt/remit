@@ -6,9 +6,9 @@ module Remit
     end
     
     def string_to_sign(endpoint, http_verb, values)
-      if values.is_a?(String)
-        values = CGI::parse(values)
-      end
+#      if values.is_a?(String)
+#        values = CGI::parse(values)
+#      end
       uri = URI::parse(endpoint.to_s)
 
       path = uri.path
