@@ -40,7 +40,7 @@ module Remit
       @query ||= begin
         query = CGI::parse(@uri.query || '')
         signature = sign(@secret_key, @uri, "GET", query)
-        q = query.merge('signature' => signature)
+        q = HashWithIndifferentAccess.new(query.merge('signature' => signature))
         @uri.query = query.collect {|k,v| "#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"}.join("&")
         q
       end
