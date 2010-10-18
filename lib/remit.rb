@@ -13,10 +13,12 @@ require 'rubygems'
 gem 'relax', '0.0.7'
 require 'relax'
 
+
 require 'remit/signature'
 require 'remit/data_types'
 require 'remit/common'
 require 'remit/error_codes'
+require 'remit/inbound_request'
 require 'remit/ipn_request'
 require 'remit/get_pipeline'
 require 'remit/pipeline_response'
@@ -52,7 +54,6 @@ require 'remit/operations/write_off_debt'
 
 module Remit
   class API < Relax::Service
-    include Signature
 
     include CancelSubscriptionAndRefund
     include CancelToken
@@ -87,14 +88,15 @@ module Remit
     API_SANDBOX_ENDPOINT = 'https://fps.sandbox.amazonaws.com/'.freeze
     PIPELINE_URL = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'.freeze
     PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
-    # API_VERSION = Date.new(2007, 1, 8).to_s.freeze
     API_VERSION = Date.new(2008, 9, 17).to_s.freeze
     PIPELINE_VERSION = Date.new(2009, 1, 9).to_s.freeze
     SIGNATURE_VERSION = 2.freeze
     SIGNATURE_METHOD = "HmacSHA256".freeze
+
+    #attr_reader :pipeline      # kickstarter
+    attr_reader :pipeline_url   # nyc
     attr_reader :access_key
     attr_reader :secret_key
-    attr_reader :pipeline_url
     attr_reader :api_endpoint
 
     def initialize(access_key, secret_key, sandbox=false)
@@ -104,22 +106,24 @@ module Remit
       @api_endpoint = sandbox ? API_SANDBOX_ENDPOINT : API_ENDPOINT
       super(@api_endpoint)
     end
+    
+    # generates v1 signatures, for historical purposes.
+    def self.signature_v1(path, params, secret_key)
+      params = params.except('awsSignature', 'action', 'controller', 'id').sort_by{ |k,v| k.to_s.downcase }.map{|k,v| "#{k}=#{CGI.escape v}"}.join('&')
+      signable = path + '?' + params
+      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, secret_key, signable)).strip
+    end
 
-    def default_query
-      Relax::Query.new({
+    private
+
+    # called from Relax::Service#call
+    def query(request)
+      params = request.to_query.merge(
         :AWSAccessKeyId => @access_key,
-        :SignatureVersion => SIGNATURE_VERSION,
-        :SignatureMethod => SIGNATURE_METHOD,
         :Version => API_VERSION,
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-      })
+      )
+      ApiQuery.new(@endpoint, @secret_key, params)
     end
-
-    def query(request)
-      query = super
-      query[:Signature] = sign(@secret_key, @endpoint, "GET", query)
-      query
-    end
-
   end
 end

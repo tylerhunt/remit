@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tyler Hunt", "Peter Boling"]
-  s.date = %q{2010-10-15}
+  s.date = %q{2010-10-18}
   s.email = %q{peter.boling+remit@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
      "lib/remit/data_types.rb",
      "lib/remit/error_codes.rb",
      "lib/remit/get_pipeline.rb",
+     "lib/remit/inbound_request.rb",
      "lib/remit/ipn_request.rb",
      "lib/remit/operations/cancel.rb",
      "lib/remit/operations/cancel_subscription_and_refund.rb",
@@ -51,7 +52,8 @@ Gem::Specification.new do |s|
      "lib/remit/operations/unsubscribe_for_caller_notification.rb",
      "lib/remit/operations/write_off_debt.rb",
      "lib/remit/pipeline_response.rb",
-     "lib/remit/signature.rb"
+     "lib/remit/signature.rb",
+     "lib/remit/verify_signature.rb"
   ]
   s.homepage = %q{http://github.com/nyc-ruby-meetup/remit}
   s.rdoc_options = ["--charset=UTF-8"]

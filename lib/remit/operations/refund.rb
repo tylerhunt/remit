@@ -16,6 +16,13 @@ module Remit
       #Amazon Docs now correctly list it as an Enumerated DataType
       parameter :marketplace_refund_policy
       parameter :timestamp
+# TODO: Check these parameters in Latest FPS API
+#      parameter :refund_recipient_description
+#      parameter :refund_recipient_reference
+#      parameter :refund_sender_description
+#      parameter :refund_sender_reference
+#      parameter :refund_sender_token_id
+#      parameter :transaction_date
 
       # The RefundAmount parameter has multiple components.  It is specified on the query string like
       # so: RefundAmount.Amount=XXX&RefundAmount.CurrencyCode=YYY
@@ -26,6 +33,8 @@ module Remit
 
     class Response < Remit::Response
       parser :rexml
+#Namespace changed with new API:
+#      parameter :transaction_response, :namespace => 'ns3', :type => TransactionResponse
       parameter :refund_result, :type => Remit::TransactionResponse
       parameter :response_metadata, :type => ResponseMetadata
     end

@@ -165,6 +165,7 @@ module Remit
   class PipelineStatusCode
     CALLER_EXCEPTION  = 'CE'  # problem with your code
     SYSTEM_ERROR      = 'SE'  # system error, try again
+    SUCCESS_UNCHANGED = 'SU'  # edit token pipeline finished, but token is unchanged
     SUCCESS_ABT       = 'SA'  # successful payment with Amazon balance
     SUCCESS_ACH       = 'SB'  # successful payment with bank transfer
     SUCCESS_CC        = 'SC'  # successful payment with credit card
@@ -180,7 +181,7 @@ module Remit
       parameter :value
       parameter :currency_code
     end
-
+    
     class TemporaryDeclinePolicy < Remit::Request
       parameter :temporary_decline_policy_type
       parameter :implicit_retry_timeout_in_mins
@@ -191,6 +192,11 @@ module Remit
       parameter :CS_owner
     end
 
+  end
+  
+  class SoftDescriptorType
+    STATIC = 'Static'
+    DYNAMIC = 'Dynamic'
   end
 
   #MarketplaceRefundPolicy is available in these APIs:
@@ -226,5 +232,9 @@ module Remit
     SETTLE_DEBT     = "SettleDebt"
     WRITE_OFF_DEBT  = "WriteOffDebt"
     FUND_PREPAID    = "FundPrepaid"
+  end
+  
+  class VerifySignatureResult < BaseResponse
+    parameter :verification_status
   end
 end

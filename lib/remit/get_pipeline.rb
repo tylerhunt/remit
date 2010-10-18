@@ -5,7 +5,6 @@ require 'remit/common'
 module Remit
   module GetPipeline
     class Pipeline
-      include Signature
 
       @parameters = []
       attr_reader :parameters
@@ -38,6 +37,7 @@ module Remit
       end
       
       attr_reader :api
+      attr_reader :pipeline_url
       
       parameter :caller_key
       parameter :cobranding_style
@@ -50,8 +50,9 @@ module Remit
       parameter :version
       parameter :website_description
 
-      def initialize(api, options)
+      def initialize(api, pipeline, options)
         @api = api
+        @pipeline_url = pipeline
         
         options.each do |k,v|
           self.send("#{k}=", v)
@@ -59,26 +60,25 @@ module Remit
       end
 
       def url
-        uri = URI.parse(@api.pipeline_url)
-        
+        uri = URI.parse(self.pipeline_url)
+
         query = {}
         self.class.parameters.each do |p|
           val = self.send(p)
-          
+
           # Convert Time values to seconds from Epoch
-          val = val.to_i if val.is_a?(Time)
-          
+          val = val.to_i if val.class == Time
+
           query[self.class.convert_key(p.to_s)] = val
         end
 
         # Remove any unused optional parameters
-        query.reject! { |key, value| value.nil? || (value.is_a?(String) && value.empty?) }
+        query.reject! { |key, value| value.nil? }
 
-        signature = sign(@api.secret_key, @api.pipeline_url, "GET", query)
-        uri.query = query.merge('signature' => signature).collect {|k,v| "#{CGI::escape(k.to_s)}=#{CGI::escape(v.to_s)}"}.join("&")
-
+        uri.query = SignedQuery.new(self.pipeline_url, self.api.secret_key, query).to_s
         uri.to_s
       end
+      
     end
     
     module ValidityPeriod
@@ -235,6 +235,16 @@ module Remit
       end
     end
 
+    class EditTokenPipeline < Pipeline
+      parameter :caller_reference
+      parameter :token_id
+      parameter :payment_method
+      
+      def pipeline_name
+        Remit::PipelineName::EDIT_TOKEN
+      end
+    end
+    
     def get_single_use_pipeline(options)
       self.get_pipeline(SingleUsePipeline, options)
     end
@@ -259,8 +269,13 @@ module Remit
       self.get_pipeline(PrepaidPipeline, options)
     end
 
+    def get_edit_token_pipeline(options)
+      self.get_pipeline(EditTokenPipeline, options)
+    end
+
     def get_pipeline(pipeline_subclass, options)
-      pipeline = pipeline_subclass.new(self, {
+      # TODO: How does @pipeline_url work here?
+      pipeline_subclass.new(self, @pipeline_url, {
         :caller_key => @access_key,
         :signature_version=>Remit::API::SIGNATURE_VERSION,
         :signature_method=>Remit::API::SIGNATURE_METHOD,

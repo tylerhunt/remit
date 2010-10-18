@@ -3,8 +3,6 @@ require 'spec'
 
 require File.expand_path(File.dirname(__FILE__) + '/../lib/remit')
 
-include Remit::Signature
-
 def remit
   @remit ||= Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
 end

@@ -5,6 +5,7 @@ describe 'A pipeline', :shared => true do
     @pipeline_options = {
       :return_url => 'http://example.com/'
     }
+    @pipeline = remit.get_single_use_pipeline(@pipeline_options)
   end
 
   describe 'with signed url' do
@@ -24,10 +25,10 @@ describe 'A pipeline', :shared => true do
 
   it 'should sign its URL' do
     uri = URI.parse(@pipeline.url)
-    signature = sign(remit.secret_key, uri, "GET", CGI::parse(uri.query))
+    pipeline = Remit::SignedQuery.parse(uri, remit.secret_key, uri.query)
     query = Relax::Query.parse(uri)
 
-    signature == query[:signature]
+    pipeline[:awsSignature].should == query[:awsSignature]
   end
 end
 
