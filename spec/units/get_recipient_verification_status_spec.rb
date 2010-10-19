@@ -5,16 +5,7 @@ describe "the GetRecipientVerificationStatus API" do
     it_should_behave_like 'a successful response'
     
     before do
-      doc = <<-XML
-        <GetRecipientVerificationStatusResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <GetRecipientVerificationStatusResult>
-            <RecipientVerificationStatus>VerificationComplete</RecipientVerificationStatus>
-          </GetRecipientVerificationStatusResult>
-          <ResponseMetadata>
-            <RequestId>b0c46f6d-dd91-464f-b37d-44be250866b7:0</RequestId>
-          </ResponseMetadata>
-        </GetRecipientVerificationStatusResponse>
-      XML
+      doc = File.read("spec/mocks/GetRecipientVerificationStatusResponse.xml")
       
       @response = Remit::GetRecipientVerificationStatus::Response.new(doc)
     end
@@ -28,7 +19,7 @@ describe "the GetRecipientVerificationStatus API" do
     end
     
     it "has status" do
-      @response.get_recipient_verification_status_result.recipient_verification_status.should == 'VerificationComplete'
+      @response.get_recipient_verification_status_result.recipient_verification_status.should_not be_nil
     end
     
   end
