@@ -47,6 +47,9 @@ describe "the GetTokens API" do
       it "should have a OldTokenId" do
         @token.old_token_id.should_not be_nil
       end
+      it "should have a PaymentReason" do
+        @token.payment_reason.should_not be_nil
+      end
     end
 
   end
