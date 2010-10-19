@@ -69,7 +69,7 @@ module Remit
     parameter :caller_reference
     parameter :token_type
     parameter :old_token_id
-    #parameter :payment_reason
+    parameter :payment_reason
 
     class TokenStatus
       ACTIVE = 'Active'

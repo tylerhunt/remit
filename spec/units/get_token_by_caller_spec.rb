@@ -4,30 +4,8 @@ describe "the GetTokenByCaller API" do
   describe "a successful response" do
     it_should_behave_like 'a successful response'
     
-    before do
-      doc = <<-XML
-        <GetTokenByCallerResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <GetTokenByCallerResult>
-            <Token>
-              <TokenId>
-                543IJMECGZZ3J4K1F7BJ3TMNXFBQU9VXNT7RRCTNAJDJ8X36L1ZRKSUUPPIBTTIK
-              </TokenId>
-              <FriendlyName>Friendly1339359778</FriendlyName>
-              <TokenStatus>Active</TokenStatus>
-              <DateInstalled>2009-10-07T04:29:05.054-07:00</DateInstalled>
-              <CallerReference>callerReferenceSingleUse10</CallerReference>
-              <TokenType>SingleUse</TokenType>
-              <OldTokenId>
-                543IJMECGZZ3J4K1F7BJ3TMNXFBQU9VXNT7RRCTNAJDJ8X36L1ZRKSUUPPIBTTIK
-              </OldTokenId>
-              <PaymentReason>PaymentReason</PaymentReason>
-            </Token>
-          </GetTokenByCallerResult>
-          <ResponseMetadata>
-            <RequestId>45b6c560-8aa9-463c-84be-80eeefb21034:0</RequestId>
-          </ResponseMetadata>
-        </GetTokenByCallerResponse>
-      XML
+    before(:all) do
+      doc = File.read("spec/mocks/GetTokenByCallerResponse.xml")
       
       @response = Remit::GetTokenByCaller::Response.new(doc)
     end
@@ -40,6 +18,39 @@ describe "the GetTokenByCaller API" do
       @response.get_token_by_caller_result.should_not be_nil
     end
     
-    
+    it "should have Token" do
+      @response.get_token_by_caller_result.token.should_not be_nil
+    end
+
+    describe "has Token" do
+      before(:all) do
+        @token = @response.get_token_by_caller_result.token
+      end
+      it "should have TokenId" do
+        @token.token_id.should_not be_nil
+      end
+      it "should have FriendlyName" do
+        @token.friendly_name.should_not be_nil
+      end
+      it "should have TokenStatus" do
+        @token.token_status.should_not be_nil
+      end
+      it "should have DateInstalled" do
+        @token.date_installed.should_not be_nil
+      end
+      it "should have CallerReference" do
+        @token.caller_reference.should_not be_nil
+      end
+      it "should have TokenType" do
+        @token.token_type.should_not be_nil
+      end
+      it "should have OldTokenId" do
+        @token.old_token_id.should_not be_nil
+      end
+      it "should have PaymentReason" do
+        @token.payment_reason.should_not be_nil
+      end
+    end
+
   end
 end
