@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetTokenUsageResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+  <!--Optional:-->
+  <GetTokenUsageResult>
+    <!--0 to 3 repetitions:-->
+    <TokenUsageLimits>
+      <!--Optional:-->
+      <Count>100</Count>
+      <!--Optional:-->
+      <Amount>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </Amount>
+      <!--Optional:-->
+      <LastResetCount>100</LastResetCount>
+      <!--Optional:-->
+      <LastResetAmount>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </LastResetAmount>
+      <!--Optional:-->
+      <LastResetTimestamp>2008-09-28T18:49:45</LastResetTimestamp>
+    </TokenUsageLimits>
+  </GetTokenUsageResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetTokenUsageResponse>

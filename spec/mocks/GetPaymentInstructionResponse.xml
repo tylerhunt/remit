@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetPaymentInstructionResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+  <!--Optional:-->
+  <GetPaymentInstructionResult>
+    <Token>
+      <TokenId>string</TokenId>
+      <FriendlyName>string</FriendlyName>
+      <TokenStatus>string</TokenStatus>
+      <DateInstalled>2008-09-28T18:49:45</DateInstalled>
+      <CallerReference>string</CallerReference>
+      <TokenType>string</TokenType>
+      <!--Optional:-->
+      <OldTokenId>string</OldTokenId>
+      <!--Optional:-->
+      <PaymentReason>string</PaymentReason>
+    </Token>
+    <PaymentInstruction>string</PaymentInstruction>
+    <CallerReference>string</CallerReference>
+    <!--Optional:-->
+    <TokenFriendlyName>string</TokenFriendlyName>
+  </GetPaymentInstructionResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetPaymentInstructionResponse>

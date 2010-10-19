@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetAccountBalanceResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+  <!--Optional:-->
+  <GetAccountBalanceResult>
+    <!--Optional:-->
+    <AccountBalance>
+      <TotalBalance>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </TotalBalance>
+      <PendingInBalance>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </PendingInBalance>
+      <PendingOutBalance>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </PendingOutBalance>
+      <AvailableBalances>
+        <DisburseBalance>
+          <CurrencyCode>string</CurrencyCode>
+          <Value>string</Value>
+        </DisburseBalance>
+        <RefundBalance>
+          <CurrencyCode>string</CurrencyCode>
+          <Value>string</Value>
+        </RefundBalance>
+      </AvailableBalances>
+    </AccountBalance>
+  </GetAccountBalanceResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetAccountBalanceResponse>
