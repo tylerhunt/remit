@@ -5,25 +5,7 @@ describe "the GetOutstandingDebtBalance API" do
     it_should_behave_like 'a successful response'
     
     before do
-      doc = <<-XML
-        <GetOutstandingDebtBalanceResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <GetOutstandingDebtBalanceResult>
-            <OutstandingDebt>
-              <OutstandingBalance>
-                <CurrencyCode>USD</CurrencyCode>
-                <Value>5.000000</Value>
-              </OutstandingBalance>
-              <PendingOutBalance>
-                <CurrencyCode>USD</CurrencyCode>
-                <Value>0.000000</Value>
-              </PendingOutBalance>
-            </OutstandingDebt>
-          </GetOutstandingDebtBalanceResult>
-          <ResponseMetadata>
-            <RequestId>ae85ac11-a38c-4c42-94fc-b71c9598c76f:0</RequestId>
-          </ResponseMetadata>
-        </GetOutstandingDebtBalanceResponse>
-      XML
+      doc = File.read("spec/mocks/GetOutstandingDebtBalanceResponse.xml")
       
       @response = Remit::GetOutstandingDebtBalance::Response.new(doc)
     end
@@ -38,7 +20,7 @@ describe "the GetOutstandingDebtBalance API" do
     
     describe "the result" do
       it "should have refund_transaction_id" do
-        @response.get_outstanding_debt_balance_result.outstanding_debt.outstanding_balance.value.should > 0
+        @response.get_outstanding_debt_balance_result.outstanding_debt.outstanding_balance.value.should == 0
       end
     end
     
