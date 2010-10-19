@@ -5,7 +5,7 @@ describe "the GetAccountActivity API" do
     it_should_behave_like 'a successful response'
     
     before(:all) do
-      doc = doc = File.read("spec/mocks/GetAccountActivityResponse.xml")
+      doc = File.read("spec/mocks/GetAccountActivityResponse.xml")
       
       @response = Remit::GetAccountActivity::Response.new(doc)
     end
