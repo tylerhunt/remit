@@ -5,21 +5,20 @@ describe "the GetTransaction API" do
     it_should_behave_like 'a successful response'
     
     before do
-      doc = <<-XML
-        <CancelTokenResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <ResponseMetadata>
-            <RequestId>a10e0ad6-148f-4afe-8bcd-e80a2680793d:0</RequestId>
-          </ResponseMetadata>
-        </CancelTokenResponse>
-      XML
-      
+      doc = File.read("spec/mocks/CancelTokenResponse.xml")
+
       @response = Remit::CancelToken::Response.new(doc)
     end
     
     it "has metadata" do
       @response.response_metadata
     end
-    
-    
+
+    describe "metadata" do
+      it "has request_id" do
+        @response.response_metadata.request_id
+      end
+    end
+
   end
 end
