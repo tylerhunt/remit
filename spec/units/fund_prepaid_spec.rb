@@ -5,23 +5,19 @@ describe "the FundPrepaid API" do
     it_should_behave_like 'a successful response'
     
     before do
-      doc = <<-XML
-        <FundPrepaidResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <FundPrepaidResult>
-            <TransactionId>14GN2BUHUAV4KG5S8USHN79PQH1NGN5ADK4</TransactionId>
-            <TransactionStatus>Pending</TransactionStatus>
-          </FundPrepaidResult>
-          <ResponseMetadata>
-            <RequestId>325c3342-a972-4d73-9e28-c56442ad56de:0</RequestId>
-          </ResponseMetadata>
-        </FundPrepaidResponse>
-      XML
+      doc = File.read("spec/mocks/FundPrepaidResponse.xml")
       
       @response = Remit::FundPrepaid::Response.new(doc)
     end
     
     it "has metadata" do
       @response.response_metadata.should_not be_nil
+    end
+
+    describe "metadata" do
+      it "has request_id" do
+        @response.response_metadata.request_id
+      end
     end
     
     it "has results" do
