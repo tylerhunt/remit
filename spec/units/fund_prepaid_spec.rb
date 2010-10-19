@@ -24,6 +24,5 @@ describe "the FundPrepaid API" do
       @response.fund_prepaid_result.should_not be_nil
     end
     
-    
   end
 end
