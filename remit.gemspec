@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{remit}
-  s.version = "0.1.8"
+  s.version = "0.1.9"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tyler Hunt", "Peter Boling"]
@@ -89,7 +89,33 @@ Gem::Specification.new do |s|
      "spec/units/write_off_debt_spec.rb",
      "spec/integrations/integrations_helper.rb",
      "spec/spec_helper.rb",
-     "spec/units/units_helper.rb"
+     "spec/units/units_helper.rb",
+     "spec/mocks/CancelResponse.xml",
+     "spec/mocks/CancelSubscriptionAndRefundResponse.xml",
+     "spec/mocks/CancelTokenResponse.xml",
+     "spec/mocks/ErrorResponse.xml",
+     "spec/mocks/FundPrepaidResponse.xml",
+     "spec/mocks/GetAccountActivityResponse.xml",
+     "spec/mocks/GetAccountBalanceResponse.xml",
+     "spec/mocks/GetDebtBalanceResponse.xml",
+     "spec/mocks/GetOutstandingDebtBalanceResponse.xml",
+     "spec/mocks/GetPaymentInstructionResponse.xml",
+     "spec/mocks/GetPrepaidBalanceResponse.xml",
+     "spec/mocks/GetRecipientVerificationStatusResponse.xml",
+     "spec/mocks/GetTokenByCallerResponse.xml",
+     "spec/mocks/GetTokensResponse.xml",
+     "spec/mocks/GetTokenUsageResponse.xml",
+     "spec/mocks/GetTotalPrepaidLiabilityResponse.xml",
+     "spec/mocks/GetTransactionResponse.xml",
+     "spec/mocks/GetTransactionStatusResponse.xml",
+     "spec/mocks/InstallPaymentInstructionResponse.xml",
+     "spec/mocks/PayResponse.xml",
+     "spec/mocks/RefundResponse.xml",
+     "spec/mocks/ReserveResponse.xml",
+     "spec/mocks/SettleDebtResponse.xml",
+     "spec/mocks/SettleResponse.xml",
+     "spec/mocks/VerifySignatureResponse.xml",
+     "spec/mocks/WriteOffDebtResponse.xml"
   ]
 
   if s.respond_to? :specification_version then
