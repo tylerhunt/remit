@@ -27,6 +27,12 @@ module Remit
   class Error < BaseResponse
     parameter :code
     parameter :message
+    def error_code
+      self.code
+    end
+    def reason_text
+      self.message
+    end
   end
 
   class InstrumentStatus
