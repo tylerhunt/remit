@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{remit}
-  s.version = "0.1.6"
+  s.version = "0.1.7"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tyler Hunt", "Peter Boling"]
-  s.date = %q{2010-10-18}
+  s.date = %q{2010-10-20}
   s.email = %q{peter.boling+remit@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -52,7 +52,6 @@ Gem::Specification.new do |s|
      "lib/remit/operations/unsubscribe_for_caller_notification.rb",
      "lib/remit/operations/write_off_debt.rb",
      "lib/remit/pipeline_response.rb",
-     "lib/remit/signature.rb",
      "lib/remit/verify_signature.rb"
   ]
   s.homepage = %q{http://github.com/nyc-ruby-meetup/remit}
@@ -64,6 +63,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/integrations/get_account_activity_spec.rb",
      "spec/integrations/get_tokens_spec.rb",
+     "spec/integrations/ipn_request_spec.rb",
      "spec/integrations/pay_spec.rb",
      "spec/units/cancel_subscription_and_refund_spec.rb",
      "spec/units/cancel_token_spec.rb",
@@ -81,7 +81,6 @@ Gem::Specification.new do |s|
      "spec/units/get_total_prepaid_liability_spec.rb",
      "spec/units/get_transaction_spec.rb",
      "spec/units/get_transaction_status_spec.rb",
-     "spec/units/ipn_request_spec.rb",
      "spec/units/pay_spec.rb",
      "spec/units/refund_spec.rb",
      "spec/units/reserve_spec.rb",
