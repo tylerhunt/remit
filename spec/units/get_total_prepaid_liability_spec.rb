@@ -15,12 +15,11 @@ describe "the GetTotalPrepaidLiability API" do
     end
     
     it "has results" do
-      @response.get_total_prepaid_liability_result.should be_an_kind_of Remit::GetTotalPrepaidLiability::Response::GetTotalPrepaidLiabilityResult
+      @response.get_total_prepaid_liability_result.should be_a_kind_of Remit::GetTotalPrepaidLiability::Response::GetTotalPrepaidLiabilityResult
     end
 
     it "has outstanding prepaid liability" do
-      @response.get_total_prepaid_liability_result.outstanding_prepaid_liability.should be_an_kind_of Remit::GetTotalPrepaidLiability::Response::GetTotalPrepaidLiabilityResult::OutstandingPrepaidLiability
-
+      @response.get_total_prepaid_liability_result.outstanding_prepaid_liability.should be_a_kind_of Remit::GetTotalPrepaidLiability::Response::GetTotalPrepaidLiabilityResult::OutstandingPrepaidLiability
     end
     
   end
