@@ -6,7 +6,6 @@ describe 'a Pay call' do
 
   before(:all) do
     @response = remit.get_tokens
-    puts "Pay response:\n#{@response.inspect}"
   end
 
   it 'should have a collection of tokens' do
