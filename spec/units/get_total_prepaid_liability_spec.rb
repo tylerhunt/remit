@@ -5,7 +5,7 @@ describe "the GetTotalPrepaidLiability API" do
     it_should_behave_like 'a successful response'
     
     before do
-      doc = doc = File.read("spec/mocks/GetTotalPrepaidLiabilityResponse.xml")
+      doc = File.read("spec/mocks/GetTotalPrepaidLiabilityResponse.xml")
       
       @response = Remit::GetTotalPrepaidLiability::Response.new(doc)
     end
