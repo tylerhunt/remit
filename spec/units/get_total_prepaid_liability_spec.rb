@@ -5,25 +5,7 @@ describe "the GetTotalPrepaidLiability API" do
     it_should_behave_like 'a successful response'
     
     before do
-      doc = <<-XML
-        <GetTotalPrepaidLiabilityResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
-          <GetTotalPrepaidLiabilityResult>
-            <OutstandingPrepaidLiability>
-              <OutstandingBalance>
-                <CurrencyCode>USD</CurrencyCode>
-                <Value>2.000000</Value>
-              </OutstandingBalance>
-              <PendingInBalance>
-                <CurrencyCode>USD</CurrencyCode>
-                <Value>0.000000</Value>
-              </PendingInBalance>
-            </OutstandingPrepaidLiability>
-          </GetTotalPrepaidLiabilityResult>
-          <ResponseMetadata>
-            <RequestId>ac7b28ea-c340-4638-be46-d4a8fa54a801:0</RequestId>
-          </ResponseMetadata>
-        </GetTotalPrepaidLiabilityResponse>
-      XML
+      doc = doc = File.read("spec/mocks/GetTotalPrepaidLiabilityResponse.xml")
       
       @response = Remit::GetTotalPrepaidLiability::Response.new(doc)
     end
@@ -33,9 +15,13 @@ describe "the GetTotalPrepaidLiability API" do
     end
     
     it "has results" do
-      @response.get_total_prepaid_liability_result.should_not be_nil
+      @response.get_total_prepaid_liability_result.should be_an_kind_of Remit::GetTotalPrepaidLiability::Response::GetTotalPrepaidLiabilityResult
     end
-    
+
+    it "has outstanding prepaid liability" do
+      @response.get_total_prepaid_liability_result.outstanding_prepaid_liability.should be_an_kind_of Remit::GetTotalPrepaidLiability::Response::GetTotalPrepaidLiabilityResult::OutstandingPrepaidLiability
+
+    end
     
   end
 end
