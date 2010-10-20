@@ -14,11 +14,10 @@ gem 'relax', '0.0.7'
 require 'relax'
 
 
-require 'remit/signature'
+require 'remit/verify_signature'
 require 'remit/data_types'
 require 'remit/common'
 require 'remit/error_codes'
-require 'remit/verify_signature'
 require 'remit/inbound_request'
 require 'remit/ipn_request'
 require 'remit/get_pipeline'
