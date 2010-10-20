@@ -234,7 +234,4 @@ module Remit
     FUND_PREPAID    = "FundPrepaid"
   end
   
-  class VerifySignatureResult < BaseResponse
-    parameter :verification_status
-  end
 end

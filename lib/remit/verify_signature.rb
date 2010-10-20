@@ -1,5 +1,3 @@
-require 'remit/common'
-
 module Remit
   module VerifySignature
     class Request < Remit::Request
@@ -9,6 +7,9 @@ module Remit
     end
 
     class Response < Remit::Response
+      class VerifySignatureResult < BaseResponse
+        parameter :verification_status
+      end
       parameter :verify_signature_result, :type => VerifySignatureResult
     end
 

@@ -18,6 +18,7 @@ require 'remit/signature'
 require 'remit/data_types'
 require 'remit/common'
 require 'remit/error_codes'
+require 'remit/verify_signature'
 require 'remit/inbound_request'
 require 'remit/ipn_request'
 require 'remit/get_pipeline'
@@ -55,6 +56,7 @@ require 'remit/operations/write_off_debt'
 module Remit
   class API < Relax::Service
 
+    include VerifySignature
     include CancelSubscriptionAndRefund
     include CancelToken
     include Cancel
@@ -91,7 +93,7 @@ module Remit
     API_VERSION = Date.new(2008, 9, 17).to_s.freeze
     PIPELINE_VERSION = Date.new(2009, 1, 9).to_s.freeze
     SIGNATURE_VERSION = 2.freeze
-    SIGNATURE_METHOD = "HmacSHA256".freeze
+    SIGNATURE_METHOD = "RSA-SHA1".freeze
 
     #attr_reader :pipeline      # kickstarter
     attr_reader :pipeline_url   # nyc
@@ -109,7 +111,7 @@ module Remit
     
     # generates v1 signatures, for historical purposes.
     def self.signature_v1(path, params, secret_key)
-      params = params.except('awsSignature', 'action', 'controller', 'id').sort_by{ |k,v| k.to_s.downcase }.map{|k,v| "#{k}=#{CGI.escape v}"}.join('&')
+      params = params.reject {|key, val| ['awsSignature', 'action', 'controller', 'id'].include?(key) }.sort_by{ |k,v| k.to_s.downcase }.map{|k,v| "#{CGI::escape(k)}=#{Remit::SignedQuery.escape_value(v)}"}.join('&')
       signable = path + '?' + params
       Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, secret_key, signable)).strip
     end
@@ -125,5 +127,25 @@ module Remit
       )
       ApiQuery.new(@endpoint, @secret_key, params)
     end
+  end
+end
+
+#Hack on Hash to make it s rocket
+class Hash
+  def to_url_params
+    elements = []
+    keys.size.times do |i|
+      elements << "#{(keys[i])}=#{Remit::SignedQuery.escape_value(values[i])}"
+    end
+    elements.join('&')
+  end
+
+  def self.from_url_params(url_params)
+    result = {}.with_indifferent_access
+    url_params.split('&').each do |element|
+      element = element.split('=')
+      result[element[0]] = element[1]
+    end
+    result
   end
 end
