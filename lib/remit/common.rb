@@ -78,7 +78,7 @@ module Remit
 
     def sign
       store(:signatureVersion, Remit::API::SIGNATURE_VERSION)
-      store(:signatureMethod, 'HmacSHA256')
+      store(:signatureMethod, Remit::API::SIGNATURE_METHOD)
       store(:signature, signature)
     end
 

@@ -7,6 +7,7 @@ describe 'a GetAccountActivity call' do
     request = Remit::GetAccountActivity::Request.new
     request.start_date = Date.today - 7
     @response = remit.get_account_activity(request)
+    puts "GetAccountActivity response:\n#{@response.inspect}"
   end
 
   it "has results" do

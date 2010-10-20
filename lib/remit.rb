@@ -93,7 +93,7 @@ module Remit
     API_VERSION = Date.new(2008, 9, 17).to_s.freeze
     PIPELINE_VERSION = Date.new(2009, 1, 9).to_s.freeze
     SIGNATURE_VERSION = 2.freeze
-    SIGNATURE_METHOD = "RSA-SHA1".freeze
+    SIGNATURE_METHOD = "HmacSHA256".freeze
 
     #attr_reader :pipeline      # kickstarter
     attr_reader :pipeline_url   # nyc
