@@ -3,6 +3,9 @@ require 'remit/common'
 module Remit
 
   class InboundRequest
+    include ConvertKey
+    protected :convert_key
+
     attr_reader :supplied_signature
     attr_reader :allow_sigv1
     
@@ -42,7 +45,8 @@ module Remit
     end
     
     def method_missing(method, *args, &block) #:nodoc:
-      return @params[method.to_s] if @params.has_key?(method.to_s)
+      key = self.convert_key(method)
+      return @params[key] if @params.has_key?(key)
       super
     end
   end

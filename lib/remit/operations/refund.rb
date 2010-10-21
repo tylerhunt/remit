@@ -27,7 +27,7 @@ module Remit
       # The RefundAmount parameter has multiple components.  It is specified on the query string like
       # so: RefundAmount.Amount=XXX&RefundAmount.CurrencyCode=YYY
       def convert_complex_key(key, parameter)
-        "#{convert_key(key).to_s}.#{convert_key(parameter).to_s}"
+        "#{convert_key(key)}.#{convert_key(parameter)}"
       end
     end
 
