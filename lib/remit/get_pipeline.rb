@@ -245,32 +245,10 @@ module Remit
       end
     end
     
-    def get_single_use_pipeline(options)
-      self.get_pipeline(SingleUsePipeline, options)
-    end
-
-    def get_multi_use_pipeline(options)
-      self.get_pipeline(MultiUsePipeline, options)
-    end
-
-    def get_recipient_pipeline(options)
-      self.get_pipeline(RecipientPipeline, {:version => Date.new(2009, 1, 9).to_s}.merge(options))
-    end
-    
-    def get_recurring_use_pipeline(options)
-      self.get_pipeline(RecurringUsePipeline, options)
-    end
-    
-    def get_postpaid_pipeline(options)
-      self.get_pipeline(PostpaidPipeline, options)
-    end
-    
-    def get_prepaid_pipeline(options)
-      self.get_pipeline(PrepaidPipeline, options)
-    end
-
-    def get_edit_token_pipeline(options)
-      self.get_pipeline(EditTokenPipeline, options)
+    %w( single_use multi_use recipient recurring_use postpaid prepaid edit_token ).each do |pipeline|
+      define_method("get_#{pipeline}_pipeline") do |options|
+        get_pipeline("Remit::GetPipeline::#{pipeline.classify}Pipeline".constantize, options)
+      end
     end
 
     def get_pipeline(pipeline_subclass, options)
