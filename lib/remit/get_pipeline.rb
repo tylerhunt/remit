@@ -67,7 +67,7 @@ module Remit
           val = self.send(p)
 
           # Convert Time values to seconds from Epoch
-          val = val.to_i if val.class == Time
+          val = val.to_i if val.is_a?(Time)
 
           query[self.class.convert_key(p)] = val
         end
