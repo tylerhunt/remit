@@ -20,7 +20,7 @@ module Remit
     def initialize(request_url, params, client, options = {})
       #ensure that params is a hash
       params = params.is_a?(String) ?
-              Hash.from_url_query(params) : params
+              Hash.from_url_params(params) : params
       @request_url        = request_url
       #sort of assuming rails here, but needs to use pure ruby so it remains compatible with non-rails
       @params             = params.reject {|key, val| ['action','controller'].include?(key) }
