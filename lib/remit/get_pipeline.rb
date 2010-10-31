@@ -244,11 +244,27 @@ module Remit
         Remit::PipelineName::EDIT_TOKEN
       end
     end
-    
-    %w( single_use multi_use recipient recurring_use postpaid prepaid edit_token ).each do |pipeline|
-      define_method("get_#{pipeline}_pipeline") do |options|
-        get_pipeline("Remit::GetPipeline::#{pipeline.classify}Pipeline".constantize, options)
-      end
+
+    def get_single_use_pipeline(options)
+      get_pipeline(Remit::GetPipeline::SingleUsePipeline, options)
+    end
+    def get_multi_use_pipeline(options)
+      get_pipeline(Remit::GetPipeline::MultiUsePipeline, options)
+    end
+    def get_recipient_pipeline(options)
+      get_pipeline(Remit::GetPipeline::RecipientPipeline, options)
+    end
+    def get_recurring_use_pipeline(options)
+      get_pipeline(Remit::GetPipeline::RecurringUsePipeline, options)
+    end
+    def get_postpaid_pipeline(options)
+      get_pipeline(Remit::GetPipeline::PostpaidPipeline, options)
+    end
+    def get_prepaid_pipeline(options)
+      get_pipeline(Remit::GetPipeline::PrepaidPipeline, options)
+    end
+    def get_edit_token_pipeline(options)
+      get_pipeline(Remit::GetPipeline::EditTokenPipeline, options)
     end
 
     def get_pipeline(pipeline_subclass, options)

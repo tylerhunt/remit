@@ -4,6 +4,8 @@ module Remit
 
   class InboundRequest
     include ConvertKey
+    extend SignatureUtilsForOutbound
+
     protected :convert_key
 
     attr_reader :supplied_signature
@@ -11,7 +13,7 @@ module Remit
     
     # signature key name
     SIGNATURE_KEY = 'signature'
-    
+
     ##
     # +request_url+ is the full request path up to the query string, as from request.url in the controller
     # +params+ is the full params hash from the controller
@@ -31,9 +33,11 @@ module Remit
     
     def valid?
       if @params['signatureVersion'].to_i == 2
+        return false unless InboundRequest.check_parameters(@params)
         verify_request = Remit::VerifySignature::Request.new(
-          :url_end_point => @request_url,
-          :http_parameters => @params.to_url_params
+          :url_end_point => InboundRequest.urlencode(@request_url),
+          :version => Remit::API::API_VERSION,
+          :http_parameters => InboundRequest.urlencode(InboundRequest.get_http_params(@params))
         )
         result = @client.verify_signature(verify_request)
         result.verify_signature_result.verification_status == 'Success'

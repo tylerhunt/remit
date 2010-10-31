@@ -5,7 +5,7 @@ describe 'an IPN request with a bad signature' do
 # The signature does not match the one calculated for these req params by amazon.  Need to get a fresh example.
 # So it is currently a test that a bad signature will be verified as BAD
   before(:each) do
-    @request_params = {
+    @bad_request_params = {
       "action"            => "notice",
       "buyerName"         => "Fps Buyer",
       "callerReference"   => "4-8-1-3.5",
@@ -14,7 +14,7 @@ describe 'an IPN request with a bad signature' do
       "paymentMethod"     => "CC",
       "recipientEmail"    => "recipient@email.url",
       "recipientName"     => "Fps Business",
-      "signatureVersion"  => Remit::API::SIGNATURE_VERSION,
+      "signatureVersion"  => Remit::API::SIGNATURE_VERSION.to_s,
       "signatureMethod"   => "RSA-SHA1",
       "certificateUrl"    => "https://fps.sandbox.amazonaws.com/certs/090909/PKICert.pem",
       Remit::IpnRequest::SIGNATURE_KEY => "This-is-a-bad-sig",
@@ -24,7 +24,7 @@ describe 'an IPN request with a bad signature' do
       "transactionId"     => "13KIGL9RC25853BGPPOS2VSKBKF2JERR3HO"
     }
 
-    @request = Remit::IpnRequest.new('http://example.com/ipn/processor', @request_params, remit)
+    @request = Remit::IpnRequest.new('http://example.com/ipn/processor', @bad_request_params, remit)
   end
 
   it 'should not be a valid request' do
@@ -37,3 +37,4 @@ describe 'an IPN request with a bad signature' do
     @request.transactionId.should == '13KIGL9RC25853BGPPOS2VSKBKF2JERR3HO'
   end
 end
+

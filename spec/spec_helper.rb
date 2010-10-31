@@ -26,8 +26,8 @@ require 'spec'
 
 require File.expand_path(File.dirname(__FILE__) + '/../lib/remit')
 
-def remit
-  @remit ||= Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
+def remit(access_key = ACCESS_KEY, seret_key = SECRET_KEY)
+  @remit ||= Remit::API.new(access_key, seret_key, true)
 end
 
 describe 'a successful response', :shared => true do

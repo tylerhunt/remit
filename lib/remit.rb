@@ -17,6 +17,7 @@ require 'relax'
 require 'remit/data_types'
 require 'remit/common'
 require 'remit/error_codes'
+require 'remit/signature_utils_for_outbound'
 require 'remit/verify_signature'
 require 'remit/inbound_request'
 require 'remit/ipn_request'
@@ -129,22 +130,3 @@ module Remit
   end
 end
 
-#Hack on Hash to make it s rocket
-class Hash
-  def to_url_params
-    elements = []
-    keys.size.times do |i|
-      elements << "#{(keys[i])}=#{Remit::SignedQuery.escape_value(values[i])}"
-    end
-    elements.join('&')
-  end
-
-  def self.from_url_params(url_params)
-    result = {}.with_indifferent_access
-    url_params.split('&').each do |element|
-      element = element.split('=')
-      result[element[0]] = element[1]
-    end
-    result
-  end
-end

@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<Response><Errors><Error><Code>InvalidParams</Code><Message>certificateUrl is missing in 'HttpParameters'.</Message></Error></Errors><RequestID>edac86c2-d488-4cdd-a069-cfe217b5c4af</RequestID></Response>

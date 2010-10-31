@@ -127,3 +127,23 @@ module Remit
     end
   end
 end
+
+#Hack on Hash to make it s rocket
+class Hash
+  def to_url_params
+    elements = []
+    keys.size.times do |i|
+      elements << "#{(keys[i])}=#{Remit::SignedQuery.escape_value(values[i])}"
+    end
+    elements.join('&')
+  end
+
+  def self.from_url_params(url_params)
+    result = {}
+    url_params.split('&').each do |element|
+      element = element.split('=')
+      result[element[0]] = element[1]
+    end
+    result
+  end
+end
