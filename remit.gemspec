@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{remit}
-  s.version = "0.1.18"
+  s.version = "0.1.19"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tyler Hunt", "Peter Boling"]
-  s.date = %q{2010-10-21}
+  s.date = %q{2010-10-31}
   s.email = %q{peter.boling+remit@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -52,6 +52,7 @@ Gem::Specification.new do |s|
      "lib/remit/operations/unsubscribe_for_caller_notification.rb",
      "lib/remit/operations/write_off_debt.rb",
      "lib/remit/pipeline_response.rb",
+     "lib/remit/signature_utils_for_outbound.rb",
      "lib/remit/verify_signature.rb"
   ]
   s.homepage = %q{http://github.com/nyc-ruby-meetup/remit}
@@ -65,6 +66,8 @@ Gem::Specification.new do |s|
      "spec/integrations/get_tokens_spec.rb",
      "spec/integrations/ipn_request_spec.rb",
      "spec/integrations/pay_spec.rb",
+     "spec/integrations/pipeline_response_spec.rb",
+     "spec/integrations/verify_signature_spec.rb",
      "spec/units/cancel_subscription_and_refund_spec.rb",
      "spec/units/cancel_token_spec.rb",
      "spec/units/fund_prepaid_spec.rb",
@@ -94,6 +97,9 @@ Gem::Specification.new do |s|
      "spec/mocks/CancelSubscriptionAndRefundResponse.xml",
      "spec/mocks/CancelTokenResponse.xml",
      "spec/mocks/ErrorResponse.xml",
+     "spec/mocks/errors/InvalidParameterValue.xml",
+     "spec/mocks/errors/InvalidParams_certificateUrl.xml",
+     "spec/mocks/errors/RequestExpired.xml",
      "spec/mocks/FundPrepaidResponse.xml",
      "spec/mocks/GetAccountActivityResponse.xml",
      "spec/mocks/GetAccountBalanceResponse.xml",
