@@ -108,5 +108,10 @@ These are the changes summarized by Amazon from the previous API, and the level 
   Compliance: Temporary decline status can no longer be tested for, as it will never be a status.
 8. Web Service notification is removed and replaced with simplified IPN (Instant Payment Notification) mechanism.
 
+Running Specification Suite
+---------------------------
+1. Copy test.sh.example to test.sh
+2. Edit test.sh to have valid Amazon developer account access and secret keys
+3. Run ./test.sh from the command line.
 
 Copyright (c) 2007-2009 Tyler Hunt, released under the MIT license
