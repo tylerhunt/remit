@@ -42,9 +42,9 @@ Using with Rails
 ----------------
 
 To use Remit in a Rails application, you must first specify a dependency on the
-Remit gem in your config/environment.rb file:
+Remit gem in your Gemfile:
 
-    config.gem 'remit', :version => '~> 0.0.1'
+    gem 'remit', :git => "git://github.com/nyc-ruby-meetup/remit.git"
 
 Then you should create an initializer to configure your Amazon keys. Create the
 file config/initializers/remit.rb with the following contents:
@@ -84,12 +84,13 @@ Sites Using Remit
 
 The following production sites are currently using Remit:
 
-  * http://www.storenvy.com/
-  * http://www.obsidianportal.com/
+ * [Storyenvy](http://www.storenvy.com/)
+ * [ObsidianPortal](http://www.obsidianportal.com/)
 
 
-This fork of remit is based exclusively on the 2008-09-17.
-These are the changes summarized by Amazon from the previous API, and the level of compliance in the gem:
+Amazon API Compliance 
+---------------------
+These are the changes summarized by Amazon from the previous API, and the level of compliance in this branch:
 
 1. You don't have to use InstallPaymentInstruction API to create Caller and Recipient tokens for your account. A Recipient token is now required only in Marketplace applications. We have completely removed the Caller token.
   Compliance: Caller token references removed.
@@ -106,7 +107,6 @@ These are the changes summarized by Amazon from the previous API, and the level 
 7. Temporary decline status is not exposed to customers as we provide a simpler way to handle this status.
   Compliance: Temporary decline status can no longer be tested for, as it will never be a status.
 8. Web Service notification is removed and replaced with simplified IPN (Instant Payment Notification) mechanism.
-
 
 
 Copyright (c) 2007-2009 Tyler Hunt, released under the MIT license
