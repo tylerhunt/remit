@@ -25,8 +25,6 @@ describe "VerifySignature API" do
                  "signatureMethod"=>"RSA-SHA1",
                  "expiry"=>"08/2014",
                  "status"=>"SC"}
-      #puts "#{@token_request_response.class}: @token_request_response: #{@token_request_response.inspect}"
-      #(request_url, params, client, options = {})
       @pipeline_response = Remit::PipelineResponse.new("https://staging.timeperks.net/member/restaurants/31/thankyou", @params, remit_api, SECRET_KEY)
     end
 
