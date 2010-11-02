@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{remit}
-  s.version = "0.1.20"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Tyler Hunt", "Peter Boling"]
@@ -65,7 +65,6 @@ Gem::Specification.new do |s|
     "spec/integrations/get_account_activity_spec.rb",
      "spec/integrations/get_tokens_spec.rb",
      "spec/integrations/ipn_request_spec.rb",
-     "spec/integrations/pay_spec.rb",
      "spec/integrations/pipeline_response_spec.rb",
      "spec/integrations/verify_signature_spec.rb",
      "spec/units/cancel_subscription_and_refund_spec.rb",
