@@ -38,6 +38,11 @@ make a simple call to get the tokens stored on the account:
     puts response.tokens.first.token_id
 
 
+VerifySignature API
+-------------------
+See spec/integrations/verify_signature_spec.rb for examples on correct and incorrect usage!
+
+
 Using with Rails
 ----------------
 
