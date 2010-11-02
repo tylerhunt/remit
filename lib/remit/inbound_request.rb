@@ -43,7 +43,7 @@ module Remit
         @hash_params      = params
         @string_params    = InboundRequest.get_http_params(@hash_params)
       end
-      puts "Params are: #{params.inspect}"
+      #puts "Params are: #{params.inspect}"
       @request_url        = request_url
       @client             = client
       @supplied_signature = @hash_params[self.class::SIGNATURE_KEY]
