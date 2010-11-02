@@ -142,7 +142,9 @@ class Hash
     result = {}
     url_params.split('&').each do |element|
       element = element.split('=')
-      result[element[0]] = element[1]
+      # BJM - need to unescape the values in the param string
+      #result[element[0]] = element[1]
+      result[element[0]] = CGI.unescape(element[1])
     end
     result
   end

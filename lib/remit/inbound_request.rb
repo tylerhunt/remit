@@ -11,6 +11,8 @@ module Remit
     attr_reader :supplied_signature
     attr_reader :allow_sigv1
     
+    # BJM: need to access sometimes from the app
+    attr_reader :hash_params
     # signature key name
     SIGNATURE_KEY = 'signature'
 
