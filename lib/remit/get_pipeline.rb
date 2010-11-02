@@ -109,6 +109,11 @@ module Remit
       parameter :max_variable_fee
       parameter :payment_method
       parameter :recipient_pays_fee
+      # BJM: missing??
+      # PHB: Amazon only documents this parameter as being part of responses, never as part of a request.
+      #       Not sure if it is a documentation oversight.
+      #       I am sure the documentation is terrible (with four fingers pointed back at me).
+      parameter :payment_reason
 
       include ValidityPeriod
 
@@ -269,6 +274,7 @@ module Remit
 
     def get_pipeline(pipeline_subclass, options)
       # TODO: How does @pipeline_url work here?
+      #       instance variable is setup in initializer of class.
       pipeline_subclass.new(self, @pipeline_url, {
         :caller_key => @access_key,
         :signature_version=>Remit::API::SIGNATURE_VERSION,
