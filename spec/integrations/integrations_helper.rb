@@ -5,10 +5,9 @@ unless ACCESS_KEY and SECRET_KEY
   raise RuntimeError, "You must set your AWS_ACCESS_KEY and AWS_SECRET_KEY environment variables to run integration tests"
 end
 
-def remit_api
-  @remit ||= Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
-end
-
+#def remit_api
+#  @remit ||= Remit::API.new(ACCESS_KEY, SECRET_KEY, true)
+#end
 
 #puts "Access key = #{ACCESS_KEY}"
 #puts "Secret key = #{SECRET_KEY}"

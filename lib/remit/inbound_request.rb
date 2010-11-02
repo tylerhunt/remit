@@ -19,33 +19,52 @@ module Remit
     # +params+ is the full params hash from the controller
     # +client+ is a fully instantiated Remit::API with access keys and sandbox settings
     #
+    # Only clean params hash is params is sent as a hash.
+    # Assume caller has cleaned string if string is sent as params
     def initialize(request_url, params, client, options = {})
-      #ensure that params is a hash
-      params = params.is_a?(String) ?
-              Hash.from_url_params(params) : params
+      if params.is_a?(String)
+        @string_params = params
+        @hash_params = Hash.from_url_params(params)
+      else
+        unless options.kind_of?(Hash)
+          options = {}
+        end
+        options[:skip_param_keys] ||= []
+        #this is a bit of helpful sugar for rails framework users
+        options[:skip_param_keys] |= ['action','controller']
+
+        if params.respond_to?(:reject)
+          params.reject! {|key, val| options[:skip_param_keys].include?(key) }
+        else
+          params = {}
+        end
+        @hash_params      = params
+        @string_params    = InboundRequest.get_http_params(@hash_params)
+      end
+      puts "Params are: #{params.inspect}"
       @request_url        = request_url
-      #sort of assuming rails here, but needs to use pure ruby so it remains compatible with non-rails
-      @params             = params.respond_to?(:reject) ? params.reject {|key, val| ['action','controller'].include?(key) } : {}
       @client             = client
-      @supplied_signature = @params[self.class::SIGNATURE_KEY]
+      @supplied_signature = @hash_params[self.class::SIGNATURE_KEY]
       @allow_sigv1        = options[:allow_sigv1] || false
     end
     
     def valid?
-      if @params['signatureVersion'].to_i == 2
-        #puts "\nparams: #{@params.inspect}\n"
-        return false unless InboundRequest.check_parameters(@params)
+      if @hash_params['signatureVersion'].to_i == 2
+        #puts "\nhash_params: #{@hash_params.inspect}\n"
+        #puts "\nstring_params: #{@string_params.inspect}\n"
+        return false unless InboundRequest.check_parameters(@hash_params)
         verify_request = Remit::VerifySignature::Request.new(
           :url_end_point => @request_url,#InboundRequest.urlencode(@request_url),
           :version => Remit::API::API_VERSION,
-          :http_parameters => InboundRequest.get_http_params(@params)
+          :http_parameters => @string_params
         )
+        #puts "\nurl_end_point#{@request_url.inspect}\n"
         #puts "\nhttp_parameters: #{verify_request.http_parameters.inspect}\n"
         result = @client.verify_signature(verify_request)
         #puts "\nresult: #{result.raw.inspect}\n"
         result.verify_signature_result.verification_status == 'Success'
-      elsif @params['signatureVersion'].nil? and self.allow_sigv1
-        self.supplied_signature == Remit::API.signature_v1(URI.parse(@request_url).path, @params, @client.secret_key).gsub('+', ' ')
+      elsif @hash_params['signatureVersion'].nil? and self.allow_sigv1
+        self.supplied_signature == Remit::API.signature_v1(URI.parse(@request_url).path, @hash_params, @client.secret_key).gsub('+', ' ')
       else
         false
       end
