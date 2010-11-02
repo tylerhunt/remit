@@ -25,7 +25,7 @@ module Remit
               Hash.from_url_params(params) : params
       @request_url        = request_url
       #sort of assuming rails here, but needs to use pure ruby so it remains compatible with non-rails
-      @params             = params.reject {|key, val| ['action','controller'].include?(key) }
+      @params             = params.respond_to?(:reject) ? params.reject {|key, val| ['action','controller'].include?(key) } : {}
       @client             = client
       @supplied_signature = @params[self.class::SIGNATURE_KEY]
       @allow_sigv1        = options[:allow_sigv1] || false
