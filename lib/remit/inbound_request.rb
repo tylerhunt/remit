@@ -33,13 +33,16 @@ module Remit
     
     def valid?
       if @params['signatureVersion'].to_i == 2
+        #puts "\nparams: #{@params.inspect}\n"
         return false unless InboundRequest.check_parameters(@params)
         verify_request = Remit::VerifySignature::Request.new(
-          :url_end_point => InboundRequest.urlencode(@request_url),
+          :url_end_point => @request_url,#InboundRequest.urlencode(@request_url),
           :version => Remit::API::API_VERSION,
-          :http_parameters => InboundRequest.urlencode(InboundRequest.get_http_params(@params))
+          :http_parameters => InboundRequest.get_http_params(@params)
         )
+        #puts "\nhttp_parameters: #{verify_request.http_parameters.inspect}\n"
         result = @client.verify_signature(verify_request)
+        #puts "\nresult: #{result.raw.inspect}\n"
         result.verify_signature_result.verification_status == 'Success'
       elsif @params['signatureVersion'].nil? and self.allow_sigv1
         self.supplied_signature == Remit::API.signature_v1(URI.parse(@request_url).path, @params, @client.secret_key).gsub('+', ' ')
