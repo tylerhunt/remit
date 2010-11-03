@@ -73,11 +73,11 @@ module Remit
     end
     
     def method_missing(method, *args, &block) #:nodoc:
-      return @params[method.to_s] if @params.has_key?(method.to_s)
-      return @params[method.to_sym] if @params.has_key?(method.to_sym)
+      return @hash_params[method.to_s] if @hash_params.has_key?(method.to_s)
+      return @hash_params[method.to_sym] if @hash_params.has_key?(method.to_sym)
       key = self.convert_key(method)
-      return @params[key] if @params.has_key?(key)
-      return @params[key.to_s] if @params.has_key?(key.to_s)
+      return @hash_params[key] if @hash_params.has_key?(key)
+      return @hash_params[key.to_s] if @hash_params.has_key?(key.to_s)
       super
     end
   end
