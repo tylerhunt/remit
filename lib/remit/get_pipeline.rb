@@ -152,6 +152,7 @@ module Remit
       parameter :shipping
       parameter :tax
       parameter :transaction_amount
+      parameter :collect_email_address
 
       def pipeline_name
         Remit::PipelineName::SINGLE_USE
