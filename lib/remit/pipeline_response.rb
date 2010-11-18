@@ -1,7 +1,10 @@
 module Remit
   class PipelineResponse
-    def initialize(uri, secret_key)
-      @uri        = URI.parse(uri)
+    def initialize(params, uri, access_key, secret_key)
+      @params = strip_keys_from(params, 'action', 'controller', 'id')
+      @uri = URI.parse(uri)
+      @url_end_point = @uri.scheme + '://' + @uri.host + @uri.path
+      @access_key = access_key
       @secret_key = secret_key
     end
 
@@ -12,8 +15,8 @@ module Remit
     # pulled from the request is filtered through the same method.
     #++
     def valid?
-      return false unless given_signature
-      Relax::Query.unescape_value(correct_signature) == given_signature
+      utils = Amazon::FPS::SignatureUtilsForOutbound.new(@access_key, @secret_key);
+      utils.validate_request(:parameters => @params, :url_end_point => @url_end_point, :http_method => "GET")
     end
 
     # Returns +true+ if the response returns a successful state.
@@ -39,14 +42,12 @@ module Remit
     end
     private :request_query
 
-    def given_signature
-      request_query[:awsSignature]
+    def strip_keys_from(params, *ignore_keys)
+      parsed = params.dup
+      ignore_keys.each { |key| parsed.delete(key) }
+      parsed
     end
-    private :given_signature
+    private :strip_keys_from
 
-    def correct_signature
-      Remit::SignedQuery.new(@uri.path, @secret_key, request_query).sign
-    end
-    private :correct_signature
   end
 end

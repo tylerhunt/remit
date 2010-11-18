@@ -11,16 +11,18 @@ module Remit
     SIGNATURE_KEY = 'signature'
 
     # +params+ should be your controllers request parameters.
-    def initialize(params, secret_key)
+    def initialize(params, uri, access_key, secret_key)
       raise ArgumentError, "Expected the request params hash, received: #{params.inspect}" unless params.kind_of?(Hash)
       @params             = strip_keys_from(params, 'action', 'controller')
-      @supplied_signature = @params.delete(SIGNATURE_KEY)
-      @secret_key         = secret_key
+      @uri = URI.parse(uri)
+      @url_end_point = @uri.scheme + '://' + @uri.host + @uri.path
+      @access_key = access_key
+      @secret_key = secret_key
     end
 
     def valid?
-      return false unless @supplied_signature
-      generate_signature_for(@params) == @supplied_signature
+      utils = Amazon::FPS::SignatureUtilsForOutbound.new(@access_key, @secret_key);
+      utils.validate_request(:parameters => @params, :url_end_point => @url_end_point, :http_method => "GET")
     end
 
     def method_missing(method, *args) #:nodoc:
@@ -30,14 +32,6 @@ module Remit
         super(method, *args)
       end
     end
-
-    def generate_signature_for(params)
-      query   = params.sort_by { |k,v| k.downcase }
-      digest  = OpenSSL::Digest::Digest.new('sha1')
-      hmac    = OpenSSL::HMAC.digest(digest, @secret_key, query.to_s)
-      encoded = Base64.encode64(hmac).chomp
-    end
-    private :generate_signature_for
 
     def strip_keys_from(params, *ignore_keys)
       parsed = params.dup

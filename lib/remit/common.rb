@@ -5,6 +5,9 @@ require 'uri'
 require 'rubygems'
 require 'relax'
 
+require File.dirname(__FILE__) + '/../amazon/fps/signatureutils'
+require File.dirname(__FILE__) + '/../amazon/fps/signatureutilsforoutbound'
+
 module Remit
   class Request < Relax::Request
     def self.action(name)
@@ -63,8 +66,17 @@ module Remit
     end
 
     def sign
-      delete(:awsSignature)
-      store(:awsSignature, Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, "#{@uri.path}?#{to_s(false)}".gsub('%20', '+'))).strip)
+      self[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = Remit::API::SIGNATURE_VERSION
+      self[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
+
+      signature = Amazon::FPS::SignatureUtils.sign_parameters({
+                                              :parameters => self,
+                                              :aws_secret_key => @secret_key,
+                                              :host => @uri.host,
+                                              :verb => "GET",
+                                              :uri  => @uri.path })
+
+      store(Amazon::FPS::SignatureUtilsForOutbound::SIGNATURE_KEYNAME.to_sym, signature)
     end
 
     def to_s(signed=true)

@@ -21,8 +21,8 @@ describe 'a GetAccountActivity call' do
     transaction.date_completed.should_not be_nil
     transaction.date_received.should_not be_nil
     transaction.error_code.should be_empty
-    transaction.error_detail.should be_nil
-    transaction.error_message.should be_nil
+    transaction.error_detail.should be_empty
+    transaction.error_message.should be_empty
     transaction.fees.should_not be_nil
     transaction.operation.should_not be_empty
     transaction.recipient_name.should_not be_empty

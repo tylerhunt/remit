@@ -85,7 +85,7 @@ module Remit
     PIPELINE_URL = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'.freeze
     PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
     API_VERSION = Date.new(2007, 1, 8).to_s.freeze
-    SIGNATURE_VERSION = 1.freeze
+    SIGNATURE_VERSION = 2.freeze
 
     attr_reader :access_key
     attr_reader :secret_key
@@ -108,6 +108,7 @@ module Remit
       new_query({
         :AWSAccessKeyId => @access_key,
         :SignatureVersion => SIGNATURE_VERSION,
+        Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME => Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM,
         :Version => API_VERSION,
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
       })
@@ -122,13 +123,13 @@ module Remit
     private :query
 
     def sign(values)
-      keys = values.keys.sort { |a, b| a.to_s.downcase <=> b.to_s.downcase }
-
-      signature = keys.inject('') do |signature, key|
-        signature += key.to_s + values[key].to_s
-      end
-
-      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, @secret_key, signature)).strip
+      signature = Amazon::FPS::SignatureUtils.sign_parameters({
+                                              :parameters => values,
+                                              :aws_secret_key => @secret_key,
+                                              :host => @endpoint.host,
+                                              :verb => "GET",
+                                              :uri  => @endpoint.path })
+      return signature
     end
     private :sign
   end
