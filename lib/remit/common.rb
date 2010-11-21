@@ -49,9 +49,10 @@ module Remit
     def initialize(xml)
       super
 
-      #TODO: How to differentiate between Error and Service Error
+      # TODO: How to differentiate between Error and Service Error properly? - pboling
+      # TODO: Is this ServiceError still relevant? - pboling
       if is?(:Response) and has?(:Errors)
-        @errors = elements(:Errors).collect do |error|
+        @errors = elements('errors/error').collect do |error|
           Error.new(error)
         end
       else
