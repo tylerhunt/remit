@@ -132,7 +132,7 @@ module Remit
     parameter :date_received, :type => :time
     parameter :error_code
     parameter :error_message
-    parameter :fees, :type => Amount
+    parameter :fees, :element=>"FPSFees", :type => Amount
     parameter :fps_fees_paid_by, :element=>"FPSFeesPaidBy"
     parameter :fps_operation, :element=>"FPSOperation"
     parameter :meta_data
