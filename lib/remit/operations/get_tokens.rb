@@ -10,7 +10,11 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :tokens, :collection => Token
+      class GetTokensResult < Remit::BaseResponse
+        parameter :tokens, :element => 'Token', :collection => Remit::Token
+      end
+      parameter :get_tokens_result, :type=>GetTokensResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def get_tokens(request = Request.new)

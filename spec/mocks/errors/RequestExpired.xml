@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Response>
+  <Errors>
+    <Error>
+      <Code>RequestExpired</Code>
+      <Message>Request has expired. Timestamp date is 2010-02-26T19:48:05.000Z</Message>
+    </Error>
+  </Errors>
+  <RequestID>465f3304-acc4-4831-9e58-bc07f80c8b50</RequestID>
+</Response>

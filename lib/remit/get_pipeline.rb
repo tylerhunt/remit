@@ -5,6 +5,7 @@ require 'remit/common'
 module Remit
   module GetPipeline
     class Pipeline
+
       @parameters = []
       attr_reader :parameters
 
@@ -20,7 +21,12 @@ module Remit
         end
 
         def convert_key(key)
-          key.to_s.gsub(/_(.)/) { $1.upcase }.to_sym
+          key = key.to_s
+          if key == 'return_url'
+            :returnURL
+          else
+            key.gsub(/_(.)/) { $1.upcase }.to_sym
+          end
         end
 
         # Returns a hash of all of the parameters for this request, including
@@ -31,31 +37,30 @@ module Remit
       end
 
       attr_reader :api
-
+      attr_reader :pipeline_url
+      
+      parameter :caller_key
+      parameter :cobranding_style
+      parameter :cobranding_url
       parameter :pipeline_name
       parameter :return_url
-      parameter :caller_key
-      parameter :version
+      parameter :signature
       parameter :signature_version
-      parameter :address_name
-      parameter :address_line_1
-      parameter :address_line_2
-      parameter :city
-      parameter :state
-      parameter :zip
-      parameter :country
-      parameter :phone_number
+      parameter :signature_method
+      parameter :version
+      parameter :website_description
 
-      def initialize(api, options)
+      def initialize(api, pipeline, options)
         @api = api
-
+        @pipeline_url = pipeline
+        
         options.each do |k,v|
           self.send("#{k}=", v)
         end
       end
 
       def url
-        uri = URI.parse(@api.pipeline_url)
+        uri = URI.parse(self.pipeline_url)
 
         query = {}
         self.class.parameters.each do |p|
@@ -64,143 +69,218 @@ module Remit
           # Convert Time values to seconds from Epoch
           val = val.to_i if val.is_a?(Time)
 
-          query[self.class.convert_key(p.to_s)] = val
+          query[self.class.convert_key(p)] = val
         end
 
         # Remove any unused optional parameters
-        query.reject! { |key, value| value.nil? || (value.is_a?(String) && value.empty?) }
+        query.reject! { |key, value| value.nil? }
 
-        uri.query = SignedQuery.new(@api.pipeline_url, @api.secret_key, query).to_s
+        uri.query = SignedQuery.new(self.pipeline_url, self.api.secret_key, query).to_s
         uri.to_s
       end
+      
     end
-
-    class SingleUsePipeline < Pipeline
-      parameter :caller_reference
-      parameter :payment_reason
-      parameter :payment_method
-      parameter :transaction_amount
-      parameter :recipient_token
-
-      def pipeline_name
-        Remit::PipelineName::SINGLE_USE
+    
+    module ValidityPeriod
+      def self.included(base)
+        base.class_eval do
+          parameter :validity_expiry # Time or seconds from Epoch
+          parameter :validity_start # Time or seconds from Epoch
+        end
       end
     end
 
-    class MultiUsePipeline < Pipeline
-      parameter :caller_reference
-      parameter :payment_reason
-      parameter :recipient_token_list
-      parameter :amount_type
-      parameter :transaction_amount
-      parameter :validity_start
-      parameter :validity_expiry
-      parameter :payment_method
-      parameter :global_amount_limit
-      parameter :usage_limit_type_1
-      parameter :usage_limit_period_1
-      parameter :usage_limit_value_1
-      parameter :usage_limit_type_2
-      parameter :usage_limit_period_2
-      parameter :usage_limit_value_2
-      parameter :is_recipient_cobranding
-
-      def pipeline_name
-        Remit::PipelineName::MULTI_USE
+    module UsageLimits
+      def self.included(base)
+        base.class_eval do
+          parameter :usage_limit_type_1
+          parameter :usage_limit_period_1
+          parameter :usage_limit_value_1
+          parameter :usage_limit_type_2
+          parameter :usage_limit_period_2
+          parameter :usage_limit_value_2
+        end
       end
     end
 
     class RecipientPipeline < Pipeline
       parameter :caller_reference
-      parameter :validity_start # Time or seconds from Epoch
-      parameter :validity_expiry # Time or seconds from Epoch
+      parameter :max_fixed_fee
+      parameter :max_variable_fee
       parameter :payment_method
       parameter :recipient_pays_fee
-      parameter :caller_reference_refund
-      parameter :max_variable_fee
-      parameter :max_fixed_fee
+      # BJM: missing??
+      # PHB: Amazon only documents this parameter as being part of responses, never as part of a request.
+      #       Not sure if it is a documentation oversight.
+      #       I am sure the documentation is terrible (with four fingers pointed back at me).
+      parameter :payment_reason
+
+      include ValidityPeriod
 
       def pipeline_name
         Remit::PipelineName::RECIPIENT
       end
     end
 
-    class RecurringUsePipeline < Pipeline
+    class SenderPipeline < Pipeline
+      # I think these should be moved down to the subclasses, or perhaps, all sender pipeline requests
+      parameter :address_name
+      parameter :address_line_1
+      parameter :address_line_2
+      parameter :city
+      parameter :state
+      parameter :zip
+      parameter :phone_number
+
+      def pipeline_name
+        raise NotImplementedError, 'SenderPipeline is abstract.  Use a concrete subclass.'
+      end
+    end
+
+    class SingleUsePipeline < SenderPipeline
       parameter :caller_reference
+      parameter :collect_shipping_address
+      parameter :currency_code
+      parameter :discount
+      parameter :gift_wrapping
+      parameter :handling
+      parameter :item_total
+      parameter :payment_method
       parameter :payment_reason
       parameter :recipient_token
+      parameter :reserve
+      parameter :shipping
+      parameter :tax
       parameter :transaction_amount
-      parameter :validity_start # Time or seconds from Epoch
-      parameter :validity_expiry # Time or seconds from Epoch
+      parameter :collect_email_address
+
+      def pipeline_name
+        Remit::PipelineName::SINGLE_USE
+      end
+    end
+
+    class MultiUsePipeline < SenderPipeline
+      parameter :amount_type
+      parameter :caller_reference
+      parameter :collect_shipping_address
+      parameter :currency_code
+      parameter :global_amount_limit
+      parameter :is_recipient_cobranding
       parameter :payment_method
-      parameter :recurring_period
+      parameter :payment_reason
+      parameter :recipient_token_list
+      parameter :transaction_amount
+
+      include ValidityPeriod
+      include UsageLimits
+
+      def pipeline_name
+        Remit::PipelineName::MULTI_USE
+      end
+    end
+    
+    class EditTokenPipeline < Pipeline
+      parameter :caller_reference
+      parameter :payment_method
+      parameter :token_id
+      
+      def pipeline_name
+        Remit::PipelineName::EDIT_TOKEN
+      end
+    end
+
+    class RecurringUsePipeline < SenderPipeline
+      parameter :caller_reference
+      parameter :collect_shipping_address
+      parameter :currency_code
+      parameter :is_recipient_cobranding
+      parameter :payment_method
+      parameter :payment_reason
+      parameter :recipient_token
+      parameter :recurring_period  
+      parameter :transaction_amount
+
+      include ValidityPeriod
 
       def pipeline_name
         Remit::PipelineName::RECURRING
       end
     end
 
-    class PostpaidPipeline < Pipeline
+    class PostpaidPipeline < SenderPipeline
       parameter :caller_reference_sender
       parameter :caller_reference_settlement
-      parameter :payment_reason
-      parameter :payment_method
-      parameter :validity_start # Time or seconds from Epoch
-      parameter :validity_expiry # Time or seconds from Epoch
+      parameter :collect_shipping_address
       parameter :credit_limit
+      parameter :currency_code
       parameter :global_amount_limit
-      parameter :usage_limit_type1
-      parameter :usage_limit_period1
-      parameter :usage_limit_value1
-      parameter :usage_limit_type2
-      parameter :usage_limit_period2
-      parameter :usage_limit_value2
+      parameter :payment_method
+      parameter :payment_reason
+
+      include ValidityPeriod
+      include UsageLimits
 
       def pipeline_name
         Remit::PipelineName::SETUP_POSTPAID
       end
     end
     
-    class PrepaidPipeline < Pipeline
-      parameter :caller_reference_sender
+    class PrepaidPipeline < SenderPipeline
       parameter :caller_reference_funding
-      parameter :payment_reason
-      parameter :payment_method
-      parameter :validity_start # Time or seconds from Epoch
-      parameter :validity_expiry # Time or seconds from Epoch
+      parameter :caller_reference_sender
+      parameter :collect_shipping_address
+      parameter :currency_code
       parameter :funding_amount
+      parameter :payment_method
+      parameter :payment_reason
+
+      include ValidityPeriod
+
       def pipeline_name
         Remit::PipelineName::SETUP_PREPAID
       end
     end
-    
+
+    class EditTokenPipeline < Pipeline
+      parameter :caller_reference
+      parameter :token_id
+      parameter :payment_method
+      
+      def pipeline_name
+        Remit::PipelineName::EDIT_TOKEN
+      end
+    end
+
     def get_single_use_pipeline(options)
-      self.get_pipeline(SingleUsePipeline, options)
+      get_pipeline(Remit::GetPipeline::SingleUsePipeline, options)
     end
-
     def get_multi_use_pipeline(options)
-      self.get_pipeline(MultiUsePipeline, options)
+      get_pipeline(Remit::GetPipeline::MultiUsePipeline, options)
     end
-
     def get_recipient_pipeline(options)
-      self.get_pipeline(RecipientPipeline, options)
+      get_pipeline(Remit::GetPipeline::RecipientPipeline, options)
     end
-
     def get_recurring_use_pipeline(options)
-      self.get_pipeline(RecurringUsePipeline, options)
+      get_pipeline(Remit::GetPipeline::RecurringUsePipeline, options)
     end
-
     def get_postpaid_pipeline(options)
-      self.get_pipeline(PostpaidPipeline, options)
+      get_pipeline(Remit::GetPipeline::PostpaidPipeline, options)
+    end
+    def get_prepaid_pipeline(options)
+      get_pipeline(Remit::GetPipeline::PrepaidPipeline, options)
+    end
+    def get_edit_token_pipeline(options)
+      get_pipeline(Remit::GetPipeline::EditTokenPipeline, options)
     end
 
-    def get_prepaid_pipeline(options)
-      self.get_pipeline(PrepaidPipeline, options)
-    end
-    
     def get_pipeline(pipeline_subclass, options)
-      pipeline = pipeline_subclass.new(self, {
-        :caller_key => @access_key
+      # TODO: How does @pipeline_url work here?
+      #       instance variable is setup in initializer of class.
+      pipeline_subclass.new(self, @pipeline_url, {
+        :caller_key => @access_key,
+        :signature_version=>Remit::API::SIGNATURE_VERSION,
+        :signature_method=>Remit::API::SIGNATURE_METHOD,
+        :version=>Remit::API::PIPELINE_VERSION
       }.merge(options))
     end
   end

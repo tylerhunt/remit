@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetRecipientVerificationStatusResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+  <GetRecipientVerificationStatusResult>
+    <RecipientVerificationStatus>string</RecipientVerificationStatus>
+  </GetRecipientVerificationStatusResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetRecipientVerificationStatusResponse>

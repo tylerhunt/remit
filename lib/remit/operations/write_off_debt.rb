@@ -4,7 +4,6 @@ module Remit
   module WriteOffDebt
     class Request < Remit::Request
       action :WriteOffDebt
-      parameter :caller_token_id, :required => true
       parameter :credit_instrument_id, :required => true
       parameter :adjustment_amount, :required => true
       parameter :transaction_date
@@ -12,13 +11,12 @@ module Remit
       parameter :caller_reference, :required => true
       parameter :recipient_reference
       parameter :sender_description
-      parameter :recipient_description
       parameter :caller_description
-      parameter :meta_data
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parameter :write_off_debt_result, :type => Remit::TransactionResponse
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def write_off_debt(request = Request.new)

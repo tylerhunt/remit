@@ -38,13 +38,18 @@ make a simple call to get the tokens stored on the account:
     puts response.tokens.first.token_id
 
 
+VerifySignature API
+-------------------
+See spec/integrations/verify_signature_spec.rb for examples on correct and incorrect usage!
+
+
 Using with Rails
 ----------------
 
 To use Remit in a Rails application, you must first specify a dependency on the
-Remit gem in your config/environment.rb file:
+Remit gem in your Gemfile:
 
-    config.gem 'remit', :version => '~> 0.0.1'
+    gem 'remit', :git => "git://github.com/nyc-ruby-meetup/remit.git"
 
 Then you should create an initializer to configure your Amazon keys. Create the
 file config/initializers/remit.rb with the following contents:
@@ -84,8 +89,34 @@ Sites Using Remit
 
 The following production sites are currently using Remit:
 
-  * http://www.storenvy.com/
-  * http://www.obsidianportal.com/
+ * [Storyenvy](http://www.storenvy.com/)
+ * [ObsidianPortal](http://www.obsidianportal.com/)
 
+
+Amazon API Compliance 
+---------------------
+These are the changes summarized by Amazon from the previous API, and the level of compliance in this branch:
+
+1. You don't have to use InstallPaymentInstruction API to create Caller and Recipient tokens for your account. A Recipient token is now required only in Marketplace applications. We have completely removed the Caller token.
+  Compliance: Caller token references removed.
+2. We removed parameters that are not being used by you today. For example, we removed metadata and recipient description, but we retained sender description and caller description.
+  Compliance: DONE! recipient_description and metadata have been removed from the code.
+3. We simplified the transaction response object.
+  Compliance: The former Remit::TransactionResponse object has been accordingly simplified.
+4. We simplified the GetTransaction response by removing unnecessary parameters.
+  Compliance: ?
+5. By default, implicit retry and cancel will be the method used to handle temporary declines rather than the current explicit retry process.
+  Compliance: Removed deprecated statuses
+6. GetResults, DiscardResults are replaced with GetTransactionStatus API.
+  Compliance: GetResults and Discard Results are gone.  GetTransactionStatus takes their place.
+7. Temporary decline status is not exposed to customers as we provide a simpler way to handle this status.
+  Compliance: Temporary decline status can no longer be tested for, as it will never be a status.
+8. Web Service notification is removed and replaced with simplified IPN (Instant Payment Notification) mechanism.
+
+Running Specification Suite
+---------------------------
+1. Copy test.sh.example to test.sh
+2. Edit test.sh to have valid Amazon developer account access and secret keys
+3. Run ./test.sh from the command line.
 
 Copyright (c) 2007-2009 Tyler Hunt, released under the MIT license

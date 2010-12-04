@@ -11,14 +11,14 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = 'remit'
     gem.summary = 'An API for using the Amazon Flexible Payment Service (FPS).'
-    gem.email = 'tyler@tylerhunt.com'
-    gem.homepage = 'http://github.com/tylerhunt/remit'
-    gem.authors = ['Tyler Hunt']
-    gem.rubyforge_project = 'remit'
+    gem.email = 'peter.boling+remit@gmail.com'
+    gem.homepage = 'http://github.com/nyc-ruby-meetup/remit'
+    gem.authors = ['Tyler Hunt','Peter Boling']
+    gem.rubyforge_project = 'remit-nyc'
     gem.platform           = Gem::Platform::RUBY
     gem.files              = FileList['{bin,lib}/**/*'].to_a
     gem.require_path       = 'lib'
-    gem.test_files         = FileList['{spec}/**/{*spec.rb,*helper.rb}'].to_a
+    gem.test_files         = FileList['{spec}/**/{*spec.rb,*helper.rb,*.xml}'].to_a
     gem.has_rdoc           = true
     gem.extra_rdoc_files   = ['README.markdown', 'LICENSE']
 

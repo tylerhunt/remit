@@ -9,14 +9,19 @@ require File.dirname(__FILE__) + '/../amazon/fps/signatureutils'
 require File.dirname(__FILE__) + '/../amazon/fps/signatureutilsforoutbound'
 
 module Remit
+
+  module ConvertKey
+    def convert_key(key)
+      key.to_s.gsub(/(^|_)(.)/) { $2.upcase }.to_sym
+    end
+  end
+
   class Request < Relax::Request
     def self.action(name)
       parameter :action, :value => name
     end
 
-    def convert_key(key)
-      key.to_s.gsub(/(^|_)(.)/) { $2.upcase }.to_sym
-    end
+    include ConvertKey
     protected :convert_key
   end
 
@@ -26,24 +31,38 @@ module Remit
     end
   end
 
+  class ResponseMetadata < BaseResponse
+    # Amazon FPS returns a RequestId element for every API call accepted for processing
+    # that means not *every* call will have a request ID.
+    parameter :request_id#, :required => true
+    parameter :signature_version
+    parameter :signature_method
+  end  
+
   class Response < BaseResponse
-    parameter :request_id
+    parameter :response_metadata, :type => Remit::ResponseMetadata, :required => true
 
     attr_accessor :status
     attr_accessor :errors
 
+    def request_id
+      self.response_metadata.respond_to?(:request_id) ? self.response_metadata.request_id : nil
+    end
+
     def initialize(xml)
       super
 
-      if is?(:Response) && has?(:Errors)
-        @errors = elements(:Errors).collect do |error|
+      # TODO: How to differentiate between Error and Service Error properly? - pboling
+      # TODO: Is this ServiceError still relevant? - pboling
+      if is?(:Response) and has?(:Errors)
+        @errors = elements('errors/error').collect do |error|
           Error.new(error)
         end
       else
         @status = text_value(element(:Status))
-        @errors = elements('Errors/Errors').collect do |error|
+        @errors = elements('errors/errors').collect do |error|
           ServiceError.new(error)
-        end unless successful?
+        end if not successful?
       end
     end
 
@@ -59,42 +78,78 @@ module Remit
   end
 
   class SignedQuery < Relax::Query
-    def initialize(uri, secret_key, query={})
+    def initialize(uri, secret_key, query = {})
       super(query)
       @uri = URI.parse(uri.to_s)
       @secret_key = secret_key
+      sign
     end
 
     def sign
-      self[Amazon::FPS::SignatureUtils::SIGNATURE_VERSION_KEYNAME] = Remit::API::SIGNATURE_VERSION
-      self[Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME] = Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM
-
-      signature = Amazon::FPS::SignatureUtils.sign_parameters({
-                                              :parameters => self,
-                                              :aws_secret_key => @secret_key,
-                                              :host => @uri.host,
-                                              :verb => "GET",
-                                              :uri  => @uri.path })
-
-      store(Amazon::FPS::SignatureUtilsForOutbound::SIGNATURE_KEYNAME.to_sym, signature)
+      store(:signatureVersion, Remit::API::SIGNATURE_VERSION)
+      store(:signatureMethod, Remit::API::SIGNATURE_METHOD)
+      store(:signature, signature)
     end
 
-    def to_s(signed=true)
-      sign if signed
-      super()
+    def signature
+      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA256.new, @secret_key, signable_string)).strip
+    end
+
+    def signable_string
+      [ 'GET',
+        @uri.host,
+        @uri.path,
+        to_s # the query string, sans :signature (but with :signatureVersion and :signatureMethod)
+      ].join("\n")
     end
 
     class << self
       def parse(uri, secret_key, query_string)
         query = self.new(uri, secret_key)
-
         query_string.split('&').each do |parameter|
           key, value = parameter.split('=', 2)
           query[key] = unescape_value(value)
         end
-
         query
       end
+
+      UNSAFE = /[^A-Za-z0-9_.~-]/
+      # Amazon is very specific about what chars should be escaped, and which should not.
+      def escape_value(value)
+        # note that URI.escape(' ') => '%20', and CGI.escape(' ') => '+'
+        URI.escape(value.to_s, UNSAFE)
+      end
     end
+  end
+
+  # Frustratingly enough, API requests want the signature params with slightly different casing.
+  class ApiQuery < SignedQuery
+    def sign
+      store(:SignatureVersion, Remit::API::SIGNATURE_VERSION)
+      store(:SignatureMethod, 'HmacSHA256')
+      store(:Signature, signature)
+    end
+  end
+end
+
+#Hack on Hash to make it s rocket
+class Hash
+  def to_url_params
+    elements = []
+    keys.size.times do |i|
+      elements << "#{(keys[i])}=#{Remit::SignedQuery.escape_value(values[i])}"
+    end
+    elements.join('&')
+  end
+
+  def self.from_url_params(url_params)
+    result = {}
+    url_params.split('&').each do |element|
+      element = element.split('=')
+      # BJM - need to unescape the values in the param string
+      #result[element[0]] = element[1]
+      result[element[0]] = CGI.unescape(element[1])
+    end
+    result
   end
 end

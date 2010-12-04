@@ -6,22 +6,27 @@ require 'uri'
 require 'date'
 require 'base64'
 require 'erb'
+require 'cgi'
 
 require 'rubygems'
 
 gem 'relax', '0.0.7'
 require 'relax'
 
-require 'remit/common'
+
 require 'remit/data_types'
+require 'remit/common'
 require 'remit/error_codes'
+require 'remit/signature_utils_for_outbound'
+require 'remit/verify_signature'
+require 'remit/inbound_request'
 require 'remit/ipn_request'
 require 'remit/get_pipeline'
 require 'remit/pipeline_response'
 
 require 'remit/operations/cancel_subscription_and_refund'
 require 'remit/operations/cancel_token'
-require 'remit/operations/discard_results'
+require 'remit/operations/cancel'
 require 'remit/operations/fund_prepaid'
 require 'remit/operations/get_account_activity'
 require 'remit/operations/get_account_balance'
@@ -31,17 +36,17 @@ require 'remit/operations/get_debt_balance'
 require 'remit/operations/get_outstanding_debt_balance'
 require 'remit/operations/get_payment_instruction'
 require 'remit/operations/get_prepaid_balance'
-require 'remit/operations/get_results'
+require 'remit/operations/get_recipient_verification_status'
 require 'remit/operations/get_token_by_caller'
 require 'remit/operations/get_token_usage'
 require 'remit/operations/get_tokens'
 require 'remit/operations/get_total_prepaid_liability'
 require 'remit/operations/get_transaction'
+require 'remit/operations/get_transaction_status'
 require 'remit/operations/install_payment_instruction'
 require 'remit/operations/pay'
 require 'remit/operations/refund'
 require 'remit/operations/reserve'
-require 'remit/operations/retry_transaction'
 require 'remit/operations/settle'
 require 'remit/operations/settle_debt'
 require 'remit/operations/subscribe_for_caller_notification'
@@ -50,9 +55,11 @@ require 'remit/operations/write_off_debt'
 
 module Remit
   class API < Relax::Service
+
+    include VerifySignature
     include CancelSubscriptionAndRefund
     include CancelToken
-    include DiscardResults
+    include Cancel
     include FundPrepaid
     include GetAccountActivity
     include GetAccountBalance
@@ -63,7 +70,7 @@ module Remit
     include GetPaymentInstruction
     include GetPipeline
     include GetPrepaidBalance
-    include GetResults
+    include GetRecipientVerificationStatus
     include GetTokenUsage
     include GetTokens
     include GetTokenByCaller
@@ -73,7 +80,6 @@ module Remit
     include Pay
     include Refund
     include Reserve
-    include RetryTransaction
     include Settle
     include SettleDebt
     include SubscribeForCallerNotification
@@ -84,53 +90,43 @@ module Remit
     API_SANDBOX_ENDPOINT = 'https://fps.sandbox.amazonaws.com/'.freeze
     PIPELINE_URL = 'https://authorize.payments.amazon.com/cobranded-ui/actions/start'.freeze
     PIPELINE_SANDBOX_URL = 'https://authorize.payments-sandbox.amazon.com/cobranded-ui/actions/start'.freeze
-    API_VERSION = Date.new(2007, 1, 8).to_s.freeze
+    API_VERSION = Date.new(2008, 9, 17).to_s.freeze
+    PIPELINE_VERSION = Date.new(2009, 1, 9).to_s.freeze
     SIGNATURE_VERSION = 2.freeze
+    SIGNATURE_METHOD = "HmacSHA256".freeze
 
+    #attr_reader :pipeline      # kickstarter
+    attr_reader :pipeline_url   # nyc
     attr_reader :access_key
     attr_reader :secret_key
-    attr_reader :pipeline_url
+    attr_reader :api_endpoint
 
     def initialize(access_key, secret_key, sandbox=false)
       @access_key = access_key
       @secret_key = secret_key
       @pipeline_url = sandbox ? PIPELINE_SANDBOX_URL : PIPELINE_URL
-
-      super(sandbox ? API_SANDBOX_ENDPOINT : API_ENDPOINT)
+      @api_endpoint = sandbox ? API_SANDBOX_ENDPOINT : API_ENDPOINT
+      super(@api_endpoint)
+    end
+    
+    # generates v1 signatures, for historical purposes.
+    def self.signature_v1(path, params, secret_key)
+      params = params.reject {|key, val| ['awsSignature', 'action', 'controller', 'id'].include?(key) }.sort_by{ |k,v| k.to_s.downcase }.map{|k,v| "#{CGI::escape(k)}=#{Remit::SignedQuery.escape_value(v)}"}.join('&')
+      signable = path + '?' + params
+      Base64.encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::SHA1.new, secret_key, signable)).strip
     end
 
-    def new_query(query={})
-      SignedQuery.new(@endpoint, @secret_key, query)
-    end
-    private :new_query
+    private
 
-    def default_query
-      new_query({
+    # called from Relax::Service#call
+    def query(request)
+      params = request.to_query.merge(
         :AWSAccessKeyId => @access_key,
-        :SignatureVersion => SIGNATURE_VERSION,
-        Amazon::FPS::SignatureUtils::SIGNATURE_METHOD_KEYNAME => Amazon::FPS::SignatureUtils::HMAC_SHA256_ALGORITHM,
         :Version => API_VERSION,
         :Timestamp => Time.now.utc.strftime('%Y-%m-%dT%H:%M:%SZ')
-      })
+      )
+      ApiQuery.new(@endpoint, @secret_key, params)
     end
-    private :default_query
-
-    def query(request)
-      query = super
-      query[:Signature] = sign(query)
-      query
-    end
-    private :query
-
-    def sign(values)
-      signature = Amazon::FPS::SignatureUtils.sign_parameters({
-                                              :parameters => values,
-                                              :aws_secret_key => @secret_key,
-                                              :host => @endpoint.host,
-                                              :verb => "GET",
-                                              :uri  => @endpoint.path })
-      return signature
-    end
-    private :sign
   end
 end
+

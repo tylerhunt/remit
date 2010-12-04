@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Response>
+  <Errors>
+    <Error>
+      <Code>InvalidParameterValue</Code>
+      <Message>Value (2010-02-26 T19:48:05.000Z) for parameter Timestamp is invalid. Must be in ISO8601 format.</Message>
+    </Error>
+  </Errors>
+  <RequestID>794c2c9f-2d0e-4a9b-9ade-e80a58d09956</RequestID>
+</Response>

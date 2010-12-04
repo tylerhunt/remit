@@ -5,6 +5,22 @@ describe 'A pipeline', :shared => true do
     @pipeline_options = {
       :return_url => 'http://example.com/'
     }
+    @pipeline = remit.get_single_use_pipeline(@pipeline_options)
+  end
+
+  describe 'with signed url' do
+    before(:each) do
+      @uri = URI.parse(@pipeline.url)
+    end
+    it "should have a signature" do
+      @uri.query.should =~ /signature=/
+    end
+    it "should specify a signature version" do
+      @uri.query.should =~ /signatureVersion=2/
+    end
+    it "should specify a signature method" do
+      @uri.query.should =~ /signatureMethod=HmacSHA256/
+    end
   end
 
   it 'should sign its URL' do

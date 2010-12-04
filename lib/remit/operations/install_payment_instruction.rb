@@ -1,5 +1,7 @@
 require 'remit/common'
 
+# This action seems to have been deprecated
+
 module Remit
   module InstallPaymentInstruction
     class Request < Remit::Request
@@ -12,7 +14,12 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :token_id
+      class InstallPaymentInstructionResult < Remit::BaseResponse
+        parameter :token_id
+      end
+      
+      parameter :install_payment_instruction_result, :type =>InstallPaymentInstructionResult
+      alias :result :install_payment_instruction_result
     end
 
     def install_payment_instruction(request)

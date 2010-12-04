@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetPrepaidBalanceResponse xmlns="http://fps.amazonaws.com/doc/2008-09-17/">
+  <!--Optional:-->
+  <GetPrepaidBalanceResult>
+    <!--Optional:-->
+    <PrepaidBalance>
+      <AvailableBalance>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </AvailableBalance>
+      <!--Optional:-->
+      <PendingInBalance>
+        <CurrencyCode>string</CurrencyCode>
+        <Value>string</Value>
+      </PendingInBalance>
+    </PrepaidBalance>
+  </GetPrepaidBalanceResult>
+  <ResponseMetadata>
+    <RequestId>string</RequestId>
+  </ResponseMetadata>
+</GetPrepaidBalanceResponse>

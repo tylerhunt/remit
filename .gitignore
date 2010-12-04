@@ -1,4 +1,6 @@
+.idea
+test.sh
+remit-*.gem
 pkg
 rdoc
-test.sh
-
+.rvmrc

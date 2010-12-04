@@ -9,7 +9,11 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :token, :type => Token
+      class GetTokenByCallerResult < Remit::BaseResponse
+        parameter :token, :type => Token
+      end
+      parameter :get_token_by_caller_result, :type=>GetTokenByCallerResult
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def get_token_by_caller(request = Request.new)

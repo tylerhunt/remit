@@ -10,7 +10,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parameter :settle_result, :type => Remit::TransactionResponse
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def settle(request = Request.new)

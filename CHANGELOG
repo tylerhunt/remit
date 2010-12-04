@@ -1,3 +1,20 @@
+0.2.4 - November 11, 2010, and the previous unmentionable releases
+
+* Added support for VerifySignature API, and signature version 2 (Peter Boling, Ben Mishkin, with help from many other forks)
+* Added support for additional parameters used by FPS Marketplace to various APIs (Peter Boling)
+* Added hundreds of rspec tests, and even a few integration tests (see test.sh.example) (Peter Boling and others)
+* Various documentation enhancements (John Joseph Bachir and Peter Boling)
+* Added collect_email_address option to single use pipeline, an undocumented, but real, feature of FPS (John Joseph Bachir)
+* Fixed recipient pipeline (Kyle Crum)
+* Updated install_payment_instruction to new API (Jeff Seibert)
+* Automatically handle snake-cased parameter names in Relax::Response (John Schult)
+* Tests now all use mock XML of Amazons responses from new API, derived from Amazon's actual code sample (Peter Boling)
+* Updated most Service APIs to the latest version of FPS, 2008-09-17 (Peter Boling, Jeff Whitmire)
+* Refactor IpnRequest and PipelineResponse commonalities into InboundRequest class (Lance Ivy)
+* Lots of work on lots of features in the parent forks from:
+  jagthedrummer, Kurt Mackey, Aaron Soules, Jeremy Green, Jon Moses, George Ogata, and of course Tyler Hunt
+* Lots of logic and ideas were straight up stolen from the remit2 refactoring by Micah Wedemeyer
+
 0.0.5 - January 11, 2010
 
 * Added support to pipelines for shipping information (Jeff Seibert)
@@ -32,3 +49,10 @@
 
 * First public release
 * Support for recurring-use tokens in the pipeline (Micah Wedemeyer)
+
+0.1.0 - October 14, 2010
+
+* Updated various parts for marketplace compatiblity [Peter Boling]
+* Added more rspec tests [Peter Boling, and many others]
+* Switched to signature parameter from awsSignature [Peter Boling]
+* Updated to latest API, 2008-09-17 [Peter Boling, and many others]

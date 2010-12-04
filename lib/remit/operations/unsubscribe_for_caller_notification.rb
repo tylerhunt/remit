@@ -1,5 +1,7 @@
 require 'remit/common'
 
+# This action seems to have been deprecated
+
 module Remit
   module UnsubscribeForCallerNotification
     class Request < Remit::Request

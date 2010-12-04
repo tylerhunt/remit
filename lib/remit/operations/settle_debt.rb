@@ -6,11 +6,8 @@ module Remit
       action :SettleDebt
       parameter :caller_description
       parameter :caller_reference, :required => true
-      parameter :caller_token_id, :required => true
       parameter :charge_fee_to, :required => true
       parameter :credit_instrument_id, :required => true
-      parameter :meta_data
-      parameter :recipient_description
       parameter :recipient_reference
       parameter :sender_description
       parameter :sender_reference
@@ -20,7 +17,8 @@ module Remit
     end
 
     class Response < Remit::Response
-      parameter :transaction_response, :type => TransactionResponse
+      parameter :settle_debt_result, :type => Remit::TransactionResponse
+      parameter :response_metadata, :type=>ResponseMetadata
     end
 
     def settle_debt(request = Request.new)
