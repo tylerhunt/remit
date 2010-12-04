@@ -49,7 +49,7 @@ Using with Rails
 To use Remit in a Rails application, you must first specify a dependency on the
 Remit gem in your Gemfile:
 
-    gem 'remit', :git => "git://github.com/nyc-ruby-meetup/remit.git"
+    gem 'remit'
 
 Then you should create an initializer to configure your Amazon keys. Create the
 file config/initializers/remit.rb with the following contents:
