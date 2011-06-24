@@ -7,7 +7,6 @@ module Remit
       parameter :transaction_ids
       parameter :caller_description
       parameter :caller_reference, :required => true
-      parameter :charge_fee_to, :required => true
       parameter :funding_amount, :type => Remit::RequestTypes::Amount, :required => true
       parameter :prepaid_instrument_id, :required => true
       parameter :recipient_reference
