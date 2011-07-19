@@ -14,6 +14,8 @@ module Remit
       parameter :charge_fee_to, :required => true
       parameter :sender_description
       parameter :caller_description
+      parameter :marketplace_fixed_fee, :type => Remit::RequestTypes::Amount
+      parameter :marketplace_variable_fee
     end
 
     class Response < Remit::Response
@@ -26,3 +28,4 @@ module Remit
     end
   end
 end
+ 
