@@ -91,11 +91,12 @@ The following production sites are currently using Remit:
 
  * [Storyenvy](http://www.storenvy.com/)
  * [ObsidianPortal](http://www.obsidianportal.com/)
+ * [TimePerks](https://www.timeperks.com/about)
 
 
 Amazon API Compliance 
 ---------------------
-These are the changes summarized by Amazon from the previous API, and the level of compliance in this branch:
+These are the changes summarized by Amazon from the previous API, and the level of compliance in this gem:
 
 1. You don't have to use InstallPaymentInstruction API to create Caller and Recipient tokens for your account. A Recipient token is now required only in Marketplace applications. We have completely removed the Caller token.
   Compliance: Caller token references removed.
@@ -119,4 +120,5 @@ Running Specification Suite
 2. Edit test.sh to have valid Amazon developer account access and secret keys
 3. Run ./test.sh from the command line.
 
+Copyright (c) 2010-2012 Peter Boling, released under the MIT license
 Copyright (c) 2007-2009 Tyler Hunt, released under the MIT license
