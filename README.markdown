@@ -1,4 +1,4 @@
-Remit
+Remit [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/tylerhunt/remit)
 =====
 
 This API provides access to the Amazon Flexible Payment Service (FPS). After
@@ -121,4 +121,5 @@ Running Specification Suite
 3. Run ./test.sh from the command line.
 
 Copyright (c) 2010-2012 Peter Boling, released under the MIT license
+
 Copyright (c) 2007-2009 Tyler Hunt, released under the MIT license
