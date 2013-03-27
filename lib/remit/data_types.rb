@@ -112,7 +112,7 @@ module Remit
     parameter :last_reset_count
     parameter :last_reset_time_stamp
   end
-  
+
   class TransactionPart < Remit::BaseResponse
     parameter :account_id
     parameter :role
@@ -121,13 +121,12 @@ module Remit
     parameter :description
     parameter :fee_paid, :type => Amount
   end
-    
+
   class Transaction < BaseResponse
-    
+
     parameter :caller_name
     parameter :caller_reference
     parameter :caller_description
-    parameter :caller_transaction_date, :type => :time
     parameter :date_completed, :type => :time
     parameter :date_received, :type => :time
     parameter :error_code
@@ -209,7 +208,7 @@ module Remit
       parameter :value
       parameter :currency_code
     end
-    
+
     class TemporaryDeclinePolicy < Remit::Request
       parameter :temporary_decline_policy_type
       parameter :implicit_retry_timeout_in_mins
@@ -221,7 +220,7 @@ module Remit
     end
 
   end
-  
+
   class SoftDescriptorType
     STATIC = 'Static'
     DYNAMIC = 'Dynamic'
@@ -252,7 +251,7 @@ module Remit
     IMPLICIT_RETRY = 'ImplicitRetry'
     FAILURE = 'Failure'
   end
-    
+
   class Operation
     PAY             = "Pay"
     REFUND          = "Refund"
@@ -261,5 +260,5 @@ module Remit
     WRITE_OFF_DEBT  = "WriteOffDebt"
     FUND_PREPAID    = "FundPrepaid"
   end
-  
+
 end
